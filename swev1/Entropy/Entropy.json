@@ -1,44 +1,87 @@
 {
-  "ComponentIndexes": {},
+  "ComponentIndexes": {
+    "footerComp": 4,
+    "footerComp_1": 4,
+    "headerComp": 3,
+    "headerComp_1": 3
+  },
   "ControlUniqueIds": {
     "App": 1,
     "backgroundPhoto": 5,
+    "backgroundRegistration": 10,
+    "DebuggingScreen": 8,
+    "footerComp": 16,
+    "footerComp_1": 20,
+    "headerComp": 12,
+    "headerComp_1": 19,
+    "homeIcon": 13,
+    "homeIcon_1": 17,
     "HomeSplash": 3,
-    "Label1": 6
+    "Icon2": 14,
+    "RegistrationPage": 9,
+    "standardBaseButton": 7,
+    "taglineLabel": 6,
+    "taglineLabel_1": 11
   },
   "FunctionParamsInvariantScripts": {},
-  "HeaderLastSavedDateTimeUTC": "01/30/2022 15:31:47",
+  "HeaderLastSavedDateTimeUTC": "01/30/2022 15:48:33",
   "LocalDatabaseReferencesAsEmpty": false,
   "LocalResourceFileNames": {
-    "outdoors": "00cb2f3f-8114-461c-893a-77d387306e34.jpg"
+    "outdoors": "00cb2f3f-8114-461c-893a-77d387306e34.jpg",
+    "outdoors2": "2ef4835b-dcdc-476a-afa0-101748bbe400.jpg"
   },
   "LocalResourceRootPaths": {
-    "outdoors": "https://docserverpwaprodeus.blob.core.windows.net/b585e01c-a4b9-432c-82e3-66ca0eb28ca7-1/resource/a178c827-5907-4a44-8e96-3538ae5600b6.jpg?sv=2017-04-17&sr=b&sig=iWaERermjFVIB768Bu9LoMBjQJkiEHGqz19AHJm902o%3D&spr=https&se=2022-01-31T15%3A45%3A52Z&sp=r"
+    "outdoors": "https://docserverpwaprodeus.blob.core.windows.net/b585e01c-a4b9-432c-82e3-66ca0eb28ca7-1/resource/a178c827-5907-4a44-8e96-3538ae5600b6.jpg?sv=2017-04-17&sr=b&sig=iWaERermjFVIB768Bu9LoMBjQJkiEHGqz19AHJm902o%3D&spr=https&se=2022-01-31T15%3A45%3A52Z&sp=r",
+    "outdoors2": "https://docserverpwaprodeus.blob.core.windows.net/b585e01c-a4b9-432c-82e3-66ca0eb28ca7-1/resource/556f3896-f7da-489c-a03c-e27520edd35e.jpg?sv=2017-04-17&sr=b&sig=A1NukB%2FsxXt%2BDuGgpX4bTNHgEnrlhl2%2FVAsBF2MnkWs%3D&spr=https&se=2022-01-31T15%3A56%3A03Z&sp=r"
   },
-  "OrderComponentMetadata": {},
-  "OrderComponentTemplate": {},
+  "OrderComponentMetadata": {
+    "9c6b60598c28458cb4cd514dd23e7f1f": 1,
+    "b38ebc91515848478091d444b87009d0": 0
+  },
+  "OrderComponentTemplate": {
+    "9c6b60598c28458cb4cd514dd23e7f1f": 1,
+    "b38ebc91515848478091d444b87009d0": 0
+  },
   "OrderDataSource": {},
   "OrderGroupControls": {},
   "OrderTemplate": {},
   "OrderXMLTemplate": {
+    "button": 2,
+    "icon": 3,
     "image": 0,
     "label": 1
   },
   "PublishOrderIndices": {
     "App": 0,
     "backgroundPhoto": 0,
+    "backgroundRegistration": 3,
+    "DebuggingScreen": 0,
+    "footerComp": 0,
+    "footerComp_1": 6,
+    "headerComp": 0,
+    "headerComp_1": 4,
+    "homeIcon": 7,
+    "homeIcon_1": 9,
     "HomeSplash": 0,
-    "Label1": 0
+    "Icon2": 8,
+    "RegistrationPage": 0,
+    "standardBaseButton": 2,
+    "taglineLabel": 1,
+    "taglineLabel_1": 5
   },
   "ResourcesJsonIndices": {
     "Image-outdoors": 0,
+    "Image-outdoors2": 2,
     "Image-SampleImage": 1
   },
   "TemplateVersions": {},
   "VolatileProperties": {
     "AnalysisLoadTime": 0.0542334,
     "ControlCount": {
-      "label": 1,
+      "9c6b60598c28458cb4cd514dd23e7f1f": 2,
+      "b38ebc91515848478091d444b87009d0": 1,
+      "icon": 2,
+      "label": 2,
       "screen": 1
     },
     "DeserializationLoadTime": 0.494895,

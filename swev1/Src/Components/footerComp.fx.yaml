@@ -1,0 +1,19 @@
+footerComp As CanvasComponent:
+    Fill: =RGBA(0, 0, 0, 0)
+    Height: =45
+    HomeScreen: =App.ActiveScreen
+    Width: =App.Width
+    X: =0
+    Y: =0
+    ZIndex: =1
+
+    homeIcon_1 As icon.Home:
+        BorderColor: =RGBA(0, 0, 0, 0)
+        Color: =RGBA(255, 255, 255, 1)
+        FocusedBorderThickness: =0
+        Height: =35
+        Icon: =Icon.BackArrow
+        OnSelect: =Back(ScreenTransition.Fade)
+        Y: =5
+        ZIndex: =1
+

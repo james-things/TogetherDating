@@ -1,0 +1,28 @@
+headerComp As CanvasComponent:
+    Fill: =Gray
+    Height: =45
+    HomeScreen: =App.ActiveScreen
+    Width: =App.Width
+    X: =0
+    Y: =0
+    ZIndex: =1
+
+    homeIcon As icon.Home:
+        BorderColor: =RGBA(0, 0, 0, 0)
+        Color: =RGBA(255, 255, 255, 1)
+        FocusedBorderThickness: =0
+        Height: =40
+        Icon: =Icon.Home
+        OnSelect: =Navigate(headerComp.HomeScreen, ScreenTransition.Fade)
+        ZIndex: =1
+
+    Icon2 As icon.Hamburger:
+        BorderColor: =RGBA(0, 0, 0, 0)
+        Color: =RGBA(255, 255, 255, 1)
+        FocusedBorderThickness: =0
+        Height: =40
+        Icon: =Icon.Hamburger
+        OnSelect: =
+        X: =1302
+        ZIndex: =2
+

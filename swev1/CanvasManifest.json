@@ -94,6 +94,8 @@
     "UserLocale": "en-US"
   },
   "ScreenOrder": [
-    "HomeSplash"
+    "HomeSplash",
+    "RegistrationPage",
+    "DebuggingScreen"
   ]
 }

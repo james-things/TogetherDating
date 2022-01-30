@@ -1,0 +1,30 @@
+RegistrationPage As screen:
+
+    backgroundRegistration As image:
+        Height: =768
+        Image: =outdoors2
+        ImagePosition: =ImagePosition.Fill
+        Transparency: =0.3
+        Width: =1366
+        ZIndex: =1
+
+    taglineLabel_1 As label:
+        Align: =Align.Center
+        Color: =RGBA(255, 255, 255, 1)
+        Font: =Font.Verdana
+        FontWeight: =FontWeight.Bold
+        Height: =143
+        Size: =20
+        Text: ="Details are coming soon!"
+        Width: =702
+        X: =332
+        Y: =325
+        ZIndex: =2
+
+    headerComp_1 As headerComp:
+        ZIndex: =3
+
+    footerComp_1 As footerComp:
+        Y: =723
+        ZIndex: =4
+
