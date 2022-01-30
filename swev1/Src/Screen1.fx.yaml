@@ -1,2 +1,10 @@
 Screen1 As screen:
 
+    Label1 As label:
+        Align: =Align.Center
+        Height: =272
+        Text: ="Hey " & User().FullName & " Welcome to the app!" 
+        Width: =1050
+        X: =150
+        ZIndex: =1
+
