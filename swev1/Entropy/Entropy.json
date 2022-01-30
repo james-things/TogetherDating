@@ -2,35 +2,46 @@
   "ComponentIndexes": {},
   "ControlUniqueIds": {
     "App": 1,
-    "Label1": 4,
-    "Screen1": 3
+    "backgroundPhoto": 5,
+    "HomeSplash": 3,
+    "Label1": 6
   },
   "FunctionParamsInvariantScripts": {},
-  "HeaderLastSavedDateTimeUTC": "01/30/2022 14:37:29",
+  "HeaderLastSavedDateTimeUTC": "01/30/2022 15:31:47",
   "LocalDatabaseReferencesAsEmpty": false,
-  "LocalResourceFileNames": {},
-  "LocalResourceRootPaths": {},
+  "LocalResourceFileNames": {
+    "outdoors": "00cb2f3f-8114-461c-893a-77d387306e34.jpg"
+  },
+  "LocalResourceRootPaths": {
+    "outdoors": "https://docserverpwaprodeus.blob.core.windows.net/b585e01c-a4b9-432c-82e3-66ca0eb28ca7-1/resource/a178c827-5907-4a44-8e96-3538ae5600b6.jpg?sv=2017-04-17&sr=b&sig=iWaERermjFVIB768Bu9LoMBjQJkiEHGqz19AHJm902o%3D&spr=https&se=2022-01-31T15%3A45%3A52Z&sp=r"
+  },
   "OrderComponentMetadata": {},
   "OrderComponentTemplate": {},
   "OrderDataSource": {},
   "OrderGroupControls": {},
   "OrderTemplate": {},
   "OrderXMLTemplate": {
-    "label": 0
+    "image": 0,
+    "label": 1
   },
   "PublishOrderIndices": {
     "App": 0,
-    "Label1": 0,
-    "Screen1": 0
+    "backgroundPhoto": 0,
+    "HomeSplash": 0,
+    "Label1": 0
   },
-  "ResourcesJsonIndices": {},
+  "ResourcesJsonIndices": {
+    "Image-outdoors": 0,
+    "Image-SampleImage": 1
+  },
   "TemplateVersions": {},
   "VolatileProperties": {
-    "AnalysisLoadTime": 0.0325197,
+    "AnalysisLoadTime": 0.0542334,
     "ControlCount": {
+      "label": 1,
       "screen": 1
     },
-    "DeserializationLoadTime": 5.6315038,
+    "DeserializationLoadTime": 0.494895,
     "ErrorCount": 0
   }
 }

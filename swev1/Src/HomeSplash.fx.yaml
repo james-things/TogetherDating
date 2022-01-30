@@ -1,0 +1,16 @@
+HomeSplash As screen:
+
+    backgroundPhoto As image:
+        Height: =768
+        Image: =outdoors
+        ImagePosition: =ImagePosition.Fill
+        Transparency: =0.3
+        Width: =1366
+        ZIndex: =1
+
+    Label1 As label:
+        Text: ="Text"
+        X: =80
+        Y: =65
+        ZIndex: =2
+
