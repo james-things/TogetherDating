@@ -16,7 +16,7 @@ Feature Sets/Epics:
     - Coinbase Wallet
     - Bitcoin Wallet
 - Profile
-    - Basic info; first name, last name, screen name, bio text, phone number
+    - Basic info; first name, last name, screen name, bio text, phone number, orientation
     - Activities & Experience levels
         - Specific activities: selected from list
         - Experience levels: none to athelete/expert
