@@ -4,4 +4,47 @@ Visions Statement -
 Adventure Together connects outdoor oriented, athletic, active people 20 to 50 with others who have similar activity interests and experience levels to foster interpersonal relationships within an activity community; from workout partners, friends, casual relationships, to dating. Members create their profiles which include basic profile information plus activity preferences and experience levels, match preferences, and a short bio, which may include photos and/or a short video. Once a member has fully populated their profile and verified their identity, they start reviewing and building a queue of potential matches. From a queue of matches, a member can request to connect with another member – moving the member from the queue of potential matches to a queue of Explorers – via in app text and video messaging. If members agree to connect in the real world, members move from the queue of Explorers to the queue of Expeditioners. At any time, members can remove themselves from another member’s queue, disconnect, block, or report other members.
 
 Stakeholders - 
-Male and female humans ages 20 to 50 who are outdoor enthusiasts, athletes, and generally active outdoors interested in connecting with other like minded invdividuals for adventures, workouts, or dating.
+Male, female, non-binary, LGBTQ humans ages 20 to 50 who are outdoor enthusiasts, athletes, and generally active outdoors interested in connecting with other like minded invdividuals for adventures, workouts, or dating.
+
+Feature Sets/Epics:
+
+- SSO
+    - Azure AD
+    - Facebook
+    - Google
+    - Meta Mask Wallet
+    - Coinbase Wallet
+    - Bitcoin Wallet
+- Profile
+    - Basic info; first name, last name, screen name, bio text, phone number
+    - Activities & Experience levels
+        - Specific activities: selected from list
+        - Experience levels: none to athelete/expert
+        - Preferences: rank order of activities
+        - Attitude: interval scale
+    - Delete profile
+    - Update profile
+    - Upload photos
+    - Upload videos
+    - Social platform connections
+        - Facebook
+        - Instagram
+        - Twitter
+        - Tumbler
+        - Onlyfans
+- Search base algorithm
+    - Allows members to submit a basic query to extract a batch of users for matching
+    - Basic search engine; Azure search
+    - Query results sent to matching algorithm for ranking/matching to the member
+- Matching algorithm
+    - ML regression to rank batch of users identified by basic search for matching
+- Text messaging w voice note
+- Audio only
+- Video messaging
+- Match Queues
+    - Explorers: match deems successful by user by swipe right
+    - Expeditioners: Explorers a user send connect requests to
+    - Incoming requests go automatically to the Expeditioners queue where a user can accept or reject a request to connect
+- Test data generation
+    - Need a tool to generate a massive set of test data for search and matching
+
