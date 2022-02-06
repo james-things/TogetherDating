@@ -10,42 +10,92 @@ Scrum Roles:
 
 Project Metrics:
 
-Priority:
+Prioritization method to be used to prioritize the entire backlog: https://www.scaledagileframework.com/wsjf/
 
-  Priority 1 - basic system - will be necessary for the system to function at all.  Having a user account, Storing user profile and at least some profile settings are examples of priority 1 items.  Items specifically required by the professor are also priority 1.
+Priorities:
 
-  Priority 2 - features - will be necessary for the system to be of value to the user.  Automatic notification of matches, match level, a system to select interests, a way to interact are all examples of priority 2 items.
+  If the assigned priority confliect with the WSJF calcuation or is not deliverable in a single sprint, the product owner and team will negotiate the work and potentially break the item into smaller work items.
 
-  Priority 3 - functionality - will be items that make an improvement to the way the site functions, its efficiency, its usability, documentation and help reporting, and administrative interfaces.
+  Priority 1 - Critical - Items marked as Critical should ideally be addressed first. 
+
+  Priority 2 - High - correlates to high business priority in order to deliver on the product vision and objectives.
+
+  Priority 3 - Medium - correlates to medium business priority relative to other items.
+
+  Priority 4 - Low - correlates to a low business priority relative to other items.
 
 
 Story Points:
 
-Story Points will be powers of 2, since estimations of effort are typically exponential.
+The Story Points will utilize the Fibonacci series. Story points are a relative measure of effort required to deliver the requested work. Story points and hours are not related. The team will select a story to be their baseline story from the backlog, discuss it, story point it, and then go implement it. Once delivered and accepted per the acceptance criteria, that story will be used to compare all over stories as a benchmark when estimating future work. Hopefully the team chooses a story that they think will be of medium effort so that future estimated stories will fall on either side of the baseline story accurately. The baselining exercise can and should be repeated when the team feels that the baseline story is no longer valid.
 
-  1 is something that can be implemented in a few minutes by a skilled coder or debugger.  Correcting a minor coding error is an example, or writing a user story.
+https://www.visual-paradigm.com/scrum/what-is-story-point-in-agile/
+https://agilevelocity.com/blogget-started-story-points-via-affinity-estimation-cheat-sheet/ 
 
-  2 is something that is well known and can be implemented in an hour or two by a skilled operator.  This might be implementing an interface where code is mostly copied from something else we've done, installing a new package, or sketching a layout or documenting a procedure.
+Story splitting:
 
-  4 is something that is known as technically feasible, but we don't really know how to do it.  We can expect to have to look up references, try a few approaches, or trying several layouts to check models with a user.  It is a task that you might expect to do in a full day of work.
+From time to time, it will be necessary to split a story into smaller chunks in order to deliver the desired business value. Here are a few references to consider when splitting stories:
 
-  8 is something that is new to the assignee.  If they are in a new language, implementing a new concept, or trying something mentioned in class that has never been done by them, you might expect them to take most of the week to get any production at all.
-
-  16 is experimental
-
+https://www.linkedin.com/pulse/10-useful-strategies-breaking-down-large-user-stories-verwijs/
+https://techbeacon.com/app-dev-testing/practical-guide-user-story-splitting-agile-teams 
+https://www.productplan.com/learn/break-product-features-into-user-stories/
 
 Item Listing Order:
 
-Items will be included in the sprint or backlog in the order that they would normally be executed, with acknowledgement to the fact that many tasks and activities can be executed simultaneously.
+Items in the backlog will be ranked according to the WSJF calculation used to maitain the backlog priority.
 
-This will be a combination of Functional Order, Priority, and story points/estimated effort, in that order.  So functional order takes precidense over priority and effort, etc when defining the listing order of items in the sprint or backlog
+Acceptance Criteria: The acceptance criteria are written in a spirit of a use case/Gherkin format <Given, When, Then>.
 
+- Interface specifications and models, whether programmic or user, will be linked to the item and pointed out in the acceptance criteria.
+- Specific parameters or descriptions of user interfaces will be included in acceptance criteria.
+- Testability specification, where definable, should be included with acceptance criteria.
+- Performance specification, where applicable, should be included in acceptance criteria.
+- Acceptance criteria should be clear and concise, giving consideration to how it can be misinterpreted and clarifying
 
-Acceptance Criteria:
+Definition of Ready (DoR):
 
-Interface specifications and models, whether programmic or user, will be linked to the item and pointed out in the acceptance criteria.
-Functionality, methods names, parameters and return types will be specified in the interface specification and linked along with it.
-Specific parameters or descriptions of user interfaces will be included in acceptance criteria.
-Testability specification, where definable, should be included with acceptance criteria.
-Performance specification, where applicable, should be included in acceptance criteria.
-Acceptance criteria should be clear and concise, giving consideration to how it can be misinterpreted and clarifying
+The term PBI is used to identify any backlog item requiring elaboration; user story or bug.
+
+The team's definition of ready will align with the INVEST model:
+
+I	Independent 	
+The PBI (Product Backlog Itmem; story or bug) should be self-contained, in a way that there is no inherent dependency on another PBI. You also try to avoid dependencies with others outside the Scrum Team Dependencies are identified and no external dependencies block the User Story from being completed.
+
+N	Negotiable	
+PBIs are not explicit contracts and should leave space for discussion. This leads to a discussion between the Development Team and the Product Owner about the exact delivery. So no set of requirements is carved in stone.
+
+V	Valuable	
+A PBI must deliver value to the stakeholders. This looks like stating the obvious, however, it is possible that a user story that has been written down at an earlier stage is outdated and no longer represents any value when it is discussed. Business value is clearly articulated in the description; As a <type of user>, I want <some goal or objective >, so that <benefit, value> PO recognizes and approves the business need of the story
+
+E	Estimable
+You must always be able to estimate the size of a PBI. The Development Team needs sufficient information about the stakeholder's wishes to estimate how much effort it will take to realize this. Often the estimate is made by means of relative estimates, for example with Planning Poker. High-level Technical Approach Document (TAD)  is attached/linked. Process models (context diagram, functional flow diagram, cross-functional diagram and/or flowchart diagram) are attached/linked. Metrics and Analytics requirements are articulated (i.e data layer story is identified and linked or performance parameters are defined). 
+Global Requirements have been reviewed and checked for relevance
+
+S	Small	
+PBIs should not be so big as to become impossible to plan/task/prioritize with a certain level of accuracy. The User Story must be small enough to be delivered within a Sprint. After all, an incremental part of the project must be delivered at the end of every Sprint. User Stories for which the Development Team estimates that the delivery will take longer than a Sprint must therefore be clipped by the Product Owner.
+
+T	Testable	
+The PBI or its related description must provide the necessary information to make test development possible. The completed work must be finished and can in principle be delivered to the customers. This means that it must be tested whether everything has been delivered properly. In order to test, it is important that clear acceptance criteria are written that the delivered work must meet in order to be valuable to the Stakeholders
+
+DoR Checklist:
+- Target release has been set
+- Story is linked to a higher level epic
+- Initial business priority has been set
+- Title is clear and understandable
+- User story is written in the "As a <type of user>, I want <some goal or objective >, so that <benefit, value>" format
+- Acceptance criteria are clear and written in the "<Given, When, Then>" format
+- Story points estimated by the team
+
+Definition of Done (DoD) Checklist:
+
+1	Development is completed and validated against the acceptance criteria
+2   Development looks like, and is validated against the approved designs. Development looks like and is validated against the approved designs (end user POV) in the design tool (Figma??)
+4   Development is compliant with performance KPIs
+5	Template/Component is fully responsive on both desktop and mobile based on designs.
+6	Realistic data/content has been used for development
+7   Unit and UI tests have been performed and have passed
+8   If applicable, user documentation has been created/updated for this story
+9	Verify solution against solution specification, architecture guidelines, coding standards, and principles.
+10  Realistic data/content has been used in testing
+11  User story has been tested and validated against acceptance criteria and test cases created for the story at the beginning of the sprint
+12	User story has been tested and validated against page designs
