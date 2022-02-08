@@ -88,14 +88,14 @@ DoR Checklist:
 
 Definition of Done (DoD) Checklist:
 
-1	Development is completed and validated against the acceptance criteria
-2   Development looks like, and is validated against the approved designs. Development looks like and is validated against the approved designs (end user POV) in the design tool (Figma??)
-4   Development is compliant with performance KPIs
-5	Template/Component is fully responsive on both desktop and mobile based on designs.
-6	Realistic data/content has been used for development
-7   Unit and UI tests have been performed and have passed
-8   If applicable, user documentation has been created/updated for this story
-9	Verify solution against solution specification, architecture guidelines, coding standards, and principles.
-10  Realistic data/content has been used in testing
-11  User story has been tested and validated against acceptance criteria and test cases created for the story at the beginning of the sprint
-12	User story has been tested and validated against page designs
+- Development is completed and validated against the acceptance criteria
+- Development looks like, and is validated against the approved designs. Development looks like and is validated against the approved designs (end user POV) in the design tool (Figma??)
+- Development is compliant with performance KPIs
+- Template/Component is fully responsive on both desktop and mobile based on designs.
+-	Realistic data/content has been used for development
+- Unit and UI tests have been performed and have passed
+- If applicable, user documentation has been created/updated for this story
+- Verify solution against solution specification, architecture guidelines, coding standards, and principles.
+- Realistic data/content has been used in testing
+- User story has been tested and validated against acceptance criteria and test cases created for the story at the beginning of the sprint
+- User story has been tested and validated against page designs
