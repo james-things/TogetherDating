@@ -99,3 +99,7 @@ Definition of Done (DoD) Checklist:
 - Realistic data/content has been used in testing
 - User story has been tested and validated against acceptance criteria and test cases created for the story at the beginning of the sprint
 - User story has been tested and validated against page designs
+
+Backlog link
+
+https://dev.azure.com/KSUSWE6733-3/TogetherDating/_backlogs/backlog/TogetherDating%20Team/Stories
