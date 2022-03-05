@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { withLayout } from '../wrappers/layout';
 import PersonSlider from '../components/PersonSlider';
 import SideMatchList from '../components/SideMatchList';
+import MatchSortList from '../method/MatchSort';
 
 const DiscoverPage = () => {
   const [persons, setPersons] = useState([]);
@@ -14,6 +15,8 @@ const DiscoverPage = () => {
   } = JSON.parse(
     localStorage.getItem('user'),
   );
+
+  MatchSortList();
 
   useEffect(() => {
     firebase
