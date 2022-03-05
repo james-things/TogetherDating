@@ -11,6 +11,9 @@ export default function MatchSortList() {
     localStorage.getItem('user'),
   );
 
+  const eastonTest = 0;
+  console.log(eastonTest);
+
   let residualScore = 0;
   let specificScore = 0;
   const likesArray = ['Climbing', 'Walking', 'Running'];
