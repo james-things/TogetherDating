@@ -16,8 +16,6 @@ const DiscoverPage = () => {
     localStorage.getItem('user'),
   );
 
-  MatchSortList();
-
   useEffect(() => {
     firebase
       .firestore()
@@ -31,6 +29,9 @@ const DiscoverPage = () => {
         setLoading(false);
       });
   }, []);
+
+  const show = MatchSortList(persons);
+  console.log('CALL', show, persons);
 
   return (
     <div className="grid grid-cols-3 md:grid-cols-9 h-screen w-screen overflow-hidden">
