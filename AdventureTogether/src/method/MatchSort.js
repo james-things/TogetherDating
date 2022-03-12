@@ -1,24 +1,34 @@
-export default function MatchSortList(personCollection) {
-  const scoreArray = [];
-  const person = [];
-  console.log(personCollection);
-  personCollection.forEach((element) => {
-    console.log(element);
-    let score = 0;
-    if (element.description.length > 0) {
-      score = Math.random();
+export default function MatchSortList(personCollection, user) {
+  console.log('USER', user.outdoorActivities);
+  const userActivites = user.outdoorActivities;
+  const residualScore = Math.random();
+  if (Object.keys(user).length > 0) {
+    const scoreArray = [];
+    const person = [];
+    personCollection.forEach((element) => {
+      // console.log(element.outdoorActivities);
+      const outdoor = element.outdoorActivities;
+      let score = 0;
+      if (typeof outdoor !== 'undefined') {
+        outdoor.forEach((activity) => {
+          if (userActivites.indexOf(activity) > 0) {
+            score += 1;
+          }
+        });
+      }
       scoreArray.push({
         person: element,
-        scoreMatch: score,
+        scoreMatch: score + residualScore,
       });
-    }
-  });
-  scoreArray.sort((a, b) => {
-    const result = b.scoreMatch - a.scoreMatch;
-    return result;
-  });
-  scoreArray.forEach((item) => {
-    person.push(item.person);
-  });
-  return person;
+    });
+    scoreArray.sort((a, b) => {
+      const result = b.scoreMatch - a.scoreMatch;
+      return result;
+    });
+    console.log(scoreArray);
+    scoreArray.forEach((item) => {
+      person.push(item.person);
+    });
+    return person;
+  }
 }

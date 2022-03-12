@@ -25,13 +25,18 @@ const DiscoverPage = () => {
       .then((querySnapshot) => {
         const newPersons = [];
         querySnapshot.forEach((person) => newPersons.push(person.data()));
+        // had to add a user object to send to compare against activities
+        // the previous above area removes already liked people
+        const user = JSON.parse(localStorage.getItem('user'));
+        const show = MatchSortList(newPersons, user);
+        // need to set people to compare - unsure what the function does for sure
         setPersons(newPersons);
+        console.log('CALL', show, newPersons);
+        // i am able to get the people then swap the persons
+        setPersons(show);
         setLoading(false);
       });
   }, []);
-
-  const show = MatchSortList(persons);
-  console.log('CALL', show, persons);
 
   return (
     <div className="grid grid-cols-3 md:grid-cols-9 h-screen w-screen overflow-hidden">
