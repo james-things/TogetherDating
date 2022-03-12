@@ -1,0 +1,102 @@
+Arguments: 
+  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js install
+
+PATH: 
+  C:\Program Files\Common Files\Oracle\Java\javapath;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Program Files (x86)\Microsoft SDKs\Azure\CLI2\wbin;C:\Python38\Scripts\;C:\Python38\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files (x86)\Box\Box Edit\;C:\Program Files\Amazon\AWSCLIV2\;C:\ProgramData\chocolatey\bin;C:\Program Files\dotnet\;C:\Program Files (x86)\Yarn\bin\;C:\Users\mmdadmin\AppData\Roaming\nvm;C:\Program Files\nodejs;C:\Program Files\Docker\Docker\resources\bin;C:\ProgramData\DockerDesktop\version-bin;C:\Users\O41159\AppData\Local\Microsoft\PowerAppsCLI\;C:\Users\O41159\AppData\Local\Microsoft\WindowsApps;C:\Users\O41159\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\O41159\AppData\Local\Programs\Git\cmd;C:\Users\O41159\AppData\Roaming\npm;C:\Users\O41159\AppData\Local\Yarn\bin;C:\Users\O41159\.dotnet\tools;C:\Program Files\nodejs;C:Program Files\Java;C:\Program Files\Java\jdk-16.0.1\bin;C:\Program Files\Java\jdk-16.0.1;
+
+Yarn version: 
+  1.22.5
+
+Node version: 
+  10.16.3
+
+Platform: 
+  win32 x64
+
+Trace: 
+  Error: https://registry.yarnpkg.com/@firebase/firestore/-/firestore-2.4.1.tgz: ESOCKETTIMEDOUT
+      at ClientRequest.<anonymous> (C:\Program Files (x86)\Yarn\lib\cli.js:141376:19)
+      at Object.onceWrapper (events.js:286:20)
+      at ClientRequest.emit (events.js:198:13)
+      at TLSSocket.emitRequestTimeout (_http_client.js:662:40)
+      at Object.onceWrapper (events.js:286:20)
+      at TLSSocket.emit (events.js:198:13)
+      at TLSSocket.Socket._onTimeout (net.js:442:8)
+      at ontimeout (timers.js:436:11)
+      at tryOnTimeout (timers.js:300:5)
+      at listOnTimeout (timers.js:263:5)
+
+npm manifest: 
+  {
+    "name": "comechat-tinder",
+    "version": "0.1.0",
+    "private": true,
+    "dependencies": {
+      "@cometchat-pro/chat": "^2.2.1",
+      "@craco/craco": "^6.1.1",
+      "@emotion/core": "^10.0.35",
+      "@react-firebase/auth": "^0.2.10",
+      "@react-firebase/firestore": "^0.5.5",
+      "@testing-library/jest-dom": "^5.11.9",
+      "@testing-library/react": "^11.2.5",
+      "@testing-library/user-event": "^12.8.1",
+      "dateformat": "^4.0.0",
+      "emoji-mart": "^3.0.0",
+      "firebase": "^8.2.10",
+      "node-sass": "^4.12.1",
+      "react": "^17.0.1",
+      "react-dom": "^17.0.1",
+      "react-html-parser": "^2.0.2",
+      "react-router": "^5.2.0",
+      "react-router-dom": "^5.2.0",
+      "react-scripts": "4.0.3",
+      "twemoji": "^13.0.1",
+      "uuid": "^8.3.2",
+      "web-vitals": "^1.1.0"
+    },
+    "scripts": {
+      "build:style": "tailwind build src/styles/index.css -o src/styles/tailwind.css",
+      "start": "craco start",
+      "build": "craco build",
+      "eject": "react-scripts eject"
+    },
+    "eslintConfig": {
+      "extends": [
+        "react-app",
+        "react-app/jest"
+      ]
+    },
+    "browserslist": {
+      "production": [
+        ">0.2%",
+        "not dead",
+        "not op_mini all"
+      ],
+      "development": [
+        "last 1 chrome version",
+        "last 1 firefox version",
+        "last 1 safari version"
+      ]
+    },
+    "devDependencies": {
+      "@tailwindcss/postcss7-compat": "^2.0.3",
+      "autoprefixer": "^9.8.6",
+      "eslint": "^7.25.0",
+      "eslint-config-airbnb": "^18.2.1",
+      "eslint-plugin-import": "^2.22.1",
+      "eslint-plugin-jsx-a11y": "^6.4.1",
+      "eslint-plugin-react": "^7.23.2",
+      "eslint-plugin-react-hooks": "^4.2.0",
+      "postcss": "^7.0.35"
+    },
+    "peerDependencies": {
+      "react": "^16.13.1",
+      "react-dom": "^16.13.1"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile

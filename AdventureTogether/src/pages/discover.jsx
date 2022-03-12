@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { withLayout } from '../wrappers/layout';
 import PersonSlider from '../components/PersonSlider';
 import SideMatchList from '../components/SideMatchList';
+import MatchSortList from '../method/MatchSort';
 
 const DiscoverPage = () => {
   const [persons, setPersons] = useState([]);
@@ -24,7 +25,15 @@ const DiscoverPage = () => {
       .then((querySnapshot) => {
         const newPersons = [];
         querySnapshot.forEach((person) => newPersons.push(person.data()));
+        // had to add a user object to send to compare against activities
+        // the previous above area removes already liked people
+        const user = JSON.parse(localStorage.getItem('user'));
+        const show = MatchSortList(newPersons, user);
+        // need to set people to compare - unsure what the function does for sure
         setPersons(newPersons);
+        console.log('CALL', show, newPersons);
+        // i am able to get the people then swap the persons
+        setPersons(show);
         setLoading(false);
       });
   }, []);
