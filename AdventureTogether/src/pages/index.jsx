@@ -8,7 +8,7 @@ import { withLayout } from '../wrappers/layout';
 const IndexPage = () => (
   <section className="flex flex-col items-center w-full">
     <h1 className="text-4xl mb-6 md:text-9xl text-white font-bold tracking-thin">
-      Explore Today
+      Swipe Right
       <span className="font-light">&reg;</span>
     </h1>
     <FirebaseAuthConsumer>
