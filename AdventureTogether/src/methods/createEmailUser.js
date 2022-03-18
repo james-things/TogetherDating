@@ -1,3 +1,4 @@
+// Description: An async function to create a firebase user with a provided email and password
 import firebase from 'firebase/compat';
 import localStorePut from './localStorePut';
 import localStoreGet from './localStoreGet';

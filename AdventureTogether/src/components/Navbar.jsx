@@ -1,7 +1,9 @@
+// Description: a navigation bar component which appears at the top of the page
 import { FirebaseAuthConsumer } from '@react-firebase/auth';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+// Component main function
 export default function Navbar() {
   return (
     <nav className="w-full px-1 absolute bg-gradient-to-b from-black to-transparent z-10">

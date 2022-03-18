@@ -1,3 +1,4 @@
+// Description: A page which logs out and then redirects the user home
 import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import firebase from 'firebase/compat/app';

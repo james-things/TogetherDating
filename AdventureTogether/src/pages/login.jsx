@@ -1,3 +1,4 @@
+// Description: A page which allows a user to log in to an existing account
 import React, { useReducer, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import firebase from 'firebase/compat/app';
@@ -6,11 +7,13 @@ import FirebaseLogin from '../components/FirebaseLogin';
 import { loginCometChatUser } from '../cometchat';
 import { withLayout } from '../wrappers/layout';
 
+// Page initial state
 const initialState = {
   email: '',
   password: '',
 };
 
+// Reducer to process inputs
 const reducer = (state, action) => {
   switch (action.type) {
     case 'email':
@@ -22,11 +25,13 @@ const reducer = (state, action) => {
   }
 };
 
+// Main func
 const LoginPage = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [error, setError] = useState('');
   const history = useHistory();
 
+  // Link reducer
   const handleOnChange = (evt) => {
     const { target } = evt;
     dispatch({
@@ -35,6 +40,8 @@ const LoginPage = () => {
     });
   };
 
+  // Log in function, called on submit (email/pw only)
+  // If the user opts to log in with SSO, this is bypassed
   const loginUser = async (evt) => {
     evt.preventDefault();
 
@@ -51,6 +58,10 @@ const LoginPage = () => {
     }
   };
 
+  // Page content
+  // You will notice <FirebaseLogin /> in the code. This singular line links
+  // in the Firebase UI SSO component. Currently, our system lacks logic to differentiate
+  // a SSO registration from a SSO login, so this will need to be implemented.
   return (
     <div className="bg-white rounded-2xl border-2 border-gray-200 flex flex-col justify-center items-center mx-auto p-10 w-full md:w-7/12">
       <div className="flex flex-col justify-center items-center">

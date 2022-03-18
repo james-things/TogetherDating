@@ -1,12 +1,14 @@
+// Description: A dynamic landing page for the site, which uses firebase sign-in state
 import { FirebaseAuthConsumer } from '@react-firebase/auth';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { withLayout } from '../wrappers/layout';
 
+// Main func/page content
 const IndexPage = () => (
   <section className="flex flex-col items-center w-full">
     <h1 className="text-4xl mb-6 md:text-9xl text-white font-bold tracking-thin">
-      Swipe Right
+      Explore Today
       <span className="font-light">&reg;</span>
     </h1>
     <FirebaseAuthConsumer>

@@ -1,3 +1,4 @@
+// Description: A page to support profile creation for a Google SSO sign-on
 import React, { useReducer, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import 'firebase/compat/auth';
@@ -6,15 +7,12 @@ import 'firebase/compat/firestore';
 import registerGoogleProfile from '../methods/registerGoogleProfile';
 import { withLayout } from '../wrappers/layout';
 
+// Page initial state
 const initialState = {
-  name: '',
-  email: '',
   description: '',
-  password: '',
-  confirmPassword: '',
-  image: '',
 };
 
+// Reducer to manage input
 const reducer = (state, action) => {
   switch (action.type) {
     case 'description':
@@ -24,11 +22,13 @@ const reducer = (state, action) => {
   }
 };
 
+// Page main function
 const GRegisterPage = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [error] = useState('');
   const history = useHistory();
 
+  // Call in reducer to handle input
   const handleOnChange = (evt) => {
     const { target } = evt;
     dispatch({
@@ -37,12 +37,16 @@ const GRegisterPage = () => {
     });
   };
 
+  // Async function to call dating profile creation function
   async function registerUser(evt) {
     evt.preventDefault();
+    // Await dating profile creation for google sign-in type
     await registerGoogleProfile(state.description);
+    // Once user has been registered, then redirct the to /discover
     history.push('/discover');
   }
 
+  // Page content
   return (
     <div className="my-10 bg-white rounded-2xl border-2 border-gray-200 flex flex-col justify-center items-center mx-auto p-10 w-full md:w-7/12">
       <div className="flex flex-col justify-center items-center">

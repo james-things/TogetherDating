@@ -1,3 +1,4 @@
+// Description: An async function to create a dating profile from a google SSO login
 import firebase from 'firebase/compat';
 import localStoreGet from './localStoreGet';
 import { loginCometChatUser, registerCometChatUser } from '../cometchat';

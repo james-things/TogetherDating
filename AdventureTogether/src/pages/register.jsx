@@ -1,21 +1,21 @@
+// Description: a page for a user who signed up with the e-mail/password flow
+// register their dating profile
 import React, { useReducer, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import 'firebase/compat/auth';
 import 'firebase/compat/storage';
 import 'firebase/compat/firestore';
-import localStoreGet from '../methods/localStoreGet';
 import registerEmailProfile from '../methods/registerEmailProfile';
 import { withLayout } from '../wrappers/layout';
 
+// Document initial state
 const initialState = {
   name: '',
-  email: '',
   description: '',
-  password: '',
-  confirmPassword: '',
   image: '',
 };
 
+// Reducer to process inputs
 const reducer = (state, action) => {
   switch (action.type) {
     case 'name':
@@ -29,11 +29,13 @@ const reducer = (state, action) => {
   }
 };
 
+// Page main function
 const RegisterPage = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [error, setError] = useState('');
   const history = useHistory();
 
+  // Link reducer to input
   const handleOnChange = (evt) => {
     const { target } = evt;
     dispatch({
@@ -42,6 +44,7 @@ const RegisterPage = () => {
     });
   };
 
+  // Link reducer to photo upload ui element
   const handleFileChange = (evt) => {
     const { target } = evt;
     dispatch({
@@ -50,16 +53,17 @@ const RegisterPage = () => {
     });
   };
 
+  // Async function to register an email/pw user's dating profile
   async function registerUser(evt) {
+    // prevent default inputs
     evt.preventDefault();
-    if (state.password !== state.confirmPassword) {
-      setError('Error: Passwords do not match.');
-      return;
-    }
+    // await dating profile creation
     await registerEmailProfile(state.image, state.name, state.description);
+    // once done, redirect user to discover page
     history.push('/discover');
   }
 
+  // Page content
   return (
     <div className="my-10 bg-white rounded-2xl border-2 border-gray-200 flex flex-col justify-center items-center mx-auto p-10 w-full md:w-7/12">
       <div className="flex flex-col justify-center items-center">

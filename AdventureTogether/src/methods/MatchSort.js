@@ -1,3 +1,4 @@
+// Description: A function to match users based on shared interests
 export default function MatchSortList(personCollection, user) {
   console.log('USER', user.outdoorActivities);
   const userActivites = user.outdoorActivities;

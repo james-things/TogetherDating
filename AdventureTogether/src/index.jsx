@@ -1,3 +1,5 @@
+// Description: As I understand it, this is our entry point. Significant changes to this page,
+// if any, should not be necessary in this project.
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { FirebaseAuthProvider } from '@react-firebase/auth';

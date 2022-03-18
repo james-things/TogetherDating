@@ -1,3 +1,5 @@
+// Description: our core app component. Routing is handled here, so any new pages need
+// to be added to the routes or they will not work.
 import React, { useEffect } from 'react';
 import firebase from 'firebase/compat';
 import 'firebase/compat/auth';
@@ -15,6 +17,7 @@ import SorryPage from './pages/sorry';
 import SignupPage from './pages/signup';
 import GRegisterPage from './pages/gregister';
 
+// Main function, essentially "if user exists then retrieve user" on every page load (I think)
 function App() {
   useEffect(() => {
     firebase.auth().onAuthStateChanged((user) => {
@@ -37,6 +40,10 @@ function App() {
     });
   }, []);
 
+  // This is where the routing magic happens. If you need to add a new page just use the existing
+  // routes as templates to add in new ones. I don't think order matters, but I would group
+  // private and non-private routes and add in any new pages before the last one with the *
+  // to keep things neat and play it safe.
   return (
     <>
       <BrowserRouter>
