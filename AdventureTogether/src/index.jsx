@@ -2,8 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { FirebaseAuthProvider } from '@react-firebase/auth';
 import { FirestoreProvider } from '@react-firebase/firestore';
-import firebase from 'firebase';
-
+import firebase from 'firebase/compat';
 import { CometChat } from '@cometchat-pro/chat';
 import firebaseConfig from './firebase';
 
@@ -18,6 +17,9 @@ const appSetting = new CometChat.AppSettingsBuilder()
 
 CometChat.init(process.env.REACT_APP_COMETCHAT_APP_ID, appSetting).then(
   () => {
+    if (CometChat.setSource) {
+      CometChat.setSource('ui-kit', 'web', 'reactjs');
+    }
     console.log('Initialization completed successfully');
 
     ReactDOM.render(

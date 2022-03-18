@@ -1,15 +1,19 @@
 import React, { useEffect } from 'react';
-import firebase from 'firebase';
-import 'firebase/auth';
+import firebase from 'firebase/compat';
+import 'firebase/compat/auth';
 import {
   Route, BrowserRouter, Switch, Redirect,
 } from 'react-router-dom';
 import IndexPage from './pages';
+import AgePage from './pages/age';
 import DiscoverPage from './pages/discover';
 import InboxPage from './pages/inbox';
 import LoginPage from './pages/login';
 import LogoutPage from './pages/logout';
 import RegisterPage from './pages/register';
+import SorryPage from './pages/sorry';
+import SignupPage from './pages/signup';
+import GRegisterPage from './pages/gregister';
 
 function App() {
   useEffect(() => {
@@ -54,6 +58,18 @@ function App() {
           </Route>
           <Route path="/register">
             <RegisterPage />
+          </Route>
+          <Route path="/gregister">
+            <GRegisterPage />
+          </Route>
+          <Route path="/age">
+            <AgePage />
+          </Route>
+          <Route path="/sorry">
+            <SorryPage />
+          </Route>
+          <Route path="/signup">
+            <SignupPage />
           </Route>
           <Route path="*">
             <IndexPage />

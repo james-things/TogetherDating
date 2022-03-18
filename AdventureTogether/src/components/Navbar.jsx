@@ -28,7 +28,7 @@ export default function Navbar() {
         {/* <!-- end logo --> */}
 
         {/* <!-- login --> */}
-        <div className="sm:block flex mx-1">
+        <div className="md:block flex mx-1">
           <div className="text-md uppercase leading-none text-left group inline-block relative">
             <FirebaseAuthConsumer>
               {({ isSignedIn }) => (

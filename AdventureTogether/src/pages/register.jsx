@@ -1,10 +1,10 @@
 import React, { useReducer, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import firebase from 'firebase/app';
-import 'firebase/auth';
-import 'firebase/storage';
-import 'firebase/firestore';
-import { loginCometChatUser, registerCometChatUser } from '../cometchat';
+import 'firebase/compat/auth';
+import 'firebase/compat/storage';
+import 'firebase/compat/firestore';
+import localStoreGet from '../methods/localStoreGet';
+import registerEmailProfile from '../methods/registerEmailProfile';
 import { withLayout } from '../wrappers/layout';
 
 const initialState = {
@@ -20,14 +20,8 @@ const reducer = (state, action) => {
   switch (action.type) {
     case 'name':
       return { ...state, name: action.payload };
-    case 'email':
-      return { ...state, email: action.payload };
     case 'description':
       return { ...state, description: action.payload };
-    case 'password':
-      return { ...state, password: action.payload };
-    case 'confirmPassword':
-      return { ...state, confirmPassword: action.payload };
     case 'image':
       return { ...state, image: action.payload };
     default:
@@ -56,61 +50,15 @@ const RegisterPage = () => {
     });
   };
 
-  const registerUser = (evt) => {
+  async function registerUser(evt) {
     evt.preventDefault();
-
     if (state.password !== state.confirmPassword) {
       setError('Error: Passwords do not match.');
       return;
     }
-
-    firebase
-      .auth()
-      .createUserWithEmailAndPassword(state.email, state.password)
-      .then(async (doc) => {
-        const { uid } = doc.user;
-        const imageRef = firebase.storage().ref(`/profiles/${uid}`);
-
-        await imageRef.put(state.image);
-
-        const imageUrl = await imageRef.getDownloadURL();
-
-        await firebase.firestore().collection('users').doc(uid).set({
-          name: state.name,
-          description: state.description,
-          imageUrl,
-          likes: [],
-          dislikes: [],
-          favorites: [],
-          matches: [],
-          birthdate: '',
-          height: '',
-          gender: '',
-          ethnicity: '',
-          outdoorActivities: [],
-          eyeColor: '',
-          hairColor: '',
-          bodyType: '',
-          education: '',
-          religion: '',
-          ambition: '',
-          alcoholUse: '',
-          smoking: '',
-          childStatus: '',
-          astrologySign: '',
-          id: uid,
-        });
-
-        await registerCometChatUser(state.name, uid);
-        await loginCometChatUser(uid);
-
-        history.push('/discover');
-      })
-      .catch((err) => {
-        setError(err.message);
-        console.log(`Unable to register user: ${err.message}`);
-      });
-  };
+    await registerEmailProfile(state.image, state.name, state.description);
+    history.push('/discover');
+  }
 
   return (
     <div className="my-10 bg-white rounded-2xl border-2 border-gray-200 flex flex-col justify-center items-center mx-auto p-10 w-full md:w-7/12">
@@ -208,58 +156,6 @@ const RegisterPage = () => {
             className="my-5 appearance-none rounded-full relative block w-full py-3 px-4 font-bold border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 text-base"
             placeholder="Name"
             minLength={3}
-          />
-          <label
-            htmlFor="email"
-            className="sr-only font-bold text-base md:ml-1"
-          >
-            Email
-          </label>
-          <input
-            id="email"
-            name="email"
-            type="email"
-            autoComplete="email"
-            required
-            onChange={handleOnChange}
-            value={state.email}
-            className="my-5 appearance-none rounded-full relative block w-full py-3 px-4 font-bold border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 text-base"
-            placeholder="Email"
-          />
-          <label
-            htmlFor="password"
-            className="sr-only font-bold text-base md:ml-1"
-          >
-            Password
-          </label>
-          <input
-            id="password"
-            name="password"
-            type="password"
-            autoComplete="password"
-            required
-            onChange={handleOnChange}
-            value={state.password}
-            className="my-5 appearance-none rounded-full relative block w-full py-3 px-4 font-bold border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 text-base"
-            placeholder="Password"
-          />
-          <label
-            htmlFor="password"
-            className="sr-only font-bold text-base md:ml-1"
-          >
-            Re-Enter Password
-          </label>
-          <input
-            id="confirmPassword"
-            name="confirmPassword"
-            type="password"
-            autoComplete="password"
-            required
-            onChange={handleOnChange}
-            value={state.confirmPassword}
-            className="my-5 appearance-none rounded-full relative block w-full py-3 px-4 font-bold border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 text-base"
-            placeholder="Re-Enter Password"
-            minLength={6}
           />
           <label
             htmlFor="description"
