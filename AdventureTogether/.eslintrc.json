@@ -22,7 +22,8 @@
         "react/jsx-props-no-spreading": "off",
         "jsx-a11y/anchor-is-valid": "off",
         "jsx-a11y/label-has-associated-control": "off",
-        "linebreak-style": "off"
+        "linebreak-style": "off",
+        "no-unused-vars": "off"
     },
     "ignorePatterns": "src/CometChatWorkspace/**/*.js"
 }

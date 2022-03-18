@@ -1,30 +1,32 @@
 import React, { useReducer, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
-import FirebaseLogin from '../components/FirebaseLogin';
-import { loginCometChatUser } from '../cometchat';
+import 'firebase/compat/storage';
+import 'firebase/compat/firestore';
+import registerGoogleProfile from '../methods/registerGoogleProfile';
 import { withLayout } from '../wrappers/layout';
 
 const initialState = {
+  name: '',
   email: '',
+  description: '',
   password: '',
+  confirmPassword: '',
+  image: '',
 };
 
 const reducer = (state, action) => {
   switch (action.type) {
-    case 'email':
-      return { ...state, email: action.payload };
-    case 'password':
-      return { ...state, password: action.payload };
+    case 'description':
+      return { ...state, description: action.payload };
     default:
       throw new Error();
   }
 };
 
-const LoginPage = () => {
+const GRegisterPage = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const [error, setError] = useState('');
+  const [error] = useState('');
   const history = useHistory();
 
   const handleOnChange = (evt) => {
@@ -35,24 +37,14 @@ const LoginPage = () => {
     });
   };
 
-  const loginUser = async (evt) => {
+  async function registerUser(evt) {
     evt.preventDefault();
-
-    try {
-      const doc = await firebase
-        .auth()
-        .signInWithEmailAndPassword(state.email, state.password);
-
-      await loginCometChatUser(doc.user.uid);
-      history.push('/discover');
-    } catch (err) {
-      setError(err.message);
-      console.log(`Unable to login: ${err.message}`);
-    }
-  };
+    await registerGoogleProfile(state.description);
+    history.push('/discover');
+  }
 
   return (
-    <div className="bg-white rounded-2xl border-2 border-gray-200 flex flex-col justify-center items-center mx-auto p-10 w-full md:w-7/12">
+    <div className="my-10 bg-white rounded-2xl border-2 border-gray-200 flex flex-col justify-center items-center mx-auto p-10 w-full md:w-7/12">
       <div className="flex flex-col justify-center items-center">
         <Link to="/">
           <svg
@@ -129,43 +121,28 @@ const LoginPage = () => {
         </div>
       </div>
       <div className="text-center w-full divide-y-2 divide-gray-100 divide-solid">
-        <form className="my-5 w-full" onSubmit={loginUser}>
+        Tell us a bit more about yourself...
+        <form className="my-5 w-full" onSubmit={registerUser}>
           {error && (
             <p className="text-red-500 font-bold text-base py-2 ">{error}</p>
           )}
           <label
-            htmlFor="email"
+            htmlFor="description"
             className="sr-only font-bold text-base md:ml-1"
           >
-            Email
+            Description
           </label>
-          <input
-            id="email"
-            name="email"
-            type="email"
-            autoComplete="email"
+          <textarea
+            id="description"
+            name="description"
+            autoComplete="description"
+            rows="5"
             required
             onChange={handleOnChange}
-            value={state.email}
-            className="my-5 appearance-none rounded-full relative block w-full py-3 px-4 font-bold border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 text-base"
-            placeholder="Email"
-          />
-          <label
-            htmlFor="password"
-            className="sr-only font-bold text-base md:ml-1"
-          >
-            Password
-          </label>
-          <input
-            id="password"
-            name="password"
-            type="password"
-            autoComplete="password"
-            required
-            onChange={handleOnChange}
-            value={state.password}
-            className="my-5 appearance-none rounded-full relative block w-full py-3 px-4 font-bold border-2 border-gray-500 placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 text-base"
-            placeholder="Password"
+            value={state.description}
+            className="my-5 appearance-none rounded-xl relative block w-full py-3 px-4 font-bold border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 text-base"
+            placeholder="Describe yourself..."
+            maxLength="255"
           />
           <button
             type="submit"
@@ -173,9 +150,6 @@ const LoginPage = () => {
           >
             Continue
           </button>
-          <br />
-          Sign in with Google:
-          <FirebaseLogin />
         </form>
         <div className="py-4">
           <h3 className="text-2xl font-extrabold italic uppercase my-4">
@@ -195,4 +169,4 @@ const LoginPage = () => {
   );
 };
 
-export default withLayout(LoginPage, { bgImage: true });
+export default withLayout(GRegisterPage, { bgImage: true });

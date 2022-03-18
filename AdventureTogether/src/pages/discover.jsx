@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import firebase from 'firebase/app';
-import 'firebase/firestore';
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/firestore';
 import { Link } from 'react-router-dom';
-import { withLayout } from '../wrappers/layout';
 import PersonSlider from '../components/PersonSlider';
 import SideMatchList from '../components/SideMatchList';
-import MatchSortList from '../method/MatchSort';
+import MatchSortList from '../methods/MatchSort';
+import { withLayout } from '../wrappers/layout';
 
 const DiscoverPage = () => {
   const [persons, setPersons] = useState([]);
