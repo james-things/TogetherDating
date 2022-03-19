@@ -11,7 +11,7 @@ const withLayout = (
     <main className="bg-gray-100">
       <div
         style={{
-          backgroundImage: bgImage ? 'url("/bg.webp")' : 'none',
+          backgroundImage: bgImage ? 'url("/outdoorActivity.webp")' : 'none',
         }}
         className="w-full min-h-screen bg-no-repeat bg-cover bg-center flex justify-center items-center"
       >
