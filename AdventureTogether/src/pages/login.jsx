@@ -3,7 +3,7 @@ import React, { useReducer, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
-import FirebaseLogin from '../components/FirebaseLogin';
+import FirebaseLogin from '../components/FirebaseRegister';
 import { loginCometChatUser } from '../cometchat';
 import { withLayout } from '../wrappers/layout';
 

@@ -5,7 +5,7 @@ import { Link, useHistory } from 'react-router-dom';
 import 'firebase/compat/auth';
 import 'firebase/compat/storage';
 import 'firebase/compat/firestore';
-import FirebaseLogin from '../components/FirebaseLogin';
+import FirebaseLogin from '../components/FirebaseRegister';
 import createEmailUser from '../methods/createEmailUser';
 import { withLayout } from '../wrappers/layout';
 
