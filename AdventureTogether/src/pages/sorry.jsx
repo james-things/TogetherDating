@@ -1,3 +1,4 @@
+// Description: a page which informs the user they are not old enough to sign up with our service
 import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import 'firebase/compat/auth';

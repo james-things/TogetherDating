@@ -1,0 +1,8 @@
+There are a lot of different folders in this directory. The purpose of each is:
+
+CometChatWorkspace - The cometchat ui kit for react (pre-built, no need to touch)
+components - Portable elements intended to be used as a PART of pages, special buttons, etc.
+methods - Portable functions which can be included and used on any page
+pages - The various pages comprising our app
+styles - Our CSS files. Not for editing, but you can ctrl+f to search for pre-defined css keys to use in pages.
+wrappers - Meant to apply factors to pages when called. Ex: withLayout applies a set of stylings to a page.

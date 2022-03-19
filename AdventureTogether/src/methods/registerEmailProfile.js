@@ -1,3 +1,4 @@
+// Description: An async function to create a dating profile for an email-registered user
 import firebase from 'firebase/compat';
 import localStoreGet from './localStoreGet';
 import { loginCometChatUser, registerCometChatUser } from '../cometchat';

@@ -6,12 +6,14 @@ import 'firebase/compat/firestore';
 import localStorePut from '../methods/localStorePut';
 import { withLayout } from '../wrappers/layout';
 
+// Interface state initialization
 const initialState = {
   month: '',
   day: '',
   year: '',
 };
 
+// Management of document state
 const reducer = (state, action) => {
   switch (action.type) {
     case 'day':
@@ -25,10 +27,13 @@ const reducer = (state, action) => {
   }
 };
 
+// Page main function
 const AgePage = () => {
+  // Initialize history routing and reducer
   const history = useHistory();
   const [state, dispatch] = useReducer(reducer, initialState);
 
+  // Call in reducer to handle inputs
   const handleOnChange = (evt) => {
     const { target } = evt;
     dispatch({
@@ -37,6 +42,7 @@ const AgePage = () => {
     });
   };
 
+  // Get an age value returned from an ISO formatted date string
   function getAge(dateString) {
     const today = new Date();
     const birthDate = new Date(dateString);
@@ -49,21 +55,25 @@ const AgePage = () => {
     return age;
   }
 
+  // Return true if age is 18 or higher
   function isOfAge(dateString) {
     return (getAge(dateString) >= 18);
   }
 
+  // Convert a MM-DD-YYYY (US) string to YYYY-MM-DD (ISO)
   function buildIsoDateString(a, b, c) {
-    return `${c}-${b}-${a}`;
+    return `${c}-${a}-${b}`;
   }
 
+  // Check if entered MM-DD-YYYY meets age requirements
   const checkDoB = (evt) => {
     evt.preventDefault();
-    const bday = buildIsoDateString(state.day, state.month, state.year);
+    const bday = buildIsoDateString(state.month, state.day, state.year);
     localStorePut('localBirthdate', bday);
     const t = (isOfAge(bday) === true) ? history.push('/signup') : history.push('/sorry');
   };
 
+  // Page content
   return (
     <div className="my-10 bg-white rounded-2xl border-2 border-gray-200 flex flex-col justify-center items-center mx-auto p-10 w-9/12 lg:w-1/2 md:w-6/12 sm:w-7/12">
       <div className="flex flex-col justify-center items-center">

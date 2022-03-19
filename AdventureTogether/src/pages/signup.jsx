@@ -1,3 +1,5 @@
+// Description: A page which allows the user to select a sign-up method and create
+// a firebase account with our app. This does not create a firestore dating profile.
 import React, { useReducer, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import 'firebase/compat/auth';
@@ -7,15 +9,14 @@ import FirebaseLogin from '../components/FirebaseLogin';
 import createEmailUser from '../methods/createEmailUser';
 import { withLayout } from '../wrappers/layout';
 
+// Document initial state
 const initialState = {
-  name: '',
   email: '',
-  description: '',
   password: '',
   confirmPassword: '',
-  image: '',
 };
 
+// Reducer to process inputs
 const reducer = (state, action) => {
   switch (action.type) {
     case 'email':
@@ -29,11 +30,13 @@ const reducer = (state, action) => {
   }
 };
 
+// Page main function
 const SignupPage = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [error, setError] = useState('');
   const history = useHistory();
 
+  // Link reducer
   const handleOnChange = (evt) => {
     const { target } = evt;
     dispatch({
@@ -42,6 +45,8 @@ const SignupPage = () => {
     });
   };
 
+  // Async function to register email/password user with firebase
+  // The function is NOT called for SSO registration, which is handled at component level
   async function registerUser(evt) {
     evt.preventDefault();
     if (state.password !== state.confirmPassword) {
@@ -52,6 +57,9 @@ const SignupPage = () => {
     history.push('/register');
   }
 
+  // Page content
+  // You will notice <FirebaseLogin /> in the code. This singular line links
+  // in the Firebase UI SSO component.
   return (
     <div className="my-10 bg-white rounded-2xl border-2 border-gray-200 flex flex-col justify-center items-center mx-auto p-10 w-9/12 lg:w-1/2 md:w-7/12 sm:w-8/12">
       <div className="flex flex-col justify-center items-center">
