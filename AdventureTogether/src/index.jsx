@@ -6,7 +6,7 @@ import { FirebaseAuthProvider } from '@react-firebase/auth';
 import { FirestoreProvider } from '@react-firebase/firestore';
 import firebase from 'firebase/compat';
 import { CometChat } from '@cometchat-pro/chat';
-import firebaseConfig from './firebase';
+import { firebaseConfig, cometConfig } from './environment';
 
 import './styles/index.css';
 import './styles/tailwind.css';
@@ -14,10 +14,10 @@ import App from './App';
 
 const appSetting = new CometChat.AppSettingsBuilder()
   .subscribePresenceForAllUsers()
-  .setRegion(process.env.REACT_APP_COMETCHAT_REGION)
+  .setRegion(cometConfig.region)
   .build();
 
-CometChat.init(process.env.REACT_APP_COMETCHAT_APP_ID, appSetting).then(
+CometChat.init(cometConfig.appId, appSetting).then(
   () => {
     if (CometChat.setSource) {
       CometChat.setSource('ui-kit', 'web', 'reactjs');
