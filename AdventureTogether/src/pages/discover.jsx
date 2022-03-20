@@ -1,3 +1,4 @@
+// Description: A page which allows the user to browse potential matches
 import React, { useEffect, useState } from 'react';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
@@ -7,6 +8,7 @@ import SideMatchList from '../components/SideMatchList';
 import MatchSortList from '../methods/MatchSort';
 import { withLayout } from '../wrappers/layout';
 
+// Page main function
 const DiscoverPage = () => {
   const [persons, setPersons] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -16,6 +18,8 @@ const DiscoverPage = () => {
     localStorage.getItem('user'),
   );
 
+  // Iterates through users to generate potential matches
+  // TODO: address bug which causes page loads to fail once you have 10+ likes or dislikes
   useEffect(() => {
     firebase
       .firestore()
@@ -37,7 +41,8 @@ const DiscoverPage = () => {
         setLoading(false);
       });
   }, []);
-  // below is an icon I took from an SVG site for a plant
+
+  // Page content
   return (
     <div className="grid grid-cols-3 md:grid-cols-9 h-screen w-screen overflow-hidden">
       <div className="hidden md:block col-span-2 bg-pink-500 shadow-lg">
