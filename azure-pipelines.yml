@@ -22,13 +22,13 @@ steps:
     yarn run build
   workingDirectory: $(System.DefaultWorkingDirectory)
   displayName: 'install yarn, restore packages, and build'
-#
+
 #- task: PublishBuildArtifacts@1
 #  inputs:
 #    PathtoPublish: '$(Build.ArtifactStagingDirectory)/AdventureDating'
 #    ArtifactName: 'drop'
 #
-#- task: PowerShell@2
-#  inputs:
-#    filePath: '$(System.DefaultWorkingDirectory)/TogetherDating/drop/deploy.ps1'
-#    arguments: '-firebaseToken $(fb_ci_token) -firebaseProject $(fb_projectId) -releaseMessage $(Release.ReleaseName)'
+- task: PowerShell@2
+  inputs:
+    filePath: '$(System.DefaultWorkingDirectory)/AdventureTogether/deploy.ps1'
+    arguments: '-firebaseToken $(fb_ci_token) -firebaseProject $(fb_projectId) -releaseMessage $(Release.ReleaseName)'
