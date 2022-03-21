@@ -16,9 +16,9 @@ steps:
   displayName: 'Install Node.js'
 
 - script: |
-    cd $(Agent.BuildDirectory)/TogetherDating/AdventureDating
     npm install
     npm run build
+  workingDirectory: $(Agent.BuildDirectory)/s/TogetherDating/AdventureDating
   displayName: 'npm install and build'
 
 - task: PublishBuildArtifacts@1
