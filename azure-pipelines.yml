@@ -17,8 +17,9 @@ steps:
 
 - script: |
     cd AdventureTogether
-    npm install
-    npm run build
+    npm install yarn
+    yarn install
+    yarn run build
   workingDirectory: $(System.DefaultWorkingDirectory)
   displayName: 'npm install and build'
 #
