@@ -16,11 +16,12 @@ steps:
   displayName: 'Install Node.js'
 
 - script: |
-    npm install
-    npm run build
-  workingDirectory: $(System.DefaultWorkingDirectory)/AdventureDating
+    # npm install
+    # npm run build
+    dir
+  workingDirectory: $(System.DefaultWorkingDirectory)
   displayName: 'npm install and build'
-
+<#
 - task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)/AdventureDating'
@@ -30,3 +31,5 @@ steps:
   inputs:
     filePath: '$(System.DefaultWorkingDirectory)/TogetherDating/drop/deploy.ps1'
     arguments: '-firebaseToken $(fb_ci_token) -firebaseProject $(fb_projectId) -releaseMessage $(Release.ReleaseName)'
+
+#>
