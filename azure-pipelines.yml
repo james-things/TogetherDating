@@ -21,7 +21,7 @@ steps:
     yarn install
     yarn run build
   workingDirectory: $(System.DefaultWorkingDirectory)
-  displayName: 'npm install and build'
+  displayName: 'install yarn, restore packages, and build'
 #
 #- task: PublishBuildArtifacts@1
 #  inputs:
