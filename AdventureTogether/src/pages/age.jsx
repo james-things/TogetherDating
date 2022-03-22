@@ -1,3 +1,4 @@
+// Description: A page to handle ensuring the user is at least 18
 import React, { useReducer } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import 'firebase/compat/auth';
