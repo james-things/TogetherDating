@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@cometchat-pro/chat": "^2.2.1",
+    "@cometchat-pro/chat": "^3.0.6",
     "@craco/craco": "^6.1.1",
     "@emotion/core": "^10.0.35",
     "@react-firebase/auth": "^0.2.10",
