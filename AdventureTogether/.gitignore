@@ -1,4 +1,6 @@
 
 node_modules/
+.idea/
+.jest-cache/
 yarn-error.log
 yarn.lock
