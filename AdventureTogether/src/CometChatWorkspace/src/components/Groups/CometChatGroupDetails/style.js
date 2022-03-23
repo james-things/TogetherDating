@@ -1,39 +1,42 @@
-export const detailStyle = (props) => {
+export const detailStyle = (context) => {
 
     return {
-        "height": "100%",
+        height: "100%",
+        position: "relative",
         boxSizing: "border-box",
-        fontFamily: `${props.theme.fontFamily}`,
+        fontFamily: `${context.theme.fontFamily}`,
         "*": {
             boxSizing: "border-box",
-            fontFamily: `${props.theme.fontFamily}`,
+            fontFamily: `${context.theme.fontFamily}`,
         }
     }
 }
 
-export const headerStyle = (props) => {
+export const headerStyle = (context) => {
 
     return {
-        padding: "19px 16px",
+        padding: "16px",
         position: "relative",
-        borderBottom: `1px solid ${props.theme.borderColor.primary}`,
+        borderBottom: `1px solid ${context.theme.borderColor.primary}`,
         display: "flex",
         justifyContent: "flex-start",
         alignItems: "center",
+        height: "69px",
     }
 }
 
-export const headerCloseStyle = (img, props) => {
+export const headerCloseStyle = (img, context) => {
 
-    const mq = [...props.theme.breakPoints];
+    const mq = [...context.theme.breakPoints];
 
     return {
         cursor: "pointer",
         display: "none",
-        background: `url(${img}) center center no-repeat`,
+        mask: `url(${img}) center center no-repeat`,
+        backgroundColor: `${context.theme.primaryColor}`,
         width: "24px",
         height: "24px",
-        [`@media ${mq[1]}, ${mq[2]}, ${mq[3]}, ${mq[4]}`]: {
+        [`@media ${mq[1]}, ${mq[2]}, ${mq[3]}, , ${mq[4]}`]: {
             display: "block"
         },
     }
@@ -44,7 +47,8 @@ export const headerTitleStyle = () => {
     return {
         margin: "0",
         fontWeight: "700",
-        fontSize: "20px"
+        fontSize: "22px",
+        lineHeight: "26px"
     }
 }
 
@@ -68,14 +72,15 @@ export const sectionStyle = () => {
     }
 }
 
-export const sectionHeaderStyle = (props) => {
+export const sectionHeaderStyle = (context) => {
 
     return {
         margin: "0",
         width: "100%",
         fontSize: "12px",
+        fontWeight: "500",
         lineHeight: "20px",
-        color: `${props.theme.color.secondary}`,
+        color: `${context.theme.color.secondary}`,
         textTransform: "uppercase",
     }
 }
@@ -108,11 +113,13 @@ export const contentItemStyle = () => {
     }
 }
 
-export const itemLinkStyle = (props, deleteLink) => {
+export const itemLinkStyle = (context, deleteLink) => {
 
     const deleteCss = (deleteLink) ? {
-        color: `${props.theme.color.red}`,
-    } : {};
+        color: `${context.theme.color.red}`,
+    } : {
+        color: `${context.theme.color.primary}`,
+    };
 
     return {
         fontSize: "15px",

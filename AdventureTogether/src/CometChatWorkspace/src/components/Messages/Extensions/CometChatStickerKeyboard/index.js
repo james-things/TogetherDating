@@ -5,6 +5,9 @@ import { jsx, keyframes } from '@emotion/core';
 import PropTypes from 'prop-types';
 import { CometChat } from "@cometchat-pro/chat";
 
+import { CometChatContext } from "../../../../util/CometChatContext";
+import * as enums from "../../../../util/enums.js";
+
 import { theme } from "../../../../resources/theme";
 import Translator from "../../../../resources/localization/translator";
 
@@ -19,15 +22,17 @@ import {
     stickerCloseStyle
 } from "./style";
 
-import closeIcon from "./resources/close.png";
+import closeIcon from "./resources/close.svg";
 
 class CometChatStickerKeyboard extends React.PureComponent {
 
-    constructor(props) {
+    static contextType = CometChatContext;
 
-        super(props);
+    constructor(props, context) {
 
-        this.decoratorMessage = Translator.translate("LOADING", props.lang);
+        super(props, context);
+
+        this.decoratorMessage = Translator.translate("LOADING", context.language);
 
         this.state = {
             stickerlist: [],
@@ -61,7 +66,7 @@ class CometChatStickerKeyboard extends React.PureComponent {
             const stickerList = [...defaultStickers, ...customStickers];
             
             if (stickerList.length === 0) {
-                this.decoratorMessage = Translator.translate("NO_STICKERS_FOUND", this.props.lang);
+                this.decoratorMessage = Translator.translate("NO_STICKERS_FOUND", this.context.language);
             }
 
             const stickerSet = stickerList.reduce((r, sticker, index) => {
@@ -97,17 +102,13 @@ class CometChatStickerKeyboard extends React.PureComponent {
 
         }).catch(error => {
             
-            // Some error occured
-            console.warn("Error: ", error);
-            this.decoratorMessage = Translator.translate("NO_STICKERS_FOUND", this.props.lang);
-
+            this.decoratorMessage = Translator.translate("SOMETHING_WRONG", this.context.language);
             this.setState({ "activestickerlist": [], "stickerset": {} });
-
         });
     }
 
     sendStickerMessage = (stickerItem) => {
-        this.props.actionGenerated("sendSticker", stickerItem);
+        this.props.actionGenerated(enums.ACTIONS["SEND_STICKER"], stickerItem);
     }
 
     onStickerSetClicked = (sectionItem) => {
@@ -120,13 +121,17 @@ class CometChatStickerKeyboard extends React.PureComponent {
         });
     }
 
+    closeStickerKeyboard = () => {
+        this.props.actionGenerated(enums.ACTIONS["CLOSE_STICKER_KEYBOARD"]);
+    }
+
     render() {
 
         let messageContainer = null;
         if (this.state.activestickerlist.length === 0) {
             messageContainer = (
                 <div css={stickerMsgStyle()} className="stickers__decorator-message">
-                    <p css={stickerMsgTxtStyle(this.props.theme)} className="decorator-message">{this.decoratorMessage}</p>
+                    <p css={stickerMsgTxtStyle(this.context)} className="decorator-message">{this.decoratorMessage}</p>
                 </div>
             );
         }
@@ -137,12 +142,7 @@ class CometChatStickerKeyboard extends React.PureComponent {
             const sectionItems = Object.keys(this.state.stickerset).map((sectionItem, key) => {
 
                 const stickerSetThumbnail = this.state.stickerset[sectionItem][0]["stickerUrl"];
-                return(
-                <div 
-                key={key} 
-                className="stickers__sectionitem"
-                css={sectionListItemStyle(this.props)} 
-                onClick={() => this.onStickerSetClicked(sectionItem)}>
+                return( <div  key={key}  className="stickers__sectionitem" css={sectionListItemStyle()}  onClick={() => this.onStickerSetClicked(sectionItem)}>
                     <img src={stickerSetThumbnail} alt={sectionItem} />
                 </div>
                 );
@@ -155,7 +155,7 @@ class CometChatStickerKeyboard extends React.PureComponent {
                 activeStickerList = stickerList.map((stickerItem, key) => {
 
                     return (
-                        <div key={key} css={stickerItemStyle(this.props)} onClick={() => this.sendStickerMessage(stickerItem)} className="stickers__listitem">
+                        <div key={key} css={stickerItemStyle(this.context)} onClick={() => this.sendStickerMessage(stickerItem)} className="stickers__listitem">
                             <img src={stickerItem.stickerUrl} alt={stickerItem.stickerName} />
                         </div>
                     );
@@ -164,15 +164,19 @@ class CometChatStickerKeyboard extends React.PureComponent {
 
             stickers = (
                 <React.Fragment>
-                    <div css={stickerCloseStyle(closeIcon)} className="stickers__close" onClick={() => this.props.actionGenerated("closeSticker")}></div>
-                    <div css={stickerListStyle(this.props)} className="stickers__list">{activeStickerList}</div>
-                    <div css={stickerSectionListStyle(this.props)} className="stickers__sections">{sectionItems}</div>
+                    <div css={stickerCloseStyle(closeIcon, this.context)} className="stickers__close" onClick={this.closeStickerKeyboard}></div>
+                    <div css={stickerListStyle(this.props)} className="stickers__list">
+                        {activeStickerList}
+                    </div>
+                    <div css={stickerSectionListStyle(this.context)} className="stickers__sections">
+                        {sectionItems}
+                    </div>
                 </React.Fragment>
             );
         }
 
         return (
-            <div css={stickerWrapperStyle(this.props, keyframes)} className="stickers">
+            <div css={stickerWrapperStyle(this.context, keyframes)} className="stickers">
                 {messageContainer}
                 {stickers}
             </div>
@@ -182,13 +186,11 @@ class CometChatStickerKeyboard extends React.PureComponent {
 
 // Specifies the default values for props:
 CometChatStickerKeyboard.defaultProps = {
-    lang: Translator.getDefaultLanguage(),
     theme: theme
 };
 
 CometChatStickerKeyboard.propTypes = {
-    lang: PropTypes.string,
     theme: PropTypes.object
 }
 
-export default CometChatStickerKeyboard;
+export { CometChatStickerKeyboard };

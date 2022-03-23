@@ -3,7 +3,7 @@ export const userInfoScreenStyle = (props) =>{
     return {
         display: "flex",
         flexDirection: "column!important",
-        height: "calc(100% - 40px)",
+        height: "calc(100% - 50px)",
         fontFamily: `${props.theme.fontFamily}`,
         "*": {
             boxSizing: "border-box",
@@ -28,8 +28,9 @@ export const headerTitleStyle = () => {
 
     return {
         margin: "0",
+        fontSize: "22px",
         fontWeight: "700",
-        fontSize: "22px"
+        lineHeight: "26px",
     }
 }
 
@@ -93,7 +94,7 @@ export const userStatusStyle = (props) => {
 export const optionsStyle = () => {
 
     return {
-        height: "calc(100% - 196px)",
+        height: "calc(100% - 145px)",
         overflowY: "auto",
         padding: "0 16px",
         display: "flex",
@@ -127,9 +128,9 @@ export const optionStyle = (img) => {
 
     return {
         width: "100%",
-        padding: "15px 15px 15px 48px",
+        padding: "16px 16px 16px 36px",
         fontWeight: 600,
-        background: `url(${img}) 16px center no-repeat`,
+        background: `url(${img}) left center no-repeat`,
     }
 }
 

@@ -1,7 +1,7 @@
-export const backdropStyle = () => {
+export const backdropStyle = (props) => {
 
     return {
-        zIndex: "1000",
+        zIndex: "3",
         backgroundColor: "#000",
         opacity: ".3",
         position: "fixed",
@@ -11,5 +11,6 @@ export const backdropStyle = () => {
         left: "0",
         cursor: "pointer",
         transition: "background .3s ease-out 0",
+        ...props.style,
     }
 }
