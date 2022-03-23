@@ -2,7 +2,7 @@
 .jest-cache/
 coverage/
 node_modules/
-.idea/
-.jest-cache/
+src/CometChatWorkspace/node_modules/
+src/CometChatWorkspace/yarn.lock
 yarn-error.log
 yarn.lock

@@ -1,10 +1,11 @@
-// Description: A page to handle ensuring the user is at least 18
 import React, { useReducer } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import 'firebase/compat/auth';
 import 'firebase/compat/storage';
 import 'firebase/compat/firestore';
 import localStorePut from '../methods/localStorePut';
+import buildIsoDateString from '../methods/buildIsoDateString';
+import isOfAge from '../methods/isOfAge';
 import { withLayout } from '../wrappers/layout';
 
 // Interface state initialization
@@ -42,29 +43,6 @@ const AgePage = () => {
       payload: target.value,
     });
   };
-
-  // Get an age value returned from an ISO formatted date string
-  function getAge(dateString) {
-    const today = new Date();
-    const birthDate = new Date(dateString);
-    let age = today.getFullYear() - birthDate.getFullYear();
-    const m = today.getMonth() - birthDate.getMonth();
-    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-      // eslint-disable-next-line no-plusplus
-      age--;
-    }
-    return age;
-  }
-
-  // Return true if age is 18 or higher
-  function isOfAge(dateString) {
-    return (getAge(dateString) >= 18);
-  }
-
-  // Convert a MM-DD-YYYY (US) string to YYYY-MM-DD (ISO)
-  function buildIsoDateString(a, b, c) {
-    return `${c}-${a}-${b}`;
-  }
 
   // Check if entered MM-DD-YYYY meets age requirements
   const checkDoB = (evt) => {
