@@ -20,7 +20,7 @@ const uiConfig = {
 };
 
 // Component main function
-function FirebaseSSO() {
+function FirebaseRegister() {
   const [isSignedIn, setIsSignedIn] = useState(false); // Local signed-in state.
 
   useEffect(() => {
@@ -53,4 +53,4 @@ function FirebaseSSO() {
   );
 }
 
-export default FirebaseSSO;
+export default FirebaseRegister;
