@@ -55,7 +55,7 @@ const SignupPage = () => {
       return;
     }
     await createEmailUser(state.email, state.password);
-    history.push('/register');
+    history.push('/email-register');
   }
 
   // Page content

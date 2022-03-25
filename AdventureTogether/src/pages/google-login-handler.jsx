@@ -63,6 +63,7 @@ const GoogleLoginHandlerPage = () => {
         <h3 className="text-2xl font-extrabold italic uppercase my-4">
           Please wait a moment while we get you signed in...
         </h3>
+        Development Note: For now, refresh this page if it gets stuck.
       </div>
       <div className="text-center w-full divide-y-2 divide-gray-100 divide-solid">
         <div className="py-4">
