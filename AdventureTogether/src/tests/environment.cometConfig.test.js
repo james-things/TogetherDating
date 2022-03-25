@@ -1,4 +1,5 @@
 /* eslint-disable no-undef */
+// Description: A unit test for cometConfig
 import React from 'react';
 import { cometConfig } from '../environment';
 

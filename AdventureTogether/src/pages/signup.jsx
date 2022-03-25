@@ -59,7 +59,7 @@ const SignupPage = () => {
   }
 
   // Page content
-  // You will notice <FirebaseLogin /> in the code. This singular line links
+  // You will notice <FirebaseLogin props={...} /> in the code. This singular line links
   // in the Firebase UI SSO component.
   return (
     <div className="my-10 bg-white rounded-2xl border-2 border-gray-200 flex flex-col justify-center items-center mx-auto p-10 w-9/12 lg:w-1/2 md:w-7/12 sm:w-8/12">
@@ -207,7 +207,7 @@ const SignupPage = () => {
             Register with Google Sign-In
           </h3>
           <div className="flex justify-between items-center">
-            {/* FirebaseUI Component in "Register Mode" */}
+            {/* The passed props set this as a REGISTRATION component */}
             <FirebaseUI props={uiConfigRegister} />
           </div>
         </div>

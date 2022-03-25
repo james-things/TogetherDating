@@ -5,7 +5,8 @@ import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 
-// Component main function
+// Component main function - now accepts configuration "props"
+// this configuration determines if it is a login or registration component
 function FirebaseUI({ props }) {
   const [isSignedIn, setIsSignedIn] = useState(false); // Local signed-in state.
 

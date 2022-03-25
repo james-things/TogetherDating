@@ -1,4 +1,5 @@
 /* eslint-disable no-undef */
+// Description: A unit test which confirms successful rendering of AgePage
 import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { render, unmountComponentAtNode } from 'react-dom';

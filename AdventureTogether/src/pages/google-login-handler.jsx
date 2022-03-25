@@ -1,31 +1,32 @@
-// Description: A page which allows a user to log in to an existing account
-import React, { useEffect, useReducer, useState } from 'react';
+// Description: A page which handles logging a user in to CometChat and
+// redirecting to discover upon completion for a Google SSO sign-in
+import React, { useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
-import FirebaseUI from '../components/FirebaseUI';
 import { loginCometChatUser } from '../cometchat';
 import { withLayout } from '../wrappers/layout';
-import { uiConfigLogin } from '../firebaseui.config';
 import localStoreGet from '../methods/localStoreGet';
 
-// Main func
+// Page main function
 const GoogleLoginHandlerPage = () => {
   const history = useHistory();
 
-  // Log in function, called on submit (email/pw only)
-  // If the user opts to log in with SSO, this is bypassed
+  // Asynchronously log the user into cometchat and redirect - approximately "on load"
   useEffect(async () => {
     try {
+      // Retrieve the current user from local storage
       const doc = await localStoreGet('user');
+      // Await CometChat login
       await loginCometChatUser(doc.id);
+      // Then push the user to discover page
       history.push('/discover');
+      // Catching an logging any errors
     } catch (e) { console.log(`Unknown Error Occurred: ${e.message}`); }
   }, []);
-  // Page content
-  // You will notice <FirebaseLogin /> in the code. This singular line links
-  // in the Firebase UI SSO component. Currently, our system lacks logic to differentiate
-  // a SSO registration from a SSO login, so this will need to be implemented.
+
+  // Page content - This is just a placeholder message while useEffect() works
+  // in the background. I would like to improve this implementation as there is a lot
+  // of blank screen time currently.
   return (
     <div className="bg-white rounded-2xl border-2 border-gray-200 flex flex-col justify-center items-center mx-auto p-10 w-full md:w-7/12">
       <div className="flex flex-col justify-center items-center">

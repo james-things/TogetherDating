@@ -1,4 +1,5 @@
 /* eslint-disable no-undef */
+// Description: A unit test for the successful rendering of IndexPage
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import React from 'react';
@@ -28,7 +29,6 @@ describe('IndexPage', () => {
     act(() => {
       render(<Router><IndexPage /></Router>, container);
     });
-    // expect(paragraph).toHaveLength(1);
     expect(container.toBeVisible);
   });
 });

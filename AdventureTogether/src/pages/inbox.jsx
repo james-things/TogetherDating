@@ -1,6 +1,7 @@
 // Description: display cometchat ui as messaging inbox
 import React from 'react';
 import { withLayout } from '../wrappers/layout';
+// Import 'error' safe to ignore
 import { CometChatConversationListWithMessages } from '../CometChatWorkspace/src';
 
 // Main func/page content

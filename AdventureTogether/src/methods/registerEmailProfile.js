@@ -4,6 +4,7 @@ import localStoreGet from './localStoreGet';
 import { loginCometChatUser, registerCometChatUser } from '../cometchat';
 
 export default async function registerEmailProfile(imageState, nameState, descState) {
+  // Prepare the profile data already collected
   const bDay = localStoreGet('localBirthdate');
   const doc = localStoreGet('doc');
   const { uid } = doc.user;
@@ -13,6 +14,7 @@ export default async function registerEmailProfile(imageState, nameState, descSt
 
   const imageUrl = await imageRef.getDownloadURL();
 
+  // Await firebase profile storage
   await firebase.firestore().collection('users').doc(uid).set({
     name: nameState,
     description: descState,
@@ -42,6 +44,7 @@ export default async function registerEmailProfile(imageState, nameState, descSt
       console.log(`Unable to register user: ${err.message}`);
     });
 
+  // Then register and log the user in to CometChat
   await registerCometChatUser(nameState, uid);
   await loginCometChatUser(uid);
 }

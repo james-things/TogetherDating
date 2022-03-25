@@ -52,7 +52,7 @@ const AgePage = () => {
     const t = (isOfAge(bday) === true) ? history.push('/signup') : history.push('/sorry');
   };
 
-  // Page content
+  // Page content - Accepts input for the users MM, DD, and YYYY of birth
   return (
     <div className="my-10 bg-white rounded-2xl border-2 border-gray-200 flex flex-col justify-center items-center mx-auto p-10 w-9/12 lg:w-1/2 md:w-6/12 sm:w-7/12">
       <div className="flex flex-col justify-center items-center">

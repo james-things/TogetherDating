@@ -1,4 +1,4 @@
-// Description: A page to support profile creation for a Google SSO sign-on
+// Description: A page to support profile creation for a Google SSO registration
 import React, { useReducer, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import 'firebase/compat/auth';
@@ -46,7 +46,7 @@ const GoogleRegisterPage = () => {
     history.push('/discover');
   }
 
-  // Page content
+  // Page content - Collect a description for the user's profile
   return (
     <div className="my-10 bg-white rounded-2xl border-2 border-gray-200 flex flex-col justify-center items-center mx-auto p-10 w-full md:w-7/12">
       <div className="flex flex-col justify-center items-center">

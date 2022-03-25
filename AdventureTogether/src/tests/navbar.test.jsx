@@ -1,14 +1,13 @@
 /* eslint-disable no-undef */
+// Description: A unit test for the successful rendering of the Navbar component
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
-import React, { useEffect, useState } from 'react';
-import { FirebaseAuthConsumer } from '@react-firebase/auth';
+import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { render, unmountComponentAtNode } from 'react-dom';
 import { act } from 'react-dom/test-utils';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
-// import { shallow, mount, render } from 'enzyme';
 import { firebaseConfig } from '../environment';
 import Navbar from '../components/Navbar';
 

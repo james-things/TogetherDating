@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-// age-verification.steps.js
+// Description: A BDD test for age verification as a feature
 
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { defineFeature, loadFeature } from 'jest-cucumber';

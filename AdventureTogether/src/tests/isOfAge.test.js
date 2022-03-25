@@ -1,4 +1,5 @@
 /* eslint-disable no-undef */
+// Description: A unit test for isOfAge
 import React from 'react';
 import isOfAge from '../methods/isOfAge';
 

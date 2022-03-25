@@ -1,4 +1,5 @@
 /* eslint-disable no-undef */
+// Description: A unit test for firebaseConfig
 import React from 'react';
 import { firebaseConfig } from '../environment';
 

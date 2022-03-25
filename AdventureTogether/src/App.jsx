@@ -12,7 +12,7 @@ import DiscoverPage from './pages/discover';
 import InboxPage from './pages/inbox';
 import LoginPage from './pages/login';
 import LogoutPage from './pages/logout';
-import RegisterPage from './pages/register';
+import EmailRegisterPage from './pages/email-register';
 import SorryPage from './pages/sorry';
 import SignupPage from './pages/signup';
 import GoogleRegisterPage from './pages/google-register';
@@ -64,8 +64,8 @@ function App() {
           <Route path="/logout">
             <LogoutPage />
           </Route>
-          <Route path="/register">
-            <RegisterPage />
+          <Route path="/email-register">
+            <EmailRegisterPage />
           </Route>
           <Route path="/google-register">
             <GoogleRegisterPage />

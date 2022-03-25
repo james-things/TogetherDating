@@ -30,7 +30,7 @@ const reducer = (state, action) => {
 };
 
 // Page main function
-const RegisterPage = () => {
+const EmailRegisterPage = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [error, setError] = useState('');
   const history = useHistory();
@@ -63,7 +63,7 @@ const RegisterPage = () => {
     history.push('/discover');
   }
 
-  // Page content
+  // Page content - Allow the user to select and initiate a registration process
   return (
     <div className="my-10 bg-white rounded-2xl border-2 border-gray-200 flex flex-col justify-center items-center mx-auto p-10 w-full md:w-7/12">
       <div className="flex flex-col justify-center items-center">
@@ -219,4 +219,4 @@ const RegisterPage = () => {
   );
 };
 
-export default withLayout(RegisterPage, { bgImage: true });
+export default withLayout(EmailRegisterPage, { bgImage: true });
