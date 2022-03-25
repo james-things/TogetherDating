@@ -3,9 +3,10 @@ import React, { useReducer, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
-import FirebaseLogin from '../components/FirebaseRegister';
+import FirebaseUI from '../components/FirebaseUI';
 import { loginCometChatUser } from '../cometchat';
 import { withLayout } from '../wrappers/layout';
+import { uiConfigLogin } from '../firebaseui.config';
 
 // Page initial state
 const initialState = {
@@ -186,7 +187,7 @@ const LoginPage = () => {
           </button>
           <br />
           Sign in with Google:
-          <FirebaseLogin />
+          <FirebaseUI props={uiConfigLogin} />
         </form>
         <div className="py-4">
           <h3 className="text-2xl font-extrabold italic uppercase my-4">

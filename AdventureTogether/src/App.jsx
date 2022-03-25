@@ -15,7 +15,8 @@ import LogoutPage from './pages/logout';
 import RegisterPage from './pages/register';
 import SorryPage from './pages/sorry';
 import SignupPage from './pages/signup';
-import GRegisterPage from './pages/gregister';
+import GoogleRegisterPage from './pages/google-register';
+import GoogleLoginHandlerPage from './pages/google-login-handler';
 
 // Main function, essentially "if user exists then retrieve user" on every page load (I think)
 function App() {
@@ -66,8 +67,11 @@ function App() {
           <Route path="/register">
             <RegisterPage />
           </Route>
-          <Route path="/gregister">
-            <GRegisterPage />
+          <Route path="/google-register">
+            <GoogleRegisterPage />
+          </Route>
+          <Route path="/google-login-handler">
+            <GoogleLoginHandlerPage />
           </Route>
           <Route path="/age">
             <AgePage />

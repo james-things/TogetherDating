@@ -5,22 +5,8 @@ import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 
-// Configure FirebaseUI.
-const uiConfig = {
-  // Popup signin flow rather than redirect flow.
-  signInFlow: 'popup',
-  // Redirect to /signedIn after sign in is successful.
-  // Alternatively you can provide a callbacks.signInSuccess function.
-  signInSuccessUrl: '/gregister',
-  // We will display Google and Facebook as auth providers.
-  signInOptions: [
-    firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-    firebase.auth.FacebookAuthProvider.PROVIDER_ID,
-  ],
-};
-
 // Component main function
-function FirebaseRegister() {
+function FirebaseUI({ props }) {
   const [isSignedIn, setIsSignedIn] = useState(false); // Local signed-in state.
 
   useEffect(() => {
@@ -35,7 +21,7 @@ function FirebaseRegister() {
   if (!isSignedIn) {
     return (
       <div className="flex flex-col items-center w-full">
-        <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
+        <StyledFirebaseAuth uiConfig={props} firebaseAuth={firebase.auth()} />
       </div>
     );
   }
@@ -53,4 +39,4 @@ function FirebaseRegister() {
   );
 }
 
-export default FirebaseRegister;
+export default FirebaseUI;

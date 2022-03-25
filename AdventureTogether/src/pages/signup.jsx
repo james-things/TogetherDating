@@ -5,9 +5,10 @@ import { Link, useHistory } from 'react-router-dom';
 import 'firebase/compat/auth';
 import 'firebase/compat/storage';
 import 'firebase/compat/firestore';
-import FirebaseLogin from '../components/FirebaseRegister';
+import FirebaseUI from '../components/FirebaseUI';
 import createEmailUser from '../methods/createEmailUser';
 import { withLayout } from '../wrappers/layout';
+import { uiConfigRegister } from '../firebaseui.config';
 
 // Document initial state
 const initialState = {
@@ -206,7 +207,8 @@ const SignupPage = () => {
             Register with Google Sign-In
           </h3>
           <div className="flex justify-between items-center">
-            <FirebaseLogin />
+            {/* FirebaseUI Component in "Register Mode" */}
+            <FirebaseUI props={uiConfigRegister} />
           </div>
         </div>
         <div className="py-4">

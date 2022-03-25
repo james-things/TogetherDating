@@ -23,7 +23,7 @@ const reducer = (state, action) => {
 };
 
 // Page main function
-const GRegisterPage = () => {
+const GoogleRegisterPage = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [error] = useState('');
   const history = useHistory();
@@ -173,4 +173,4 @@ const GRegisterPage = () => {
   );
 };
 
-export default withLayout(GRegisterPage, { bgImage: true });
+export default withLayout(GoogleRegisterPage, { bgImage: true });
