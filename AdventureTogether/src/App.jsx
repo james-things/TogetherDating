@@ -14,6 +14,7 @@ import RegisterPage from './pages/register';
 import SorryPage from './pages/sorry';
 import SignupPage from './pages/signup';
 import GRegisterPage from './pages/gregister';
+import ProfilePage from './pages/profile';
 
 function App() {
   useEffect(() => {
@@ -58,6 +59,9 @@ function App() {
           </Route>
           <Route path="/register">
             <RegisterPage />
+          </Route>
+          <Route path="/profile">
+            <ProfilePage />
           </Route>
           <Route path="/gregister">
             <GRegisterPage />

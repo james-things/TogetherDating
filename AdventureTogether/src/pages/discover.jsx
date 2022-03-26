@@ -7,6 +7,7 @@ import PersonSlider from '../components/PersonSlider';
 import SideMatchList from '../components/SideMatchList';
 import MatchSortList from '../methods/MatchSort';
 import { withLayout } from '../wrappers/layout';
+import getImplicitInterests from '../methods/getImplicitInterests';
 
 // Page main function
 const DiscoverPage = () => {
@@ -32,6 +33,7 @@ const DiscoverPage = () => {
         // had to add a user object to send to compare against activities
         // the previous above area removes already liked people
         const user = JSON.parse(localStorage.getItem('user'));
+        const implicit = getImplicitInterests();
         const show = MatchSortList(newPersons, user);
         // need to set people to compare - unsure what the function does for sure
         setPersons(newPersons);
