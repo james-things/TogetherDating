@@ -1,10 +1,15 @@
-export const groupWrapperStyle = () => {
+export const groupWrapperStyle = (props, theme) => {
     
+    const borderStyle = (props._parent === "") ? {
+        border: `1px solid ${theme.borderColor.primary}`
+    } : {};
+
     return {
         display: "flex",
         flexDirection: "column",
         height: "100%",
         boxSizing: "border-box",
+        ...borderStyle,
         "*": {
             boxSizing: "border-box",
             "::-webkit-scrollbar": {
@@ -24,34 +29,35 @@ export const groupWrapperStyle = () => {
     }
 }
 
-export const groupHeaderStyle = (props) => {
+export const groupHeaderStyle = theme => {
 
-    return {
-        padding: "16px",
-        position: "relative",
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        borderBottom: `1px solid ${props.theme.borderColor.primary}`,
-        height: "70px",
-    }
-}
+	return {
+		padding: "16px",
+		position: "relative",
+		display: "flex",
+		justifyContent: "space-between",
+		alignItems: "center",
+		borderBottom: `1px solid ${theme.borderColor.primary}`,
+		height: "70px",
+	};
+};
 
-export const groupHeaderCloseStyle = (img, props) => {
+export const groupHeaderCloseStyle = (img, theme) => {
 
-    const mq = [...props.theme.breakPoints];
+	const mq = [...theme.breakPoints];
 
-    return {
-        cursor: "pointer",
-        display: "none",
-        background: `url(${ img}) left center no-repeat`,
-        height: "24px",
-        width: "33%",
-        [`@media ${mq[0]}`]: {
-            display: "block!important"
-        }
-    }
-}
+	return {
+		cursor: "pointer",
+		display: "none",
+		mask: `url(${img}) left center no-repeat`,
+		backgroundColor: `${theme.primaryColor}`,
+		height: "24px",
+		width: "33%",
+		[`@media ${mq[0]}`]: {
+			display: "block!important",
+		},
+	};
+};
 
 export const groupHeaderTitleStyle = (props) => {
 
@@ -62,11 +68,12 @@ export const groupHeaderTitleStyle = (props) => {
 
     return {
         margin: "0",
-        fontWeight: "700",
         display: "inline-block",
         width: "100%",
         textAlign: "left",
-        fontSize: "20px",
+        fontSize: "22px",
+        fontWeight: "700",
+        lineHeight: "26px",
         ...alignment,
         "&[dir=rtl]": {
             textAlign: "right",
@@ -74,38 +81,62 @@ export const groupHeaderTitleStyle = (props) => {
     }
 }
 
-export const groupAddStyle = (img) => {
-    
-    return {
-        display: "block",
-        height: "24px",
-        cursor: "pointer",
-    }
-}
+export const groupAddStyle = (img, theme) => {
+
+	return {
+		height: "24px",
+		cursor: "pointer",
+		i: {
+			display: "inline-block",
+			width: "24px",
+			height: "24px",
+			mask: `url(${img}) center center no-repeat`,
+			backgroundColor: `${theme.primaryColor}`,
+		},
+	};
+};
 
 export const groupSearchStyle = () => {
     
     return {
-        padding: "16px 16px",
+        margin: "16px",
         position: "relative",
+        borderRadius: "8px",
+		boxShadow: "rgba(20, 20, 20, 0.04) 0 0 0 1px inset",
+        backgroundColor: "rgba(20, 20, 20, 0.04)",
+        height: "35px",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center"
     }
 }
 
-export const groupSearchInputStyle = (props, img) => {
+export const groupSearchButtonStyle = (img, context) => {
+
+	return {
+		width: "30px",
+		height: "100%",
+		padding: "8px 0 8px 8px",
+		cursor: "default",
+		mask: `url(${img}) 10px center no-repeat`,
+		backgroundColor: `${context.theme.secondaryTextColor}!important`,
+	};
+};
+
+export const groupSearchInputStyle = (props) => {
 
     return {
-        display: "block",
-        width: "100%",
-        border: "0",
-        boxShadow: "rgba(20, 20, 20, 0.04) 0 0 0 1px inset",
-        borderRadius: "8px",
-        lineHeight: "20px",
-        padding: "8px 8px 8px 40px",
+        width: "calc(100% - 30px)",
+        height: "100%",
+        padding: "8px",
         fontSize: "15px",
+        fontWeight: "400",
+        lineHeight: "20px",
         outline: "none",
-        color: `${props.theme.color.primary}`,
-        background: `url(${img}) 10px center no-repeat ${props.theme.backgroundColor.grey}`,
-    }
+        border: "none",
+        color: props.theme.color.search,
+        backgroundColor: "transparent",
+    };
 }
 
 export const groupMsgStyle = () => {
@@ -121,17 +152,19 @@ export const groupMsgStyle = () => {
     }
 }
 
-export const groupMsgTxtStyle = (props) => {
+export const groupMsgTxtStyle = theme => {
 
-    return {
-        margin: "0",
-        height: "36px",
-        color: `${props.theme.color.secondary}`,
-        fontSize: "24px!important",
-        fontWeight: "600",
-        lineHeight: "30px",
-    }
-}
+	return {
+		margin: "0",
+		minHeight: "36px",
+		color: `${theme.color.secondary}`,
+		fontSize: "20px!important",
+		fontWeight: "600",
+		lineHeight: "30px",
+		wordWrap: "break-word",
+		padding: "0 16px",
+	};
+};
 
 export const groupListStyle = () => {
 

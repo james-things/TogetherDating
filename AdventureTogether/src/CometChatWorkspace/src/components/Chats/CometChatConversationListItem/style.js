@@ -12,6 +12,7 @@ export const listItem = (props) => {
         cursor: "pointer",
         width: "100%",
         padding: "8px 16px",
+        position: "relative",
         ...selectedState,
         '&:hover': {
             backgroundColor: `${props.theme.backgroundColor.primary}`
@@ -51,16 +52,18 @@ export const itemRowStyle = () => {
     }
 }
 
-export const itemNameStyle = () => {
+export const itemNameStyle = (props) => {
 
     return {
         fontSize: "15px",
         fontWeight: "600",
         display: "block",
-        width: "calc(100% - 72px)",
+        width: "calc(100% - 70px)",
         overflow: "hidden",
         textOverflow: "ellipsis",
         whiteSpace: "nowrap",
+        lineHeight: "22px",
+        color: `${props.theme.color.primary}`
     }
 }
 
@@ -69,6 +72,7 @@ export const itemLastMsgStyle = (props) => {
     return {
         margin: "0",
         fontSize: "13px",
+        fontWeight: "400",
         width: "calc(100% - 50px)",
         overflow: "hidden",
         textOverflow: "ellipsis",
@@ -82,7 +86,7 @@ export const itemLastMsgTimeStyle = (props) => {
 
     return {
         fontSize: "11px",
-        width: "72px",
+        width: "70px",
         textAlign: "right",
         color: `${props.theme.color.helpText}`,
     }

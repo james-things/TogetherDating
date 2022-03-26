@@ -5,9 +5,11 @@ import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import { logoutCometChatUser } from '../cometchat';
 
+// Main function/"page content"
 export default function LogoutPage() {
   const history = useHistory();
 
+  // Approximately on load, log the user out, then log the user out of CometChat
   useEffect(() => {
     firebase
       .auth()
