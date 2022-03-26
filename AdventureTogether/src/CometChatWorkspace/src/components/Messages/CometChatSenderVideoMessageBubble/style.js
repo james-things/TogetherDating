@@ -11,11 +11,6 @@ export const messageContainerStyle = () => {
         display: "flex",
         flexDirection: "column",
         flexShrink: "0",
-        ":hover": {
-            "ul.message__actions": {
-                display: "flex"
-            }
-        }
     }
 }
 
@@ -29,7 +24,7 @@ export const messageWrapperStyle = () => {
     }
 }
 
-export const messageVideoWrapperStyle = (props) => {
+export const messageVideoWrapperStyle = () => {
 
     return {
         display: "inline-block",
@@ -46,16 +41,22 @@ export const messageInfoWrapperStyle = () => {
 
     return {
         alignSelf: "flex-end",
+        display: "flex",
+        justifyContent: "flex-end",
+        alignItems: "center",
+        height: "25px",
+        padding: "4px 8px",
     }
 }
 
 export const messageReactionsWrapperStyle = () => {
 
     return {
-        display: "inline-flex",
+        display: "flex",
         alignSelf: "flex-end",
         width: "100%",
         flexWrap: "wrap",
         justifyContent: "flex-end",
+        minHeight: "36px",
     }
 }

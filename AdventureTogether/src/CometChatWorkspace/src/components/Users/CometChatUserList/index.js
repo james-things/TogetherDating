@@ -9,6 +9,9 @@ import { UserListManager } from "./controller";
 
 import { CometChatUserListItem } from "../../Users";
 
+import { CometChatContextProvider, CometChatContext } from "../../../util/CometChatContext";
+import * as enums from "../../../util/enums.js";
+
 import { theme } from "../../../resources/theme";
 import Translator from "../../../resources/localization/translator";
 
@@ -18,6 +21,7 @@ import {
   contactHeaderCloseStyle, 
   contactHeaderTitleStyle,
   contactSearchStyle,
+  contactSearchButtonStyle,
   contactSearchInputStyle,
   contactMsgStyle,
   contactMsgTxtStyle,
@@ -25,273 +29,280 @@ import {
   contactAlphabetStyle
 } from "./style";
 
-import searchIcon from "./resources/search-grey-icon.png";
-import navigateIcon from "./resources/navigate.png";
+import searchIcon from "./resources/search.svg";
+import navigateIcon from "./resources/back.svg";
 
 class CometChatUserList extends React.PureComponent {
-  timeout;
-  friendsOnly = false;
 
-  constructor(props) {
+	item;
+	timeout;
+	static contextType = CometChatContext;
 
-    super(props);
+	constructor(props) {
 
-    this.state = {
-      userlist: props.userlist,
-      selectedUser: null,
-      lang: props.lang
-    }
-    
-    this.decoratorMessage = Translator.translate("LOADING", props.lang);
-    this.userListRef = React.createRef();
-  }
+		super(props);
 
-  componentDidMount() {
+		this.state = {
+			userlist: [],
+			enableSearchUser: false,
+			decoratorMessage: Translator.translate("LOADING", props.lang),
+		};
 
-    if(this.props.hasOwnProperty("friendsOnly")) {
-      this.friendsOnly = this.props.friendsOnly;
-    }
+		this.contextProviderRef = React.createRef();
+		this.userListRef = React.createRef();
 
-    if(this.props.hasOwnProperty("widgetsettings") 
-    && this.props.widgetsettings
-    && this.props.widgetsettings.hasOwnProperty("sidebar") 
-    && this.props.widgetsettings.sidebar.hasOwnProperty("user_listing")) {
+		CometChat.getLoggedinUser()
+			.then(user => (this.loggedInUser = user))
+			.catch(error => this.setState({ decoratorMessage: Translator.translate("SOMETHING_WRONG", this.props.lang) }));
+	}
 
-      switch(this.props.widgetsettings.sidebar["user_listing"]) {
-        case "friends":
-          this.friendsOnly = true;
-        break;
-        default:
-        break;
-      }
-    }
+	componentDidMount() {
 
-    this.UserListManager = new UserListManager(this.friendsOnly);
-    this.getUsers();
-    this.UserListManager.attachListeners(this.userUpdated);
-  }
+		this.item = (this.getContext().type === CometChat.ACTION_TYPE.TYPE_USER) ? this.getContext().item : null;
+		this.toggleUserSearch();
 
-  componentDidUpdate(prevProps) {
+		this.UserListManager = new UserListManager(this.getContext())
+		this.UserListManager.initializeUsersRequest()
+			.then(response => {
+				this.getUsers();
+				this.UserListManager.attachListeners(this.userUpdated);
+			})
+			.catch(error => this.setState({ decoratorMessage: Translator.translate("SOMETHING_WRONG", this.props.lang) }));
+	}
 
-    const previousItem = JSON.stringify(prevProps.item);
-    const currentItem = JSON.stringify(this.props.item);
+	componentDidUpdate(prevProps) {
 
-    if (previousItem !== currentItem) {
+		//if user is blocked/unblocked, update userlist
+		if (this.item 
+		&& Object.keys(this.item).length
+		&& this.getContext().type === CometChat.ACTION_TYPE.TYPE_USER && this.item.uid === this.getContext().item.uid
+		&& this.item.blockedByMe !== this.getContext().item.blockedByMe) {
 
-      if (Object.keys(this.props.item).length === 0) {
+			let userlist = [...this.state.userlist];
 
-        this.userListRef.scrollTop = 0;
-        this.setState({ selectedUser: {} });
+				//search for user
+				let userKey = userlist.findIndex(u => u.uid === this.getContext().item.uid);
+				if(userKey > -1) {
 
-      } else {
+				let userObject = { ...userlist[userKey] };
+				let newUserObject = Object.assign({}, userObject, { blockedByMe: this.getContext().item.blockedByMe });
+				
+				userlist.splice(userKey, 1, newUserObject);
+				this.setState({ userlist: userlist });
+			}
+		}
 
-        let userlist = [...this.state.userlist];
+		this.item = (this.getContext().type === CometChat.ACTION_TYPE.TYPE_USER) ? this.getContext().item : null;
+		this.toggleUserSearch();
+	}
 
-        //search for user
-        let userKey = userlist.findIndex(u => u.uid === this.props.item.uid);
-        if (userKey > -1) {
+	componentWillUnmount() {
 
-          let userObj = { ...userlist[userKey] };
-          this.setState({ selectedUser: userObj });
-        }
-      }
-    }
+		this.UserListManager.removeListeners();
+		this.UserListManager = null;
+	}
 
-    //if user is blocked/unblocked, update userlist in state
-    if(prevProps.item 
-    && Object.keys(prevProps.item).length 
-    && prevProps.item.uid === this.props.item.uid 
-    && prevProps.item.blockedByMe !== this.props.item.blockedByMe) {
+	toggleUserSearch = () => {
 
-      let userlist = [...this.state.userlist];
+		this.getContext().FeatureRestriction.isUserSearchEnabled().then(response => {
 
-      //search for user
-      let userKey = userlist.findIndex((u, k) => u.uid === this.props.item.uid);
-      if(userKey > -1) {
+			/**
+			* Don't update state if the response has the same value
+			*/
+			if (response !== this.state.enableSearchUser) {
+				this.setState({enableSearchUser: response});
+			}
 
-        let userObj = {...userlist[userKey]};
-        let newUserObj = Object.assign({}, userObj, {blockedByMe: this.props.item.blockedByMe});
-        userlist.splice(userKey, 1, newUserObj);
+		}).catch(error => {
 
-        this.setState({ userlist: userlist });
-      }
-    }
+			if (this.state.enableSearchUser !== false) {
+				this.setState({enableSearchUser: false});
+			}
 
-    if (prevProps.lang !== this.props.lang) {
-      this.setState({ lang: this.props.lang });
-    }
-  }
+		});
+	}
 
-  componentWillUnmount() {
+	userUpdated = (user) => {
+		
+		let userlist = [...this.state.userlist];
 
-    this.UserListManager.removeListeners();
-    this.UserListManager = null;
-  }
+		//search for user
+		let userKey = userlist.findIndex(u => u.uid === user.uid);
+		
+		//if found in the list, update user object
+		if(userKey > -1) {
 
-  userUpdated = (user) => {
-    
-    let userlist = [...this.state.userlist];
+			let userObj = {...userlist[userKey]};
+			let newUserObj = {...userObj, ...user};
+			userlist.splice(userKey, 1, newUserObj);
 
-    //search for user
-    let userKey = userlist.findIndex(u => u.uid === user.uid);
-    
-    //if found in the list, update user object
-    if(userKey > -1) {
+			this.setState({ userlist: userlist });
+		}
+	}
 
-      let userObj = {...userlist[userKey]};
-      let newUserObj = {...userObj, ...user};
-      userlist.splice(userKey, 1, newUserObj);
+	handleScroll = (e) => {
 
-      this.setState({ userlist: userlist });
+		const bottom =
+		Math.round(e.currentTarget.scrollHeight - e.currentTarget.scrollTop) === Math.round(e.currentTarget.clientHeight);
+		if (bottom) this.getUsers();
+	}
 
-    }
-  }
+	handleClick = (user) => {
 
-  handleScroll = (e) => {
+		if(!this.props.onItemClick)
+			return;
 
-    const bottom =
-      Math.round(e.currentTarget.scrollHeight - e.currentTarget.scrollTop) === Math.round(e.currentTarget.clientHeight);
-    if (bottom) this.getUsers();
-  }
+		this.props.onItemClick(user, CometChat.ACTION_TYPE.TYPE_USER);
+	}
 
-  handleClick = (user) => {
+  	handleMenuClose = () => {
 
-    if(!this.props.onItemClick)
-      return;
+		if(!this.props.actionGenerated) {
+			return false;
+		}
 
-    //this.setState({selectedUser: {...user}});
-    this.props.onItemClick(user, "user");
-  }
-
-  handleMenuClose = () => {
-
-    if(!this.props.actionGenerated) {
-      return false;
-    }
-
-    this.props.actionGenerated("closeMenuClicked")
-  }
+		this.props.actionGenerated(enums.ACTIONS["TOGGLE_SIDEBAR"]);
+  	}
   
-  searchUsers = (e) => {
+ 	searchUsers = (e) => {
 
-    if (this.timeout) {
-      clearTimeout(this.timeout);
-    }
+		if (this.timeout) {
+			clearTimeout(this.timeout);
+		}
 
-    let val = e.target.value;
-    this.timeout = setTimeout(() => {
+		let val = e.target.value;
+		this.UserListManager = new UserListManager(this.getContext(), val);
+		this.UserListManager.initializeUsersRequest()
+			.then(response => {
+				this.timeout = setTimeout(() => {
+					this.setState({ userlist: [], decoratorMessage: Translator.translate("LOADING", this.props.lang) }, () => this.getUsers());
+				}, 500);
+			})
+			.catch(error => this.setState({ decoratorMessage: Translator.translate("SOMETHING_WRONG", this.props.lang) }));
+  	}
 
-      this.UserListManager = new UserListManager(this.friendsOnly, val);
-      this.setState({ userlist: [] }, () => this.getUsers())
-    }, 500)
+	getUsers = () => {
 
-  }
+		this.UserListManager.fetchNextUsers()
+			.then(userList => {
 
-  getUsers = () => {
+				if (userList.length === 0) {
+					if (this.state.userlist.length === 0) {
+						this.setState({ decoratorMessage: Translator.translate("NO_USERS_FOUND", this.props.lang) });
+					}
+				} else {
+					this.setState({ userlist: [...this.state.userlist, ...userList], decoratorMessage: "" });
+				}
+				
+			})
+			.catch(error => this.setState({ decoratorMessage: Translator.translate("SOMETHING_WRONG", this.props.lang) }));
+	}
 
-    CometChat.getLoggedinUser().then((user) => {
+	getContext = () => {
 
-      this.UserListManager.fetchNextUsers().then((userList) => {
+		if (this.props._parent.length) {
+			return this.context;
+		} else {
+			return this.contextProviderRef.state;
+		}
+	}
 
-        if(userList.length === 0) {
-          this.decoratorMessage = Translator.translate("NO_USERS_FOUND", this.state.lang);
-        }
-        
-        this.setState({ userlist: [...this.state.userlist, ...userList] });
-          
-      }).catch((error) => {
+  	render() {
 
-        this.decoratorMessage = Translator.translate("ERROR", this.state.lang);
-        console.error("[CometChatUserList] getUsers fetchNext error", error);
-      });
+		let messageContainer = null;
+		if (this.state.decoratorMessage.length !== 0) {
+			messageContainer = (
+				<div css={contactMsgStyle()} className="contacts__decorator-message">
+					<p css={contactMsgTxtStyle(theme)} className="decorator-message">
+						{this.state.decoratorMessage}
+					</p>
+				</div>
+			);
+		}
 
-    }).catch((error) => {
+		const userList = [...this.state.userlist];
+		let currentLetter = "";
+		
+		const users = userList.map(user => {
+		
+			const chr = user.name[0].toUpperCase();
+			let firstChar = null;
+			if (chr !== currentLetter) {
+				currentLetter = chr;
+				firstChar = (<div css={contactAlphabetStyle(this.props)} className="contacts__list__alphabet-filter">{currentLetter}</div>);
+			} else {
+				firstChar = null;
+			}
+			
+			let selectedUser = (this.getContext().type === CometChat.ACTION_TYPE.TYPE_USER && this.getContext().item.uid === user.uid) ? user : null;
 
-      this.decoratorMessage = Translator.translate("ERROR", this.state.lang);
-      console.log("[CometChatUserList] getUsers getLoggedinUser error", error);
-    });
-  }
+			return (
+				<React.Fragment key={user.uid}>
+					{firstChar}
+					<CometChatUserListItem user={user} selectedUser={selectedUser} clickHandler={this.handleClick} />
+				</React.Fragment>
+			);
 
-  render() {
+		});
 
-    let messageContainer = null;
-    if(this.state.userlist.length === 0) {
-      messageContainer = (
-        <div css={contactMsgStyle()} className="contacts__decorator-message">
-          <p css={contactMsgTxtStyle(this.props)} className="decorator-message">{this.decoratorMessage}</p>
-        </div>
-      );
-    }
+		let closeBtn = <div css={contactHeaderCloseStyle(navigateIcon, theme)} className="header__close" onClick={this.handleMenuClose}></div>;
+		if (this.getContext() && Object.keys(this.getContext().item).length === 0) {
+			closeBtn = null;
+		}
 
-    const userList = [...this.state.userlist];
-    let currentLetter = "";
-    const users = userList.map((user, key) => {
-      
-      const chr = user.name[0].toUpperCase();
-      let firstChar = null;
-      if (chr !== currentLetter) {
-        currentLetter = chr;
-        firstChar = (<div css={contactAlphabetStyle()} className="contacts__list__alphabet-filter">{currentLetter}</div>);
-      } else {
-        firstChar = null;
-      }
+		let searchUser = null;
+		if (this.state.enableSearchUser) {
+			searchUser = (
+				<div css={contactSearchStyle()} className="contacts__search">
+					<button type="button" className="search__button" css={contactSearchButtonStyle(searchIcon, theme)} />
+					<input type="text" autoComplete="off" css={contactSearchInputStyle(this.props)} className="search__input" placeholder={Translator.translate("SEARCH", this.props.lang)} onChange={this.searchUsers} />
+				</div>
+			);
+		}
 
-      return (
-        <React.Fragment key={key}>
-          {firstChar}
-          <CometChatUserListItem 
-          theme={this.props.theme}
-          user={user} 
-          selectedUser={this.state.selectedUser}
-          lang={this.state.lang}
-          widgetsettings={this.props.widgetsettings} 
-          clickHandler={this.handleClick}  />
-        </React.Fragment>
-      );
+		const userListTemplate = (
+			<div css={contactWrapperStyle(this.props, theme)} className="contacts">
+				<div css={contactHeaderStyle(theme)} className="contacts__header">
+					{closeBtn}
+					<h4 css={contactHeaderTitleStyle(this.props)} className="header__title" dir={Translator.getDirection(this.props.lang)}>
+						{Translator.translate("USERS", this.props.lang)}
+					</h4>
+					<div></div>
+				</div>
+				{searchUser}
+				{messageContainer}
+				<div css={contactListStyle()} className="contacts__list" onScroll={this.handleScroll} ref={el => (this.userListRef = el)}>
+					{users}
+				</div>
+			</div>
+		);
 
-    });
+		let userListWrapper = (userListTemplate);
+		if (this.props._parent === "") {
+			userListWrapper = (
+				<CometChatContextProvider ref={el => (this.contextProviderRef = el)}>
+					{userListTemplate}
+				</CometChatContextProvider>
+			);
+		}
 
-    let closeBtn = (<div css={contactHeaderCloseStyle(navigateIcon, this.props)} className="header__close" onClick={this.handleMenuClose}></div>);
-    if (!this.props.hasOwnProperty("enableCloseMenu") || (this.props.hasOwnProperty("enableCloseMenu") && this.props.enableCloseMenu === 0)) {
-      closeBtn = null;
-    }
-
-    return (
-      <div css={contactWrapperStyle()} className="contacts">
-        <div css={contactHeaderStyle(this.props.theme)} className="contacts__header">
-          {closeBtn}
-          <h4 css={contactHeaderTitleStyle(this.props)} className="header__title" dir={Translator.getDirection(this.state.lang)}>{Translator.translate("USERS", this.state.lang)}</h4>
-          <div></div>
-        </div>
-        <div css={contactSearchStyle()} className="contacts__search">
-          <input
-          type="text" 
-          autoComplete="off" 
-          css={contactSearchInputStyle(this.props, searchIcon)}
-          className="search__input" 
-          placeholder={Translator.translate("SEARCH", this.state.lang)}
-          onChange={this.searchUsers} />
-        </div>
-        {messageContainer}
-        <div css={contactListStyle()} className="contacts__list" onScroll={this.handleScroll} ref={el => this.userListRef = el}>{users}</div>
-      </div>
-    );
-  }
+		return (userListWrapper);
+  	}
 }
 
 // Specifies the default values for props:
 CometChatUserList.defaultProps = {
-  lang: Translator.getDefaultLanguage(),
-  theme: theme,
-  userlist: [],
-  onItemClick: () => {}
+	lang: Translator.getDefaultLanguage(),
+	theme: theme,
+	onItemClick: () => {},
+	_parent: ""
 };
 
 CometChatUserList.propTypes = {
-  lang: PropTypes.string,
-  theme: PropTypes.object,
-  userlist: PropTypes.arrayOf(PropTypes.shape(CometChat.User)),
-  onItemClick: PropTypes.func
+	lang: PropTypes.string,
+	theme: PropTypes.object,
+	onItemClick: PropTypes.func,
+	_parent: PropTypes.string
 }
 
-export default CometChatUserList;
+export { CometChatUserList };

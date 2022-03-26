@@ -1,7 +1,7 @@
-export const listItem = (props) => {
+export const listItem = (props, context) => {
 
     const selectedState = (props.selectedUser && props.selectedUser.uid === props.user.uid) ? {
-        backgroundColor: `${props.theme.backgroundColor.primary}`
+        backgroundColor: `${context.theme.backgroundColor.primary}`
     } : {};
 
     return {
@@ -14,7 +14,7 @@ export const listItem = (props) => {
         padding: "8px 16px",
         ...selectedState,
         '&:hover': {
-            backgroundColor: `${props.theme.backgroundColor.primary}`
+            backgroundColor: `${context.theme.backgroundColor.primary}`
         }
     }
 }
@@ -42,7 +42,7 @@ export const itemDetailStyle = () => {
     }
 }
 
-export const itemNameStyle = () => { 
+export const itemNameStyle = (context) => { 
     
     return {
         fontSize: "15px",
@@ -51,14 +51,16 @@ export const itemNameStyle = () => {
         textOverflow: "ellipsis",
         whiteSpace: "nowrap",
         width: "100%",
-        margin: "5px 0 0 0" 
+        margin: "5px 0 0 0",
+        lineHeight: "22px",
+        color: `${context.theme.color.primary}`
     }
 };
 
-export const itemDescStyle = (theme) => { 
-    return {
-        marginTop: "10px",
-        borderBottom: `1px solid ${theme.borderColor.primary}` 
-    }
+export const itemDescStyle = context => {
+	return {
+		marginTop: "10px",
+		borderBottom: `1px solid ${context.theme.borderColor.primary}`,
+	};
 };
 

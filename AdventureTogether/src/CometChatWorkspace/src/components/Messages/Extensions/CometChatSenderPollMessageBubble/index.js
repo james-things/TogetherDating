@@ -7,6 +7,7 @@ import PropTypes from "prop-types";
 import { CometChatMessageActions, CometChatThreadedMessageReplyCount, CometChatReadReceipt } from "../../";
 import { CometChatMessageReactions } from "../";
 
+import { CometChatContext } from "../../../../util/CometChatContext";
 import { checkMessageForExtensionsData } from "../../../../util/common";
 
 import { theme } from "../../../../resources/theme";
@@ -26,159 +27,135 @@ import {
 } from "./style";
 
 class CometChatSenderPollMessageBubble extends React.Component {
-    pollId;
-    requestInProgress = null;
-    messageFrom = "sender";
+	pollId;
+	static contextType = CometChatContext;
 
-    constructor(props) {
-        
-        super(props);
-        const message = Object.assign({}, props.message, { messageFrom: this.messageFrom });
+	constructor(props) {
+		super(props);
 
-        this.state = {
-            message: message,
-            isHovering: false
-        }
-    }
+		this.state = {
+			isHovering: false,
+		};
+	}
 
-    componentDidUpdate(prevProps) {
+	shouldComponentUpdate(nextProps, nextState) {
 
-        const previousMessageStr = JSON.stringify(prevProps.message);
-        const currentMessageStr = JSON.stringify(this.props.message);
+		const currentMessageStr = JSON.stringify(this.props.message);
+		const nextMessageStr = JSON.stringify(nextProps.message);
 
-        if (previousMessageStr !== currentMessageStr) {
+		if (currentMessageStr !== nextMessageStr 
+        || this.state.isHovering !== nextState.isHovering) {
+			return true;
+		}
+		return false;
+	}
 
-            const message = Object.assign({}, this.props.message, { messageFrom: this.messageFrom });
-            this.setState({ message: message })
-        }
-    }
+	handleMouseHover = () => {
+		this.setState(this.toggleHoverState);
+	};
 
-    handleMouseHover = () => {
-        this.setState(this.toggleHoverState);
-    }
+	toggleHoverState = state => {
+		return {
+			isHovering: !state.isHovering,
+		};
+	};
 
-    toggleHoverState = (state) => {
+	render() {
+		const pollExtensionData = checkMessageForExtensionsData(this.props.message, "polls");
+		if (!pollExtensionData) {
+			return null;
+		}
 
-        return {
-            isHovering: !state.isHovering,
-        };
-    }
+		const pollOptions = [];
 
-    render() {
+		this.pollId = pollExtensionData.id;
+		const total = pollExtensionData.results.total;
+		let totalText = Translator.translate("NO_VOTE", this.context.language);
 
-        if (!this.props.message.hasOwnProperty("metadata")) {
-            return null;
-        }
-        
-        if (!this.props.message.metadata.hasOwnProperty("@injected")) {
-            return null;
-        }
+		if (total === 1) {
+			totalText = `${total} ${Translator.translate("VOTE", this.context.language)}`;
+		} else if (total > 1) {
+			totalText = `${total} ${Translator.translate("VOTES", this.context.language)}`;
+		}
 
-        if (!this.props.message.metadata["@injected"].hasOwnProperty("extensions")) {
-            return null;
-        }
+		for (const option in pollExtensionData.results.options) {
+			const optionData = pollExtensionData.results.options[option];
+			const vote = optionData["count"];
 
-        if (!this.props.message.metadata["@injected"]["extensions"].hasOwnProperty("polls")) {
-            return null;
-        }
+			let width = "0%";
+			if (total) {
+				const fraction = vote / total;
+				width = fraction.toLocaleString("en", { style: "percent" });
+			}
 
-        const pollOptions = [];
-        const pollExtensionData = this.props.message.metadata["@injected"]["extensions"]["polls"]; 
+			const template = (
+				<li key={option}>
+					<div css={pollPercentStyle(this.context, width)}> </div>
+					<div css={answerWrapperStyle(this.context, width)}>
+						<span>{width}</span>
+						<p>{optionData.text}</p>
+					</div>
+				</li>
+			);
+			pollOptions.push(template);
+		}
 
-        this.pollId = pollExtensionData.id;
-        const total = pollExtensionData.results.total;
-        let totalText = Translator.translate("NO_VOTE", this.props.lang);
+		let messageReactions = null;
+		const reactionsData = checkMessageForExtensionsData(this.props.message, "reactions");
+		if (reactionsData) {
+			if (Object.keys(reactionsData).length) {
+				messageReactions = (
+					<div css={messageReactionsWrapperStyle()} className="message__reaction__wrapper">
+						<CometChatMessageReactions message={this.props.message} actionGenerated={this.props.actionGenerated} />
+					</div>
+				);
+			}
+		}
 
-        if (total === 1) {
+		let toolTipView = null;
+		if (this.state.isHovering) {
+			toolTipView = <CometChatMessageActions message={this.props.message} actionGenerated={this.props.actionGenerated} />;
+		}
 
-            totalText = `${total} ${Translator.translate("VOTE", this.props.lang)}`;
+		return (
+			<div css={messageContainerStyle()} className="sender__message__container message__poll" onMouseEnter={this.handleMouseHover} onMouseLeave={this.handleMouseHover}>
+				{toolTipView}
 
-        } else if (total > 1) {
+				<div css={messageWrapperStyle()} className="message__wrapper">
+					<div css={messageTxtWrapperStyle(this.context)} className="message__poll__wrapper">
+						<p css={pollQuestionStyle()} className="poll__question">
+							{pollExtensionData.question}
+						</p>
+						<ul css={pollAnswerStyle(this.context)} className="poll__options">
+							{pollOptions}
+						</ul>
+						<p css={pollTotalStyle()} className="poll__votes">
+							{totalText}
+						</p>
+					</div>
+				</div>
 
-            totalText = `${total} ${Translator.translate("VOTES", this.props.lang)}`;
-        }
+				{messageReactions}
 
-        for (const option in pollExtensionData.results.options) {
-
-            const optionData = pollExtensionData.results.options[option];
-            const vote = optionData["count"];
-
-            let width = "0%";
-            if(total) {
-
-                const fraction = (vote / total);
-                width = fraction.toLocaleString("en", { style: 'percent' }); 
-            }
-
-            const template = (
-                <li key={option}>
-                    <div css={pollPercentStyle(this.props, width)}> </div>
-                    <div css={answerWrapperStyle(this.props, width)}>
-                        <span>{width}</span>
-                        <p>{optionData.text}</p>
-                    </div>
-                </li>
-            );
-            pollOptions.push(template);
-        }
-
-        let messageReactions = null;
-        const reactionsData = checkMessageForExtensionsData(this.state.message, "reactions");
-        if (reactionsData) {
-
-            if (Object.keys(reactionsData).length) {
-                messageReactions = (
-                    <div css={messageReactionsWrapperStyle()} className="message__reaction__wrapper">
-                        <CometChatMessageReactions {...this.props} message={this.state.message} reaction={reactionsData} />
-                    </div>
-                );
-            }
-        }
-
-        let toolTipView = null;
-        if (this.state.isHovering) {
-            toolTipView = (<CometChatMessageActions {...this.props} message={this.state.message} />);
-        }
-
-        return (
-            <div 
-            css={messageContainerStyle()} 
-            className="sender__message__container message__poll"
-            onMouseEnter={this.handleMouseHover}
-            onMouseLeave={this.handleMouseHover}>
-                
-                {toolTipView}
-                    
-                <div css={messageWrapperStyle()} className="message__wrapper">
-                    <div css={messageTxtWrapperStyle(this.props)} className="message__poll__wrapper">
-                        <p css={pollQuestionStyle()} className="poll__question">{pollExtensionData.question}</p>
-                        <ul css={pollAnswerStyle(this.props)} className="poll__options">
-                            {pollOptions}
-                        </ul>
-                        <p css={pollTotalStyle()} className="poll__votes">{totalText}</p>
-                    </div>
-                </div>
-
-                {messageReactions}
-
-                <div css={messageInfoWrapperStyle()} className="message__info__wrapper">
-                    <CometChatThreadedMessageReplyCount {...this.props} message={this.state.message} />
-                    <CometChatReadReceipt {...this.props} message={this.state.message} />
-                </div>
-            </div>
-        );
-    }
+				<div css={messageInfoWrapperStyle()} className="message__info__wrapper">
+					<CometChatThreadedMessageReplyCount message={this.props.message} actionGenerated={this.props.actionGenerated} />
+					<CometChatReadReceipt message={this.props.message} />
+				</div>
+			</div>
+		);
+	}
 }
 
 // Specifies the default values for props:
 CometChatSenderPollMessageBubble.defaultProps = {
-    lang: Translator.getDefaultLanguage(),
-    theme: theme
+	theme: theme,
+	actionGenerated: () => {},
 };
 
 CometChatSenderPollMessageBubble.propTypes = {
-    lang: PropTypes.string,
-    theme: PropTypes.object
-}
+	theme: PropTypes.object,
+	actionGenerated: PropTypes.func.isRequired,
+	message: PropTypes.object.isRequired,
+};
 
-export default CometChatSenderPollMessageBubble;
+export { CometChatSenderPollMessageBubble };

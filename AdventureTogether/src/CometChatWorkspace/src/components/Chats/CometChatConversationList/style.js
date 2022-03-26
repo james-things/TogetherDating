@@ -1,10 +1,15 @@
-export const chatsWrapperStyle = () => {
+export const chatsWrapperStyle = (props, theme) => {
+
+    const borderStyle = (props._parent === "") ? {
+        border: `1px solid ${theme.borderColor.primary}`
+    } : {};
 
     return {
         display: "flex",
         flexDirection: "column",
         height: "100%",
         boxSizing: "border-box",
+        ...borderStyle,
         "*": {
             boxSizing: "border-box",
             "::-webkit-scrollbar": {
@@ -24,32 +29,33 @@ export const chatsWrapperStyle = () => {
     }
 }
 
-export const chatsHeaderStyle = (props) => {
+export const chatsHeaderStyle = theme => {
 
-    return {
-        padding: "16px",
-        display: "flex",
-        alignItems: "center",
-        borderBottom: `1px solid ${props.theme.borderColor.primary}`,
-        height: "69px",
-    }
-}
+	return {
+		padding: "16px",
+		display: "flex",
+		alignItems: "center",
+		borderBottom: `1px solid ${theme.borderColor.primary}`,
+		height: "69px",
+	};
+};
 
-export const chatsHeaderCloseStyle = (img, props) => {
+export const chatsHeaderCloseStyle = (img, theme) => {
 
-    const mq = [...props.theme.breakPoints];
+	const mq = [...theme.breakPoints];
 
-    return {
-        cursor: "pointer",
-        display: "none",
-        background: `url(${img}) left center no-repeat`,
-        height: "24px",
-        width: "33%",
-        [`@media ${mq[0]}`]: {
-            display: "block!important"
-        }
-    }
-}
+	return {
+		cursor: "pointer",
+		display: "none",
+		mask: `url(${img}) no-repeat left center`,
+		backgroundColor: `${theme.primaryColor}`,
+		height: "24px",
+		width: "33%",
+		[`@media ${mq[0]}`]: {
+			display: "block!important",
+		},
+	};
+};
 
 export const chatsHeaderTitleStyle = (props) => {
 
@@ -63,7 +69,9 @@ export const chatsHeaderTitleStyle = (props) => {
         display: "inline-block",
         width: "100%",
         textAlign: "left",
-        fontSize: "20px",
+        fontSize: "22px",
+        fontWeight: "700",
+        lineHeight: "26px",
         ...alignment,
         "&[dir=rtl]": {
             textAlign: "right",
@@ -84,17 +92,19 @@ export const chatsMsgStyle = () =>{
     }
 }
 
-export const chatsMsgTxtStyle = (props) => {
-
-    return {
-        margin: "0",
-        height: "36px",
-        color: `${props.theme.color.secondary}`,
-        fontSize: "24px!important",
-        fontWeight: "600",
-        lineHeight: "30px",
-    }
-}
+export const chatsMsgTxtStyle = theme => {
+    
+	return {
+		margin: "0",
+		minHeight: "36px",
+		color: `${theme.color.secondary}`,
+		fontSize: "20px!important",
+		fontWeight: "600",
+		lineHeight: "30px",
+		wordWrap: "break-word",
+		padding: "0 16px",
+	};
+};
 
 export const chatsListStyle = () => {
 

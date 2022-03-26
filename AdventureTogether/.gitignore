@@ -1,4 +1,8 @@
-
+.idea/
+.jest-cache/
+coverage/
 node_modules/
+src/CometChatWorkspace/node_modules/
+src/CometChatWorkspace/yarn.lock
 yarn-error.log
 yarn.lock

@@ -1,5 +1,30 @@
 export const callScreenWrapperStyle = (props, keyframes) => {
 
+    let styles = {
+        width: "100%",
+        height: "100%",
+        position: "absolute",
+        top: "0",
+        right: "0",
+        bottom: "0",
+        left: "0",
+        zIndex: "999",
+    }
+
+    if (props.widgetsettings) {
+
+        styles = {
+            width: "100%",
+            height: "100%",
+            position: "fixed",
+            top: "0",
+            right: "0",
+            bottom: "0",
+            left: "0",
+            zIndex: "2147483000",
+        }
+    }
+
     const fadeAnimation = keyframes`
     from {
         opacity: 0;
@@ -9,15 +34,8 @@ export const callScreenWrapperStyle = (props, keyframes) => {
     }`;
 
     return {
-        width: "100%",
-        height: "100%",
-        position: "absolute",
-        top: "0",
-        right: "0",
-        bottom: "0",
-        left: "0",
+        ...styles,
         backgroundColor: `${props.theme.backgroundColor.darkGrey}`,
-        zIndex: "999",
         color: `${props.theme.color.white}`,
         textAlign: "center",
         boxSizing: "border-box",
@@ -88,7 +106,7 @@ export const thumbnailStyle = () => {
 }
 
 export const headerIconStyle = () => {
-    
+
     return {
         width: "100%",
         height: "15%",
@@ -105,20 +123,26 @@ export const iconWrapperStyle = () => {
     }
 }
 
-export const iconStyle = (img, callAction) => {
-
-    const bgColor = (callAction) ? "#008000" : "#ff3b30";
+export const iconStyle = (img) => {
 
     return {
         width: "50px",
         height: "50px",
         borderRadius: "27px",
-        backgroundColor: "rgba(255, 255, 255, 0.2)",
-        display: "block",
+        backgroundColor: "red",
+        display: "flex",
         margin: "auto 10px",
         cursor: "pointer",
-        background: `url(${img}) center center no-repeat ${bgColor}`,
-    }
+        justifyContent: "center",
+        alignItems: "center",
+        "i": {
+            mask: `url(${img}) center center no-repeat`,
+            backgroundColor: `white`,
+            display: "inline-block",
+            width: "24px",
+            height: "24px",
+        },
+    };
 }
 
 export const errorContainerStyle = () => {
