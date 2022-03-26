@@ -1,34 +1,41 @@
+// Description: a page for a user who signed up with the e-mail/password flow
+// register their dating profile
 import React, { useReducer, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import 'firebase/compat/auth';
 import 'firebase/compat/storage';
 import 'firebase/compat/firestore';
-import registerGoogleProfile from '../methods/registerGoogleProfile';
+import registerEmailProfile from '../methods/registerEmailProfile';
 import { withLayout } from '../wrappers/layout';
 
+// Document initial state
 const initialState = {
   name: '',
-  email: '',
   description: '',
-  password: '',
-  confirmPassword: '',
   image: '',
 };
 
+// Reducer to process inputs
 const reducer = (state, action) => {
   switch (action.type) {
+    case 'name':
+      return { ...state, name: action.payload };
     case 'description':
       return { ...state, description: action.payload };
+    case 'image':
+      return { ...state, image: action.payload };
     default:
       throw new Error();
   }
 };
 
-const GRegisterPage = () => {
+// Page main function
+const EmailRegisterPage = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const [error] = useState('');
+  const [error, setError] = useState('');
   const history = useHistory();
 
+  // Link reducer to input
   const handleOnChange = (evt) => {
     const { target } = evt;
     dispatch({
@@ -37,12 +44,26 @@ const GRegisterPage = () => {
     });
   };
 
+  // Link reducer to photo upload ui element
+  const handleFileChange = (evt) => {
+    const { target } = evt;
+    dispatch({
+      type: target.name,
+      payload: target.files[0],
+    });
+  };
+
+  // Async function to register an email/pw user's dating profile
   async function registerUser(evt) {
+    // prevent default inputs
     evt.preventDefault();
-    await registerGoogleProfile(state.description);
+    // await dating profile creation
+    await registerEmailProfile(state.image, state.name, state.description);
+    // once done, redirect user to discover page
     history.push('/discover');
   }
 
+  // Page content - Allow the user to select and initiate a registration process
   return (
     <div className="my-10 bg-white rounded-2xl border-2 border-gray-200 flex flex-col justify-center items-center mx-auto p-10 w-full md:w-7/12">
       <div className="flex flex-col justify-center items-center">
@@ -121,11 +142,25 @@ const GRegisterPage = () => {
         </div>
       </div>
       <div className="text-center w-full divide-y-2 divide-gray-100 divide-solid">
-        Tell us a bit more about yourself...
         <form className="my-5 w-full" onSubmit={registerUser}>
           {error && (
             <p className="text-red-500 font-bold text-base py-2 ">{error}</p>
           )}
+          <label htmlFor="name" className="sr-only font-bold text-base md:ml-1">
+            Name
+          </label>
+          <input
+            id="name"
+            name="name"
+            type="name"
+            autoComplete="name"
+            required
+            onChange={handleOnChange}
+            value={state.name}
+            className="my-5 appearance-none rounded-full relative block w-full py-3 px-4 font-bold border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 text-base"
+            placeholder="Name"
+            minLength={3}
+          />
           <label
             htmlFor="description"
             className="sr-only font-bold text-base md:ml-1"
@@ -143,6 +178,21 @@ const GRegisterPage = () => {
             className="my-5 appearance-none rounded-xl relative block w-full py-3 px-4 font-bold border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 text-base"
             placeholder="Describe yourself..."
             maxLength="255"
+          />
+          <label htmlFor="name" className="sr-only font-bold text-base md:ml-1">
+            Profile Image
+          </label>
+          <input
+            id="image"
+            name="image"
+            type="file"
+            accept=".png,.jpeg,.jpg,.webp"
+            required
+            onChange={handleFileChange}
+            value={state.image.fileNamer}
+            className="my-5 appearance-none rounded-full relative block w-full py-3 px-4 font-bold border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 text-base"
+            placeholder="Name"
+            minLength={3}
           />
           <button
             type="submit"
@@ -169,4 +219,4 @@ const GRegisterPage = () => {
   );
 };
 
-export default withLayout(GRegisterPage, { bgImage: true });
+export default withLayout(EmailRegisterPage, { bgImage: true });
