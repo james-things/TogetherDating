@@ -11,11 +11,6 @@ export const messageContainerStyle = () => {
         display: "flex",
         flexDirection: "column",
         flexShrink: "0",
-        ":hover": {
-            "ul.message__actions": {
-                display: "flex"
-            }
-        }
     }
 }
 
@@ -29,18 +24,18 @@ export const messageWrapperStyle = () => {
     }
 }
 
-export const messageTxtWrapperStyle = (props) => {
+export const messageTxtWrapperStyle = context => {
 
-    return {
-        display: "inline-block",
-        borderRadius: "12px",
-        backgroundColor: `${props.theme.backgroundColor.blue}`,
-        color: `${props.theme.color.white}`,
-        padding: "8px 16px",
-        alignSelf: "flex-end",
-        width: "auto",
-    }
-}
+	return {
+		display: "inline-block",
+		borderRadius: "12px",
+		backgroundColor: `${context.theme.primaryColor}`,
+		color: `${context.theme.color.white}`,
+		padding: "8px 16px",
+		alignSelf: "flex-end",
+		width: "auto",
+	};
+};
 
 export const pollQuestionStyle = () => {
 
@@ -54,23 +49,23 @@ export const pollQuestionStyle = () => {
     }
 }
 
-export const pollAnswerStyle = (props) => {
+export const pollAnswerStyle = context => {
 
-    return {
-        listStyleType: "none",
-        padding: "0",
-        margin: "0",
-        width: "100%",
-        "li": {
-            backgroundColor: `${props.theme.backgroundColor.white}`,
-            margin: "10px 0",
-            borderRadius: "8px",
-            display: "flex",
-            width: "100%",
-            position: "relative",
-        }
-    }
-}
+	return {
+		listStyleType: "none",
+		padding: "0",
+		margin: "0",
+		width: "100%",
+		li: {
+			backgroundColor: `${context.theme.backgroundColor.white}`,
+			margin: "10px 0",
+			borderRadius: "8px",
+			display: "flex",
+			width: "100%",
+			position: "relative",
+		},
+	};
+};
 
 export const pollTotalStyle = () => {
 
@@ -81,7 +76,7 @@ export const pollTotalStyle = () => {
     }
 }
 
-export const pollPercentStyle = (props, width) => {
+export const pollPercentStyle = (context, width) => {
 
     const curvedBorders = (width === "100%") ? { borderRadius: "8px" } : {
         borderRadius: "8px 0 0 8px"
@@ -91,7 +86,7 @@ export const pollPercentStyle = (props, width) => {
         maxWidth: "100%",
         width: width,
         ...curvedBorders,
-        backgroundColor: `${props.theme.backgroundColor.primary}`,
+        backgroundColor: `${context.theme.backgroundColor.primary}`,
         minHeight: "35px",
         height: "100%",
         position: "absolute",
@@ -99,27 +94,27 @@ export const pollPercentStyle = (props, width) => {
     }
 }
 
-export const answerWrapperStyle = (props, width) => {
+export const answerWrapperStyle = (context, width) => {
 
     return {
         width: "100%",
-        color: `${props.theme.color.primary}`,
+        color: `${context.theme.color.primary}`,
         display: "flex",
         alignItems: "center",
         minHeight: "35px",
+        padding: "0 16px",
         height: "100%",
         zIndex: "2",
         "p": {
             margin: "0",
-            padding: "6px 12px",
             width: "calc(100% - 40px)",
             whiteSpace: "pre-wrap",
             wordWrap: "break-word",
             fontSize: "14px",
         },
         "span": {
-            width: "40px",
-            padding: "6px 12px",
+            maxWidth: "40px",
+            padding: "0px 16px 0px 0px",
             fontWeight: "bold",
             display: "inline-block",
             fontSize: "13px",
@@ -131,16 +126,22 @@ export const messageInfoWrapperStyle = () => {
 
     return {
         alignSelf: "flex-end",
+        display: "flex",
+        justifyContent: "flex-end",
+        alignItems: "center",
+        padding: "4px 8px",
+        height: "25px",
     }
 }
 
 export const messageReactionsWrapperStyle = () => {
 
     return {
-        display: "inline-flex",
+        display: "flex",
         alignSelf: "flex-end",
         width: "100%",
         flexWrap: "wrap",
         justifyContent: "flex-end",
+        minHeight: "36px",
     }
 }

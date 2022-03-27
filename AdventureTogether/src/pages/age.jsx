@@ -4,6 +4,8 @@ import 'firebase/compat/auth';
 import 'firebase/compat/storage';
 import 'firebase/compat/firestore';
 import localStorePut from '../methods/localStorePut';
+import buildIsoDateString from '../methods/buildIsoDateString';
+import isOfAge from '../methods/isOfAge';
 import { withLayout } from '../wrappers/layout';
 
 // Interface state initialization
@@ -42,29 +44,6 @@ const AgePage = () => {
     });
   };
 
-  // Get an age value returned from an ISO formatted date string
-  function getAge(dateString) {
-    const today = new Date();
-    const birthDate = new Date(dateString);
-    let age = today.getFullYear() - birthDate.getFullYear();
-    const m = today.getMonth() - birthDate.getMonth();
-    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-      // eslint-disable-next-line no-plusplus
-      age--;
-    }
-    return age;
-  }
-
-  // Return true if age is 18 or higher
-  function isOfAge(dateString) {
-    return (getAge(dateString) >= 18);
-  }
-
-  // Convert a MM-DD-YYYY (US) string to YYYY-MM-DD (ISO)
-  function buildIsoDateString(a, b, c) {
-    return `${c}-${a}-${b}`;
-  }
-
   // Check if entered MM-DD-YYYY meets age requirements
   const checkDoB = (evt) => {
     evt.preventDefault();
@@ -73,7 +52,7 @@ const AgePage = () => {
     const t = (isOfAge(bday) === true) ? history.push('/signup') : history.push('/sorry');
   };
 
-  // Page content
+  // Page content - Accepts input for the users MM, DD, and YYYY of birth
   return (
     <div className="my-10 bg-white rounded-2xl border-2 border-gray-200 flex flex-col justify-center items-center mx-auto p-10 w-9/12 lg:w-1/2 md:w-6/12 sm:w-7/12">
       <div className="flex flex-col justify-center items-center">

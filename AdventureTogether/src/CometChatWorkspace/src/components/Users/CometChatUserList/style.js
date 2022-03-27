@@ -1,9 +1,16 @@
-export const contactWrapperStyle = () => {
+export const contactWrapperStyle = (props, theme) => {
+
+    const borderStyle = (props._parent === "") ? {
+        border: `1px solid ${theme.borderColor.primary}`
+    } : {};
+
+
     return {
         display: "flex",
         flexDirection: "column",
         height: "100%",
         boxSizing: "border-box",
+        ...borderStyle,
         "*": {
             boxSizing: "border-box",
             "::-webkit-scrollbar": {
@@ -23,33 +30,34 @@ export const contactWrapperStyle = () => {
     }
 }
 
-export const contactHeaderStyle = (theme) => {
+export const contactHeaderStyle = theme => {
 
-    return {
-        padding: "16px",
-        position: "relative",
-        display: "flex",
-        alignItems: "center",
-        borderBottom: `1px solid ${theme.borderColor.primary}`,
-        height: "70px",
-    }
-}
+	return {
+		padding: "16px",
+		position: "relative",
+		display: "flex",
+		alignItems: "center",
+		borderBottom: `1px solid ${theme.borderColor.primary}`,
+		height: "70px",
+	};
+};
 
-export const contactHeaderCloseStyle = (img, props) => {
+export const contactHeaderCloseStyle = (img, theme) => {
 
-    const mq = [...props.theme.breakPoints];
+	const mq = [...theme.breakPoints];
 
-    return {
-        cursor: "pointer",
-        display: "none",
-        background: `url(${img}) left center no-repeat`,
-        height: "24px",
-        width: "33%",
-        [`@media ${mq[0]}`]: {
-            display: "block!important"
-        }
-    }
-}
+	return {
+		cursor: "pointer",
+		display: "none",
+		mask: `url(${img}) left center no-repeat`,
+		backgroundColor: `${theme.secondaryTextColor}`,
+		height: "24px",
+		width: "33%",
+		[`@media ${mq[1]}, ${mq[2]}`]: {
+			display: "block!important",
+		},
+	};
+};
 
 export const contactHeaderTitleStyle = (props) => {
 
@@ -64,7 +72,8 @@ export const contactHeaderTitleStyle = (props) => {
         display: "inline-block",
         width: "100%",
         textAlign: "left",
-        fontSize: "20px",
+        fontSize: "22px",
+        lineHeight: "26px",
         ...alignment,
         "&[dir=rtl]": {
             textAlign: "right",
@@ -75,24 +84,43 @@ export const contactHeaderTitleStyle = (props) => {
 export const contactSearchStyle = () => {
     
     return {
-        padding: "16px",
-        position: "relative"
+        margin: "16px",
+        position: "relative",
+        borderRadius: "8px",
+		boxShadow: "rgba(20, 20, 20, 0.04) 0 0 0 1px inset",
+        backgroundColor: "rgba(20, 20, 20, 0.04)",
+        height: "35px",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center"
     }
 }
 
-export const contactSearchInputStyle = (props, img) => {
+export const contactSearchButtonStyle = (img, theme) => {
+
+	return {
+		width: "30px",
+		height: "100%",
+		padding: "8px 0 8px 8px",
+		cursor: "default",
+		mask: `url(${img}) 10px center no-repeat`,
+		backgroundColor: `${theme.secondaryTextColor}!important`,
+	};
+};
+
+export const contactSearchInputStyle = (props) => {
 
     return {
-        display: "block",
-        width: "100%",
-        border: "0",
-        boxShadow: "rgba(20, 20, 20, 0.04) 0 0 0 1px inset",
-        borderRadius: "8px",
-        padding: "8px 8px 8px 40px",
+        width: "calc(100% - 30px)",
+        padding: "8px",
         fontSize: "15px",
+        fontWeight: "400",
+        lineHeight: "20px",
         outline: "none",
-        color: `${props.theme.color.primary}`,
-        background: `url(${img}) 10px center no-repeat ${props.theme.backgroundColor.grey}`,
+        border: "none",
+        height: "100%",
+        color: props.theme.color.search,
+        backgroundColor: "transparent",
     }
 }
 
@@ -109,17 +137,19 @@ export const contactMsgStyle = () => {
     }
 }
 
-export const contactMsgTxtStyle = (props) => {
+export const contactMsgTxtStyle = theme => {
 
-    return {
-        margin: "0",
-        height: "36px",
-        color: `${props.theme.color.secondary}`,
-        fontSize: "24px!important",
-        fontWeight: "600",
-        lineHeight: "30px",
-    }
-}
+	return {
+		margin: "0",
+		minHeight: "36px",
+		color: `${theme.color.secondary}`,
+		fontSize: "20px!important",
+		fontWeight: "600",
+		lineHeight: "30px",
+		wordWrap: "break-word",
+		padding: "0 16px",
+	};
+};
 
 export const contactListStyle = () => {
     
@@ -131,12 +161,15 @@ export const contactListStyle = () => {
     }
 }
 
-export const contactAlphabetStyle = () => {
+export const contactAlphabetStyle = (props) => {
     
     return {
         padding: "0 16px",
         margin: "5px 0",
         width: "100%",
-        fontSize: "14px"
+        fontSize: "12px",
+        fontWeight: "500",
+        lineHeight: "20px",
+        color: `${props.theme.color.tertiary}`
     }
 }
