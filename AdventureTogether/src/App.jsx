@@ -14,7 +14,6 @@ import EmailRegisterPage from './pages/email-register';
 import SorryPage from './pages/sorry';
 import SignupPage from './pages/signup';
 import GoogleRegisterPage from './pages/google-register';
-import GoogleLoginHandlerPage from './pages/google-login-handler';
 import ProfilePage from './pages/profile';
 
 function App() {
@@ -66,9 +65,6 @@ function App() {
           </Route>
           <Route path="/google-register">
             <GoogleRegisterPage />
-          </Route>
-          <Route path="/google-login-handler">
-            <GoogleLoginHandlerPage />
           </Route>
           <Route path="/age">
             <AgePage />
