@@ -1,16 +1,20 @@
+// Description: A page which allows a user to log in to an existing account
 import React, { useReducer, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
-import FirebaseLogin from '../components/FirebaseLogin';
+import FirebaseUI from '../components/FirebaseUI';
 import { loginCometChatUser } from '../cometchat';
 import { withLayout } from '../wrappers/layout';
+import { uiConfigLogin } from '../firebaseui.config';
 
+// Page initial state
 const initialState = {
   email: '',
   password: '',
 };
 
+// Reducer to process inputs
 const reducer = (state, action) => {
   switch (action.type) {
     case 'email':
@@ -22,11 +26,13 @@ const reducer = (state, action) => {
   }
 };
 
+// Main func
 const LoginPage = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [error, setError] = useState('');
   const history = useHistory();
 
+  // Link reducer
   const handleOnChange = (evt) => {
     const { target } = evt;
     dispatch({
@@ -35,6 +41,8 @@ const LoginPage = () => {
     });
   };
 
+  // Log in function, called on submit (email/pw only)
+  // If the user opts to log in with SSO, this is bypassed
   const loginUser = async (evt) => {
     evt.preventDefault();
 
@@ -51,6 +59,9 @@ const LoginPage = () => {
     }
   };
 
+  // Page content - Allow user to select and initiate a login process
+  // You will notice <FirebaseLogin props={...} /> in the code. This singular line links
+  // in the Firebase UI SSO component.
   return (
     <div className="bg-white rounded-2xl border-2 border-gray-200 flex flex-col justify-center items-center mx-auto p-10 w-full md:w-7/12">
       <div className="flex flex-col justify-center items-center">
@@ -175,7 +186,8 @@ const LoginPage = () => {
           </button>
           <br />
           Sign in with Google:
-          <FirebaseLogin />
+          {/* The passed props set this as a LOGIN component */}
+          <FirebaseUI props={uiConfigLogin} />
         </form>
         <div className="py-4">
           <h3 className="text-2xl font-extrabold italic uppercase my-4">

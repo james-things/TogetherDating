@@ -1,0 +1,144 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>User Profile</title>
+  <meta name="description" content="One way to Enter Interests with Dropdowns">
+  <meta name="author" content="Frank Wear">
+
+
+
+  <link rel="stylesheet" href="css/myStyleSheet.css?v=1.0">
+
+</head>
+
+<body>
+  <p>
+    <p style="font-size: 300%;">What are your interests?<br /></p>
+    Choose up to 10 Interests:
+  </p>
+
+  <!--Drop Down List-->
+  <p>
+    <label for="Animal">Animals:</label>
+    <select name="Animal" id="Animal">
+      <option value="AnimalAll">Any</option>
+      <option value="Horse">Horse</option>
+      <option value="Dog">Dog</option>
+      <option value="Dog Sleding">Dog Sled</option>
+      <option value="Herding">Herding</option>
+      <option value="Farm Animal">Farm Animal</option>
+    </select>
+  </p>
+
+  <p>
+    <label for="Biking">Bikes:</label>
+    <select name="Biking" id="Biking">
+      <option value="BikeAll">Any</option>
+      <option value="BMX">BMX</option>
+      <option value="MountainBike">Mountain Biking</option>
+      <option value="StreetBike">Street Biking</option>
+      <option value="WinterBike">Winter Biking</option>
+    </select>
+  </p>
+  
+  <p>
+    <label for="LargeBoat">Large Boats:</label>
+    <select name="LargeBoat" id="LargeBoat">
+      <option value="LargeBoatAll">Any</option>
+      <option value="MotorBoat">Motor Boating</option>
+      <option value="SailBoat">Sailing</option>
+      <option value="Yacht">Yachting</option>
+    </select>
+  </p>
+
+  <p>
+    <label for="SmallBoat">Small Boats:</label>
+    <select name="SmallBoat" id="SmallBoat">
+      <option value="SmallBoatAll">Any</option>
+      <option value="KayakFish">Fishing Kayak</option>
+      <option value="KayakRec">Recreational Kayaking</option>
+      <option value="KayakTour">Sea / Tour Kayaking</option>
+      <option value="KayakWhiteWater">White Water Kayaking</option>
+      <option value="Raft">Rafting</option>
+      <option value="Canoe">Canoeing</option>
+    </select>
+  </p>
+
+  <p>
+    <label for="Camping">Camping:</label>
+    <select name="Camping" id="Camping">
+      <option value="CampingAll">Any</option>
+      <option value="SiteCamping">Camping in park</option>
+      <option value="RV">RVing</option>
+      <option value="BackyardCamping">Camping in the Backyard</option>
+      <option value="Bonfire">Bonfire</option>
+    </select>
+  </p>
+
+<!--Full List-->
+<br><br>  
+<p>Animals:</p>
+  <p>
+    <ul style="list-style-type:none;">   
+      <li>
+        <input type="checkbox" name="AnimalAll" value="AnimalAll">
+        <label for="AnimalAll">Any Animal</label>
+      </li>
+      <li>
+        <input type="checkbox" name="Horse" value="Horse">
+        <label for="Horse">Horse</label>
+      </li>
+      <li>
+        <input type="checkbox" name="Dog" value="Dog">
+        <label for="Dog">Dog</label>
+      </li>
+      <li>
+        <input type="checkbox" name="DogSleding" value="DogSleding">
+        <label for="DogSleding">Dog Sled</label>
+      </li>
+      <li>
+        <input type="checkbox" name="Herding" value="Herding">
+        <label for="Herding">Herding</label>
+      </li>
+      <li>
+        <input type="checkbox" name="FarmAnimal" value="FarmAnimal">
+        <label for="FarmAnimal">Farm Animal</label>
+      </li>
+    </ul>
+  </p>
+
+  <br><br>  
+<p>Bikes:</p>
+  <p>
+    <ul style="list-style-type:none;">   
+      <li>
+        <input type="checkbox" name="BikingAll" value="BikingAll">
+        <label for="BikingAll">Any Bike</label>
+      </li>
+      <li>
+        <input type="checkbox" name="BMX" value="BMX">
+        <label for="BMX">BMX</label>
+      </li>
+      <li>
+        <input type="checkbox" name="MountainBike" value="MountainBike">
+        <label for="MountainBike">Mountain Bike</label>
+      </li>
+      <li>
+        <input type="checkbox" name="StreetBike" value="StreetBike">
+        <label for="StreetBike">Street Bike</label>
+      </li>
+      <li>
+        <input type="checkbox" name="WinterBike" value="WinterBike">
+        <label for="WinterBike">Fat Tire Snow Bike</label>
+      </li>
+    </ul>
+  </p>
+
+
+  <script src="js/scripts.js"></script>
+</body>
+</html>

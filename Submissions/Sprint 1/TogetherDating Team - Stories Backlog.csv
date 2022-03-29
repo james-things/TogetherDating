@@ -1,0 +1,49 @@
+﻿ID,Work Item Type,Title 1,Title 2,State,Story Points,Value Area,Iteration Path,Tags
+161,User Story,Create New User Profile/Account Spr2,,New,3,Business,"TogetherDating\Sprint 2 - Selection, AI, ML, UI",Phase 1; Split; User Interaction
+163,User Story,User Interface Implementation spr2,,New,5,Business,"TogetherDating\Sprint 2 - Selection, AI, ML, UI",Split
+139,Task,,UI Profile Input Form with Data,New,,,"TogetherDating\Sprint 2 - Selection, AI, ML, UI",
+162,User Story,SSO Authentication Spr2,,New,3,Business,"TogetherDating\Sprint 2 - Selection, AI, ML, UI",General; Phase 1; Split
+178,Task,,Create Facebook App,New,,,"TogetherDating\Sprint 2 - Selection, AI, ML, UI",
+164,User Story,Accept Match Spr2,,New,2,Business,"TogetherDating\Sprint 2 - Selection, AI, ML, UI",Needs Additional Specification; Phase 1; Split; User Interaction
+165,User Story,Decline Match Spr2,,New,2,Business,"TogetherDating\Sprint 2 - Selection, AI, ML, UI",Phase 1; Split; User Interaction
+111,User Story,Match to Shared Skill Level [M],,New,3,Business,TogetherDating,Matching
+83,User Story,Profile Engagement Sensitivity,,New,3,Business,"TogetherDating\Sprint 2 - Selection, AI, ML, UI",Matching; Needs Team Input
+179,Task,,explore how the firebase cometchat showcases last activity,New,,,"TogetherDating\Sprint 2 - Selection, AI, ML, UI",
+3,User Story,Limit Gender Interests,,New,1,Business,TogetherDating,General; Needs Team Input
+10,User Story,Update Existing User Profile,,New,1,Business,TogetherDating,Phase 1; User Interaction
+108,User Story,Connect Profile to Instagram [M],,New,3,Business,TogetherDating,External; Needs Team Input
+107,User Story,Search For Users With Criteria,,New,2,Business,"TogetherDating\Sprint 2 - Selection, AI, ML, UI",Needs Acceptance Criteria; Needs Team Input; Phase 1; User Interaction
+180,Task,,create a UI filter referral,New,,,"TogetherDating\Sprint 2 - Selection, AI, ML, UI",
+117,User Story,Matching Level Displayed,,New,2,Business,TogetherDating,Needs Team Input
+119,User Story,Save User Data,,New,2,Business,TogetherDating,Needs Team Input
+46,User Story,Accept Outing from Match [M],,New,2,Business,TogetherDating,Phase 1; User Interaction
+125,User Story,Decline Outing from Match [M],,New,2,Business,TogetherDating,Phase 1; User Interaction
+7,User Story,In-App Messaging [M],,New,3,Business,TogetherDating,Needs Additional Specification; Phase 1; Question; User Interaction
+28,User Story,Block Other User,,New,2,Business,"TogetherDating\Sprint 3 - UI, Engagement",Phase 3; User Interaction
+102,User Story,Login/Welcome Notifications,,New,1,Business,TogetherDating,General; Question
+116,User Story,Let User Manage forms and content of interactions,,New,5,Business,TogetherDating,Needs Clarification; Needs Team Input
+112,User Story,Propose Date to Match [M],,New,2,Business,TogetherDating,Needs Clarification; Question; User Interaction
+74,User Story,Find Non-Intimate Adventures (Option),,New,1,Business,TogetherDating,Matching; Needs Acceptance Criteria; Needs Team Input
+115,User Story,Define a policy for Identity Management,,New,2,Business,TogetherDating,Needs Clarification; Needs Team Input
+24,User Story,"""New Matches Waiting"" Email Notifications",,New,2,Business,TogetherDating,External
+29,User Story,"""New Swipes Waiting"" Email Notifications",,New,2,Business,TogetherDating,External
+118,User Story,Report Other User (for Harassment),,New,2,Business,"TogetherDating\Sprint 3 - UI, Engagement",Needs Team Input; Phase 3; User Interaction
+104,User Story,Suspend/Pause User Account/Profile,,New,2,Business,TogetherDating,Phase 1; User Interaction
+45,User Story,Sync Contacts to Device [?],,New,2,Business,TogetherDating,External; Needs Clarification
+103,User Story,Delete User Account/Profile [M],,New,1,Business,TogetherDating,Phase 1; User Interaction
+137,User Story,Detect and Filter Nudity,,New,,Business,TogetherDating,
+138,User Story,Common Interest Groups,,New,,Business,TogetherDating,
+158,User Story,Matching Algorithm Spr2 : Machine Learning/Advanced Matching,,Active,5,Business,"TogetherDating\Sprint 2 - Selection, AI, ML, UI",Split
+159,Task,,investigate potential available ML builds,New,,,"TogetherDating\Sprint 2 - Selection, AI, ML, UI",
+160,Task,,incorporate weightage of implicit interests,New,,,"TogetherDating\Sprint 2 - Selection, AI, ML, UI",
+166,User Story,Sprint 2 Planning and Management,,Active,,Business,"TogetherDating\Sprint 2 - Selection, AI, ML, UI",
+167,Task,,Create Burndown Chart for Sprint 2 on Dashboard,New,,,"TogetherDating\Sprint 2 - Selection, AI, ML, UI",
+168,Task,,Decompose Stories into Tasks,New,,,"TogetherDating\Sprint 2 - Selection, AI, ML, UI",
+169,Task,,Define Acceptance Criteria for User Stories,New,,,"TogetherDating\Sprint 2 - Selection, AI, ML, UI",
+170,Task,,Define Tests for Work Items as appropriate,New,,,"TogetherDating\Sprint 2 - Selection, AI, ML, UI",
+171,Task,,Groom User Stories and Ordering - Sprint 2,New,,,"TogetherDating\Sprint 2 - Selection, AI, ML, UI",
+172,Task,,Plan Sprint 2 Goal and Scope,Active,,,"TogetherDating\Sprint 2 - Selection, AI, ML, UI",
+173,Task,,Sprint 1 Review and Retrospective,Active,,,"TogetherDating\Sprint 2 - Selection, AI, ML, UI",
+174,Task,,Sprint 2 Review and Retrospective,New,,,"TogetherDating\Sprint 2 - Selection, AI, ML, UI",
+175,Task,,Put together all components of submission for Sprint 1 per rubric,Active,,,"TogetherDating\Sprint 2 - Selection, AI, ML, UI",
+177,User Story,Mob Coding,,New,1,Business,TogetherDating,Rubric

@@ -4,14 +4,18 @@ import 'firebase/compat/auth';
 import 'firebase/compat/storage';
 import 'firebase/compat/firestore';
 import localStorePut from '../methods/localStorePut';
+import buildIsoDateString from '../methods/buildIsoDateString';
+import isOfAge from '../methods/isOfAge';
 import { withLayout } from '../wrappers/layout';
 
+// Interface state initialization
 const initialState = {
   month: '',
   day: '',
   year: '',
 };
 
+// Management of document state
 const reducer = (state, action) => {
   switch (action.type) {
     case 'day':
@@ -25,10 +29,13 @@ const reducer = (state, action) => {
   }
 };
 
+// Page main function
 const AgePage = () => {
+  // Initialize history routing and reducer
   const history = useHistory();
   const [state, dispatch] = useReducer(reducer, initialState);
 
+  // Call in reducer to handle inputs
   const handleOnChange = (evt) => {
     const { target } = evt;
     dispatch({
@@ -37,33 +44,15 @@ const AgePage = () => {
     });
   };
 
-  function getAge(dateString) {
-    const today = new Date();
-    const birthDate = new Date(dateString);
-    let age = today.getFullYear() - birthDate.getFullYear();
-    const m = today.getMonth() - birthDate.getMonth();
-    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-      // eslint-disable-next-line no-plusplus
-      age--;
-    }
-    return age;
-  }
-
-  function isOfAge(dateString) {
-    return (getAge(dateString) >= 18);
-  }
-
-  function buildIsoDateString(a, b, c) {
-    return `${c}-${b}-${a}`;
-  }
-
+  // Check if entered MM-DD-YYYY meets age requirements
   const checkDoB = (evt) => {
     evt.preventDefault();
-    const bday = buildIsoDateString(state.day, state.month, state.year);
+    const bday = buildIsoDateString(state.month, state.day, state.year);
     localStorePut('localBirthdate', bday);
     const t = (isOfAge(bday) === true) ? history.push('/signup') : history.push('/sorry');
   };
 
+  // Page content - Accepts input for the users MM, DD, and YYYY of birth
   return (
     <div className="my-10 bg-white rounded-2xl border-2 border-gray-200 flex flex-col justify-center items-center mx-auto p-10 w-9/12 lg:w-1/2 md:w-6/12 sm:w-7/12">
       <div className="flex flex-col justify-center items-center">

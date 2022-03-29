@@ -1,10 +1,11 @@
 import { CometChat } from '@cometchat-pro/chat';
+import { cometConfig } from './environment';
 
 const loginCometChatUser = async (uid) => {
   try {
     const user = await CometChat.login(
       uid,
-      process.env.REACT_APP_COMETCHAT_AUTH_KEY,
+      cometConfig.authKey,
     );
     console.log('Login Successful:', { user });
   } catch (error) {
@@ -29,7 +30,7 @@ const registerCometChatUser = async (name, uid) => {
   try {
     const createdUser = await CometChat.createUser(
       user,
-      process.env.REACT_APP_COMETCHAT_AUTH_KEY,
+      cometConfig.authKey,
     );
     console.log('user created', createdUser);
   } catch (error) {

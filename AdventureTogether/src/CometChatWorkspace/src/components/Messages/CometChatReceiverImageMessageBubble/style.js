@@ -11,11 +11,6 @@ export const messageContainerStyle = () => {
         display: "flex",
         flexDirection: "column",
         flexShrink: "0",
-        ":hover": {
-            "ul.message__actions": {
-                display: "flex"
-            }
-        }
     }
 }
 
@@ -61,13 +56,13 @@ export const nameWrapperStyle = (avatar) => {
     }
 }
 
-export const nameStyle = (props) => {
+export const nameStyle = context => {
 
-    return {
-        fontSize: "10px",
-        color: `${props.theme.color.helpText}`,
-    }
-}
+	return {
+		fontSize: "11px",
+		color: `${context.theme.color.search}`,
+	};
+};
 
 export const messageImgContainerStyle = () => {
 
@@ -79,44 +74,49 @@ export const messageImgContainerStyle = () => {
     }
 }
 
-export const messageImgWrapperStyle = (props) => {
+export const messageImgWrapperStyle = context => {
 
-    const mq = [...props.theme.breakPoints];
+	const mq = [...context.theme.breakPoints];
 
-    return {
-        display: "inline-block",
-        alignSelf: "flex-start",
-        maxWidth: "300px",
-        height: "200px",
-        cursor: "pointer",
-        'img': {
-            borderRadius: "8px",
-            height: "100%",
-        },
-        [`@media ${mq[0]}`]: {
-            minWidth: "50px",
-            maxWidth: "150px",
-            height: "100px",
-            padding: "2px 2px",
-        }
-    }
-}
+	return {
+		display: "inline-block",
+		alignSelf: "flex-start",
+		maxWidth: "300px",
+		height: "200px",
+		cursor: "pointer",
+		img: {
+			borderRadius: "8px",
+			height: "100%",
+		},
+		[`@media ${mq[1]}, ${mq[2]}`]: {
+			minWidth: "50px",
+			maxWidth: "150px",
+			height: "100px",
+			padding: "2px 2px",
+		},
+	};
+};
 
 export const messageInfoWrapperStyle = () => {
 
     return {
         alignSelf: "flex-start",
-        padding: "3px 5px",
+        padding: "4px 8px",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "flex-start",
+        height: "25px"
     }
 }
 
 export const messageReactionsWrapperStyle = () => {
 
     return {
-        display: "inline-flex",
+        display: "flex",
         alignSelf: "flex-start",
         width: "100%",
         flexWrap: "wrap",
         justifyContent: "flex-start",
+        minHeight: "36px",
     }
 }

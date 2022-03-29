@@ -11,11 +11,6 @@ export const messageContainerStyle = () => {
         display: "flex",
         flexDirection: "column",
         flexShrink: "0",
-        ":hover": {
-            "ul.message__actions": {
-                display: "flex"
-            }
-        }
     }
 }
 
@@ -61,13 +56,13 @@ export const nameWrapperStyle = (avatar) => {
     }
 }
 
-export const nameStyle = (props) => {
+export const nameStyle = context => {
 
-    return {
-        fontSize: "10px",
-        color: `${props.theme.color.helpText}`,
-    }
-}
+	return {
+		fontSize: "11px",
+		color: `${context.theme.color.search}`,
+	};
+};
 
 export const messageImgContainerStyle = () => {
 
@@ -79,39 +74,44 @@ export const messageImgContainerStyle = () => {
     }
 }
 
-export const messageImgWrapperStyle = (props) => {
+export const messageImgWrapperStyle = context => {
 
-    const mq = [`@media (min-width : 320px) and (max-width: 767px)`];
+	const mq = [...context.theme.breakPoints];
 
-    return {
-        display: "inline-block",
-        alignSelf: "flex-start",
-        maxWidth: "128px",
-        height: "128px",
-        cursor: "pointer",
-        [mq[0]]: {
-            maxWidth: "128px",
-            height: "128px",
-            padding: "2px 2px",
-        }
-    }
-}
+	return {
+		display: "inline-block",
+		alignSelf: "flex-start",
+		maxWidth: "128px",
+		height: "128px",
+		cursor: "pointer",
+		[`@media ${mq[1]}, ${mq[2]}`]: {
+			maxWidth: "128px",
+			height: "128px",
+			padding: "2px 2px",
+		},
+	};
+};
 
 export const messageInfoWrapperStyle = () => {
 
     return {
         alignSelf: "flex-start",
-        padding: "3px 5px",
+        padding: "4px 8px",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "flex-start",
+        height: "25px"
     }
 }
 
 export const messageReactionsWrapperStyle = () => {
 
     return {
-        display: "inline-flex",
+        display: "flex",
         alignSelf: "flex-start",
         width: "100%",
         flexWrap: "wrap",
         justifyContent: "flex-start",
+        minHeight: "36px",
     }
 }

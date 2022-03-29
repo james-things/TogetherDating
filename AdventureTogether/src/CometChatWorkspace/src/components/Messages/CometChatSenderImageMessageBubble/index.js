@@ -7,235 +7,264 @@ import PropTypes from "prop-types";
 import { CometChatMessageActions, CometChatThreadedMessageReplyCount, CometChatReadReceipt } from "../";
 import { CometChatMessageReactions } from "../Extensions";
 
-import { checkMessageForExtensionsData } from "../../../util/common";
+import { CometChatContext } from "../../../util/CometChatContext";
+import * as enums from "../../../util/enums.js";
+import { checkMessageForExtensionsData, getMessageFileMetadata } from "../../../util/common";
 
 import { theme } from "../../../resources/theme";
+import Translator from "../../../resources/localization/translator";
 
 import {
-  messageContainerStyle,
-  messageWrapperStyle,
-  messageImgWrapper,
-  messageInfoWrapperStyle,
-  messageReactionsWrapperStyle
+	messageContainerStyle,
+	messageWrapperStyle,
+	messageImgWrapper,
+	messageInfoWrapperStyle,
+	messageReactionsWrapperStyle
 } from "./style";
 
 import srcIcon from "./resources/1px.png";
 
-class CometChatSenderImageMessageBubble extends React.PureComponent {
+class CometChatSenderImageMessageBubble extends React.Component {
+	static contextType = CometChatContext;
+	timer = null;
 
-  timer = null;
-  messageFrom = "sender";
+	constructor(props, context) {
 
-  constructor(props) {
+		super(props, context);
+		this._isMounted = false;
+		this.imgRef = React.createRef();
 
-    super(props);
+		this.state = {
+			imageUrl: srcIcon,
+			imageName: Translator.translate("LOADING", context.language),
+			isHovering: false,
+		};
+	}
 
-    this.imgRef = React.createRef();
-    const message = Object.assign({}, props.message, { messageFrom: this.messageFrom });
+	shouldComponentUpdate(nextProps, nextState) {
 
-    this.state = {
-      message: message,
-      imageUrl: srcIcon,
-      fullScreenView: false,
-      isHovering: false
-    }
-  }
+		const currentMessageStr = JSON.stringify(this.props.message);
+		const nextMessageStr = JSON.stringify(nextProps.message);
 
-  componentDidMount() {
-    this.setImage();
-  }
+		if (currentMessageStr !== nextMessageStr 
+		|| this.state.imageUrl !== nextState.imageUrl 
+		|| this.state.isHovering !== nextState.isHovering) {
 
-  componentDidUpdate(prevProps) { 
+			return true;
+		}
 
-    const previousMessageStr = JSON.stringify(prevProps.message);
-    const currentMessageStr = JSON.stringify(this.props.message);
+		return false;
+	}
 
-    if (previousMessageStr !== currentMessageStr) {
+	componentDidMount() {
 
-      const message = Object.assign({}, this.props.message, { messageFrom: this.messageFrom });
-      this.setState({ message: message });
-      this.setImage();
-    }
-  }
+		this._isMounted = true;
+		this.setImage();
+	}
 
-  chooseImage = (thumbnailGenerationObject) => {
+	componentDidUpdate(prevProps) {
 
-    const smallUrl = thumbnailGenerationObject["url_small"];
-    const mediumUrl = thumbnailGenerationObject["url_medium"];
+		const previousMessageStr = JSON.stringify(prevProps.message);
+		const currentMessageStr = JSON.stringify(this.props.message);
 
-    const mq = window.matchMedia(this.props.theme.breakPoints[0]);
+		if (previousMessageStr !== currentMessageStr) {
+			this.setImage();
+		}
+	}
 
-    let imageToDownload = mediumUrl;
-    if (mq.matches) {
-      imageToDownload = smallUrl;
-    }
+	componentWillUnmount() {
+		this._isMounted = false;
+	}
 
-    return imageToDownload;
-  }
+	chooseImage = thumbnailGenerationObject => {
+		const smallUrl = thumbnailGenerationObject["url_small"];
+		const mediumUrl = thumbnailGenerationObject["url_medium"];
 
-  setImage = () => {
+		const mq = window.matchMedia(this.props.theme.breakPoints[0]);
 
-    const thumbnailGenerationData = checkMessageForExtensionsData(this.state.message, "thumbnail-generation");
-    
-    if (thumbnailGenerationData) {
+		let imageToDownload = mediumUrl;
+		if (mq.matches) {
+			imageToDownload = smallUrl;
+		}
 
-      const mq = window.matchMedia(this.props.theme.breakPoints[0]);
-      mq.addListener(() => {
+		return imageToDownload;
+	};
 
-        const imageToDownload = this.chooseImage(thumbnailGenerationData);
-        let img = new Image();
-        img.src = imageToDownload;
-        img.onload = () => this.setState({ imageUrl: img.src });
+	setImage = () => {
 
-      });
+		const thumbnailGenerationData = checkMessageForExtensionsData(this.props.message, "thumbnail-generation");
+		if (thumbnailGenerationData) {
 
-      const imageToDownload = this.chooseImage(thumbnailGenerationData);
-      this.downloadImage(imageToDownload).then(response => {
+			let imageName = "";
+			if (this.props.message.data.attachments 
+			&& typeof this.props.message.data.attachments === "object" 
+			&& this.props.message.data.attachments.length) {
+				imageName = this.props.message.data.attachments[0]?.name;
+			}
 
-        let img = new Image();
-        img.src = imageToDownload;
-        img.onload = () => {
+			const mq = window.matchMedia(this.props.theme.breakPoints[0]);
+			mq.addListener(() => {
 
-          this.setState({ imageUrl: img.src });
-        }
+				const imageToDownload = this.chooseImage(thumbnailGenerationData);
+				let img = new Image();
+				img.src = imageToDownload;
+				img.onload = () => {
+					if (this._isMounted && this.state.imageUrl !== img.src) {
+						this.setState({ imageUrl: img.src, imageName: imageName });
+					}
+				};
+			});
 
-      }).catch(error => console.error(error));
+			const imageToDownload = this.chooseImage(thumbnailGenerationData);
+			this.downloadImage(imageToDownload)
+				.then(response => {
+					let img = new Image();
+					img.src = imageToDownload;
+					img.onload = () => {
+						if (this._isMounted && this.state.imageUrl !== img.src) {
+							this.setState({ imageUrl: img.src, imageName: imageName });
+						}
+					};
+				})
+				.catch(error => console.error(error));
+		} else {
+			this.setMessageImageUrl();
+		}
+	};
 
+	setMessageImageUrl = () => {
 
-    } else {
-      this.setMessageImageUrl();
-    }
-  }
+		const metadataKey = enums.CONSTANTS["FILE_METADATA"];
+		const fileMetadata = getMessageFileMetadata(this.props.message, metadataKey);
+		
+		let img = new Image();
+		let imageName;
+		if (fileMetadata instanceof Blob) {
 
-  setMessageImageUrl = () => {
+			const reader = new FileReader();
+			reader.onload = function() {
+				img.src = reader.result;
+			};
+			imageName = fileMetadata["name"];
+			reader.readAsDataURL(fileMetadata);
 
-    let img = new Image();
-    if (this.state.message.data.hasOwnProperty("url")) {
-      
-      img.src = this.state.message.data.url;
+		} else if (this.props.message.data.attachments 
+			&& typeof this.props.message.data.attachments === "object" 
+			&& this.props.message.data.attachments.length) {
 
-    } else if(this.state.message.data.hasOwnProperty("file")) {
+			const fileUrl = this.props.message.data.attachments[0]?.url;
+			imageName = this.props.message.data.attachments[0]?.name;
+			img.src = fileUrl;
+		}
 
-      const reader = new FileReader();
-      reader.onload = function () {
-        img.src = reader.result;
-      }
+		img.onload = () => {
+			//only if there is a change in the image path, update state
+			if (this._isMounted && this.state.imageUrl !== img.src) {
+				this.setState({ imageUrl: img.src, imageName: imageName });
+			}
+		};
+	};
 
-      reader.readAsDataURL(this.state.message.data.file);
-    }
-     
-    img.onload = () => this.setState({ imageUrl: img.src });
-  }
+	downloadImage(imgUrl) {
+		const promise = new Promise((resolve, reject) => {
+			const xhr = new XMLHttpRequest();
+			xhr.open("GET", imgUrl, true);
+			xhr.responseType = "blob";
 
-  downloadImage(imgUrl) {
+			xhr.onload = () => {
+				if (xhr.readyState === 4) {
+					if (xhr.status === 200) {
+						this.timer = null;
+						resolve(imgUrl);
+					} else if (xhr.status === 403) {
+						this.timer = setTimeout(() => {
+							this.downloadImage(imgUrl)
+								.then(response => resolve(imgUrl))
+								.catch(error => reject(error));
+						}, 800);
+					}
+				} else {
+					reject(xhr.statusText);
+				}
+			};
 
-    const promise = new Promise((resolve, reject) => {
+			xhr.onerror = event => reject(new Error("There was a network error.", event));
+			xhr.ontimeout = event => reject(new Error("There was a timeout error.", event));
+			xhr.send();
+		});
 
-      const xhr = new XMLHttpRequest();
-      xhr.open("GET", imgUrl, true);
-      xhr.responseType = "blob";
+		return promise;
+	}
 
-      xhr.onload = () => {
+	open = () => {
+		this.props.actionGenerated(enums.ACTIONS["VIEW_ORIGINAL_IMAGE"], this.props.message);
+	};
 
-        if (xhr.readyState === 4) {
+	handleMouseHover = () => {
+		this.setState(this.toggleHoverState);
+	};
 
-          if (xhr.status === 200) {
+	toggleHoverState = state => {
+		return {
+			isHovering: !state.isHovering,
+		};
+	};
 
-            this.timer = null;
-            resolve(imgUrl);
+	render() {
+		let messageReactions = null;
+		const reactionsData = checkMessageForExtensionsData(this.props.message, "reactions");
+		if (reactionsData) {
+			if (Object.keys(reactionsData).length) {
+				messageReactions = (
+					<div css={messageReactionsWrapperStyle()} className="message__reaction__wrapper">
+						<CometChatMessageReactions message={this.props.message} actionGenerated={this.props.actionGenerated} />
+					</div>
+				);
+			}
+		}
 
-          } else if (xhr.status === 403) {
+		let toolTipView = null;
+		if (this.state.isHovering) {
+			toolTipView = <CometChatMessageActions message={this.props.message} actionGenerated={this.props.actionGenerated} />;
+		}
 
-            this.timer = setTimeout(() => {
+		return (
+			<div css={messageContainerStyle()} className="sender__message__container message__image" onMouseEnter={this.handleMouseHover} onMouseLeave={this.handleMouseHover}>
+				{toolTipView}
 
-              this.downloadImage(imgUrl).then(response => resolve(imgUrl)).catch(error => reject(error));
+				<div css={messageWrapperStyle()} className="message__wrapper">
+					<div css={messageImgWrapper(this.context)} onClick={this.open} className="message__img__wrapper">
+						<img
+							src={this.state.imageUrl}
+							alt={this.state.imageName}
+							ref={el => {
+								this.imgRef = el;
+							}}
+						/>
+					</div>
+				</div>
 
-            }, 800);
-          }
-          
-        } else {
-          reject(xhr.statusText);
-        }
+				{messageReactions}
 
-      }
-
-      xhr.onerror = event => reject(new Error('There was a network error.', event));
-      xhr.ontimeout = event => reject(new Error('There was a timeout error.', event));
-      xhr.send();
-      
-    });
-
-    return promise;
-  }
-
-  open = () => {
-    this.props.actionGenerated("viewActualImage", this.state.message);
-  }
-
-  handleMouseHover = () => {
-    this.setState(this.toggleHoverState);
-  }
-
-  toggleHoverState = (state) => {
-
-    return {
-      isHovering: !state.isHovering,
-    };
-  }
-
-  render() {
-
-    let messageReactions = null;
-    const reactionsData = checkMessageForExtensionsData(this.state.message, "reactions");
-    if (reactionsData) {
-
-      if (Object.keys(reactionsData).length) {
-        messageReactions = (
-          <div css={messageReactionsWrapperStyle()} className="message__reaction__wrapper">
-            <CometChatMessageReactions {...this.props} message={this.state.message} reaction={reactionsData} />
-          </div>
-        );
-      }
-    }
-
-    let toolTipView = null;
-    if (this.state.isHovering) {
-      toolTipView = (<CometChatMessageActions {...this.props} message={this.state.message} />);
-    }
-
-    return (
-      <div 
-      css={messageContainerStyle()} 
-      className="sender__message__container message__image"
-      onMouseEnter={this.handleMouseHover}
-      onMouseLeave={this.handleMouseHover}>
-
-        {toolTipView}
-          
-        <div css={messageWrapperStyle()} className="message__wrapper">
-          <div css={messageImgWrapper(this.props)} onClick={this.open} className="message__img__wrapper">
-            <img src={this.state.imageUrl} alt={this.state.imageUrl} ref={el => { this.imgRef = el; }} />
-          </div>
-        </div>
-
-        {messageReactions}
-
-        <div css={messageInfoWrapperStyle()} className="message__info__wrapper">
-          <CometChatThreadedMessageReplyCount {...this.props} message={this.state.message} />
-          <CometChatReadReceipt {...this.props} message={this.state.message} />
-        </div>
-      </div>
-    )
-  }
+				<div css={messageInfoWrapperStyle()} className="message__info__wrapper">
+					<CometChatThreadedMessageReplyCount message={this.props.message} actionGenerated={this.props.actionGenerated} />
+					<CometChatReadReceipt message={this.props.message} />
+				</div>
+			</div>
+		);
+	}
 }
 
 // Specifies the default values for props:
 CometChatSenderImageMessageBubble.defaultProps = {
-  theme: theme
+	theme: theme,
+	actionGenerated: () => {},
 };
 
 CometChatSenderImageMessageBubble.propTypes = {
-  theme: PropTypes.object
-}
+	theme: PropTypes.object,
+	actionGenerated: PropTypes.func.isRequired,
+	message: PropTypes.object.isRequired,
+};
 
-export default CometChatSenderImageMessageBubble;
+export { CometChatSenderImageMessageBubble };

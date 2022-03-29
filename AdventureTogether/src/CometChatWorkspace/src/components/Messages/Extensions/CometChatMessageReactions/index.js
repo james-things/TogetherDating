@@ -6,7 +6,9 @@ import PropTypes from "prop-types";
 import { Emoji } from "emoji-mart";
 import { CometChat } from "@cometchat-pro/chat";
 
-import { checkMessageForExtensionsData, validateWidgetSettings } from "../../../../util/common";
+import { CometChatContext } from "../../../../util/CometChatContext";
+import * as enums from "../../../../util/enums.js";
+import { checkMessageForExtensionsData } from "../../../../util/common";
 
 import { theme } from "../../../../resources/theme";
 import Translator from "../../../../resources/localization/translator";
@@ -17,148 +19,158 @@ import {
     emojiButtonStyle,
 } from "./style";
 
-import reactIcon from "./resources/add-reaction.png";
+import reactIcon from "./resources/reactions.svg";
 
 class CometChatMessageReactions extends React.Component {
+	static contextType = CometChatContext;
+	loggedInUser;
 
-    constructor(props) {
+	constructor(props, context) {
+		super(props, context);
+		this._isMounted = false;
+		this.state = {
+			enableMessageReaction: false,
+		};
 
-        super(props);
-        this.state = {
-            message: props.message,
-            reaction: props.reaction
-        }
-    }
+		this.context.getLoggedinUser().then(user => {
+			this.loggedInUser = { ...user };
+		});
+	}
 
-    componentDidUpdate(prevProps, prevState) {
+	componentDidMount() {
+		this._isMounted = true;
+		this.enableMessageReaction();
+	}
 
-        if (prevProps.message !== this.props.message) {
-            this.setState({ message: this.props.message });
-        }
-    }
+	componentWillUnmount() {
+		this._isMounted = false;
+	}
 
-    reactToMessages = (emoji) => {
+	enableMessageReaction = () => {
+		/**
+		 * If reacting to messages feature is disabled
+		 */
+		this.context.FeatureRestriction.isReactionsEnabled()
+			.then(response => {
+				if (response !== this.state.enableMessageReaction && this._isMounted) {
+					this.setState({ enableMessageReaction: response });
+				}
+			})
+			.catch(error => {
+				if (this.state.enableMessageReaction !== false) {
+					this.setState({ enableMessageReaction: false });
+				}
+			});
+	};
 
-        CometChat.callExtension("reactions", "POST", "v1/react", {
-            msgId: this.state.message.id,
-            emoji: emoji.colons,
-        }).then(response => {
-            // Reaction added successfully
-        }).catch(error => {
-            // Some error occured
-        });
-    }
+	reactToMessages = emoji => {
 
-    triggerEmojiClick = (event) => {
+		let messageObject = { ...this.props.message };
+		delete messageObject["metadata"]["@injected"]["extensions"]["reactions"][emoji.colons][this.loggedInUser.uid];
+		this.props.actionGenerated(enums.ACTIONS["MESSAGE_EDITED"], messageObject);
 
-        event.stopPropagation();
-        event.currentTarget.querySelector(".emoji-mart-emoji").click();
-    }
+		CometChat.callExtension("reactions", "POST", "v1/react", {
+			msgId: this.props.message.id,
+			emoji: emoji.colons,
+		}).then(response => {
+			
+			// Reaction failed
+			if (!response || !response.success || response.success !== true) {
+				this.props.actionGenerated(enums.ACTIONS["ERROR"], [], "SOMETHING_WRONG");
+			}
+		})
+		.catch(error => {
+			this.props.actionGenerated(enums.ACTIONS["ERROR"], [], "SOMETHING_WRONG");
+		});
+	};
 
-    getMessageReactions = (reaction) => {
+	getMessageReactions = reaction => {
+		
+		if (reaction === null) {
+			return null;
+		}
 
-        if(reaction === null) {
-            return null;
-        }
+		const messageReactions = Object.keys(reaction).map((data, key) => {
+			const reactionData = reaction[data];
+			const reactionName = data.replaceAll(":", "");
+			const reactionCount = Object.keys(reactionData).length;
 
-        const messageReactions = Object.keys(reaction).map((data, key) => {
+			if (!reactionCount) {
+				return null;
+			}
 
-            const reactionData = reaction[data];
-            const reactionName = data.replaceAll(":", "");
-            const reactionCount = Object.keys(reactionData).length;
+			const userList = [];
+			let reactionTitle = "";
 
-            if (!reactionCount) {
-                return null;
-            }
+			for (const user in reactionData) {
+				userList.push(reactionData[user]["name"]);
+			}
 
-            const userList = [];
-            let reactionTitle = "";
+			if (userList.length) {
+				reactionTitle = userList.join(", ");
+				const str = ` ${Translator.translate("REACTED", this.context.language)}`;
+				reactionTitle = reactionTitle.concat(str);
+			}
 
-            for (const user in reactionData) {
-                userList.push(reactionData[user]["name"]);
-            }
+			const reactionClassName = `reaction reaction__${reactionName}`;
+			return (
+				<div key={key} css={messageReactionsStyle(this.props, reactionData, this.context, this.loggedInUser)} className={reactionClassName} title={reactionTitle}>
+					<Emoji emoji={{ id: reactionName }} size={16} native onClick={this.reactToMessages} />
+					<span css={reactionCountStyle(this.context)} className="reaction__count">
+						{reactionCount}
+					</span>
+				</div>
+			);
+		});
 
-            if (userList.length) {
+		return messageReactions;
+	};
 
-                reactionTitle = userList.join(", ");
-                const str = ` ${Translator.translate("REACTED", this.props.lang)}`;
-                reactionTitle = reactionTitle.concat(str);
-            }
+	addMessageReaction = () => {
+		//If reacting to messages feature is disabled
+		if (this.state.enableMessageReaction === false) {
+			return null;
+		}
 
-            const reactionClassName = `reaction reaction__${reactionName}`;
-            return (
-                <div
-                key={key}
-                css={messageReactionsStyle(this.props, reactionData)}
-                className={reactionClassName}
-                title={reactionTitle}
-                onClick={this.triggerEmojiClick}>
-                    <Emoji
-                    emoji={{ id: reactionName }}
-                    size={16}
-                    native
-                    onClick={this.reactToMessages} />
-                    <span css={reactionCountStyle(this.props)} className="reaction__count">{reactionCount}</span>
-                </div>
-            );
-        });
+		const addReactionEmoji = (
+			<div key="-1" css={messageReactionsStyle(this.props, {}, this.context)} className="reaction reaction__add" title={Translator.translate("ADD_REACTION", this.context.language)}>
+				<button type="button" css={emojiButtonStyle(reactIcon, this.context)} className="button__reacttomessage" onClick={() => this.props.actionGenerated(enums.ACTIONS["REACT_TO_MESSAGE"], this.props.message)}>
+					<i></i>
+				</button>
+			</div>
+		);
 
-        return messageReactions;
-    }
+		return addReactionEmoji;
+	};
 
-    addMessageReaction = () => {
+	render() {
+		const reaction = checkMessageForExtensionsData(this.props.message, "reactions");
+		const messageReactions = this.getMessageReactions(reaction);
 
-        //if message reactions are disabled in chat widget
-        if (validateWidgetSettings(this.props.widgetsettings, "allow_message_reactions") === false) {
-            return null;
-        }
+		const addReactionEmoji = this.addMessageReaction();
 
-        const addReactionEmoji = (
-            <div 
-            key="-1" 
-            css={messageReactionsStyle(this.props, {})} 
-            className="reaction reaction__add"
-            title={Translator.translate("ADD_REACTION", this.props.lang)}>
-                <button
-                type="button"
-                css={emojiButtonStyle(reactIcon)}
-                className="button__reacttomessage"
-                onClick={() => this.props.actionGenerated("reactToMessage", this.props.message)}><span></span></button>
-            </div>
-        );
+		if (messageReactions !== null && messageReactions.length && addReactionEmoji !== null) {
+			if (this.props.message?.sender?.uid !== this.loggedInUser?.uid) {
+				messageReactions.push(addReactionEmoji);
+			} else {
+				messageReactions.unshift(addReactionEmoji);
+			}
+		}
 
-        return addReactionEmoji;
-    }
-
-    render() {
-
-        const reaction = checkMessageForExtensionsData(this.state.message, "reactions");
-        const messageReactions = this.getMessageReactions(reaction);
-
-        const addReactionEmoji = this.addMessageReaction();
-
-        if (messageReactions !== null && messageReactions.length && addReactionEmoji !== null) {
-
-            if (this.props.message.messageFrom === "receiver") {
-                messageReactions.push(addReactionEmoji);
-            } else {
-                messageReactions.unshift(addReactionEmoji);
-            }
-        }
-
-        return (messageReactions);
-    }
+		return messageReactions;
+	}
 }
 
 // Specifies the default values for props:
 CometChatMessageReactions.defaultProps = {
-    lang: Translator.getDefaultLanguage(),
-    theme: theme
+	theme: theme,
+	actionGenerated: () => {},
 };
 
 CometChatMessageReactions.propTypes = {
-    lang: PropTypes.string,
-    theme: PropTypes.object
-}
+	theme: PropTypes.object,
+	actionGenerated: PropTypes.func.isRequired,
+	message: PropTypes.object.isRequired,
+};
 
-export default CometChatMessageReactions;
+export { CometChatMessageReactions };

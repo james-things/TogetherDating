@@ -7,110 +7,142 @@ import PropTypes from "prop-types";
 import { CometChatMessageActions, CometChatThreadedMessageReplyCount, CometChatReadReceipt } from "../";
 import { CometChatMessageReactions } from "../Extensions";
 
-import { checkMessageForExtensionsData } from "../../../util/common";
+import { checkMessageForExtensionsData, getMessageFileMetadata } from "../../../util/common";
+import * as enums from "../../../util/enums.js";
 
 import { theme } from "../../../resources/theme";
 
 import {
-  messageContainerStyle,
-  messageWrapperStyle,
-  messageAudioWrapperStyle,
-  messageInfoWrapperStyle,
-  messageReactionsWrapperStyle
+	messageContainerStyle,
+	messageWrapperStyle,
+	messageAudioWrapperStyle,
+	messageInfoWrapperStyle,
+	messageReactionsWrapperStyle
 } from "./style";
 
 class CometChatSenderAudioMessageBubble extends React.Component {
+	constructor(props) {
+		super(props);
 
-  messageFrom = "sender";
+		this.state = {
+			isHovering: false,
+			fileData: {},
+		};
+	}
 
-  constructor(props) {
+	componentDidMount() {
+		
+		const fileData = this.getFileData();
+		this.setState({ fileData: fileData });
+	}
 
-    super(props);
+	shouldComponentUpdate(nextProps, nextState) {
 
-    const message = Object.assign({}, props.message, { messageFrom: this.messageFrom });
-    this.state = {
-      message: message,
-      isHovering: false
-    }
-  }
+		const currentMessageStr = JSON.stringify(this.props.message);
+		const nextMessageStr = JSON.stringify(nextProps.message);
 
-  componentDidUpdate(prevProps) {
+		if (currentMessageStr !== nextMessageStr 
+		|| this.state.isHovering !== nextState.isHovering 
+		|| this.state.fileData !== nextState.fileData) {
+			return true;
+		}
+		return false;
+	}
 
-    const previousMessageStr = JSON.stringify(prevProps.message);
-    const currentMessageStr = JSON.stringify(this.props.message);
+	componentDidUpdate(prevProps) {
 
-    if (previousMessageStr !== currentMessageStr) {
+		const previousMessageStr = JSON.stringify(prevProps.message);
+		const currentMessageStr = JSON.stringify(this.props.message);
 
-      const message = Object.assign({}, this.props.message, { messageFrom: this.messageFrom });
-      this.setState({ message: message })
-    }
-  }
+		if (previousMessageStr !== currentMessageStr) {
+			const fileData = this.getFileData();
 
-  handleMouseHover = () => {
-    this.setState(this.toggleHoverState);
-  }
+			const previousfileData = JSON.stringify(this.state.fileData);
+			const currentfileData = JSON.stringify(fileData);
 
-  toggleHoverState = (state) => {
+			if (previousfileData !== currentfileData) {
+				this.setState({ fileData: fileData });
+			}
+		}
+	}
 
-    return {
-      isHovering: !state.isHovering,
-    };
-  }
+	getFileData = () => {
 
-  render() {
+		const metadataKey = enums.CONSTANTS["FILE_METADATA"];
+		const fileMetadata = getMessageFileMetadata(this.props.message, metadataKey);
+		
+		if (fileMetadata instanceof Blob) {
+			return { fileName: fileMetadata["name"] };
+		} else if (this.props.message.data.hasOwnProperty("attachments") && this.props.message.data.attachments.length) {
+			const fileName = this.props.message.data.attachments[0]?.name;
+			const fileUrl = this.props.message.data.attachments[0]?.url;
 
-    let messageReactions = null;
-    const reactionsData = checkMessageForExtensionsData(this.state.message, "reactions");
-    if (reactionsData) {
+			return { fileName, fileUrl: fileUrl };
+		}
+	};
 
-      if (Object.keys(reactionsData).length) {
-        messageReactions = (
-          <div css={messageReactionsWrapperStyle()} className="message__reaction__wrapper">
-            <CometChatMessageReactions  {...this.props} message={this.state.message} reaction={reactionsData} />
-          </div>
-        );
-      }
-    }
+	handleMouseHover = () => {
+		this.setState(this.toggleHoverState);
+	};
 
-    let toolTipView = null;
-    if (this.state.isHovering) {
-      toolTipView = (<CometChatMessageActions {...this.props} message={this.state.message} />);
-    }
-    
-    return (
-      <div 
-      css={messageContainerStyle()} 
-      className="sender__message__container message__audio"
-      onMouseEnter={this.handleMouseHover}
-      onMouseLeave={this.handleMouseHover}>
+	toggleHoverState = state => {
+		return {
+			isHovering: !state.isHovering,
+		};
+	};
 
-        {toolTipView}
-        <div css={messageWrapperStyle()} className="message__wrapper">
-          <div css={messageAudioWrapperStyle(this.props)} className="message__audio__wrapper">
-            <audio controls src={this.state.message.data.url}></audio>
-          </div>
-        </div>
+	render() {
+		if (!Object.keys(this.state.fileData).length) {
+			return null;
+		}
 
-        {messageReactions}
+		let messageReactions = null;
+		const reactionsData = checkMessageForExtensionsData(this.props.message, "reactions");
+		if (reactionsData) {
+			if (Object.keys(reactionsData).length) {
+				messageReactions = (
+					<div css={messageReactionsWrapperStyle()} className="message__reaction__wrapper">
+						<CometChatMessageReactions message={this.props.message} actionGenerated={this.props.actionGenerated} />
+					</div>
+				);
+			}
+		}
 
-        <div css={messageInfoWrapperStyle()} className="message__info__wrapper">
-          <CometChatThreadedMessageReplyCount {...this.props} message={this.state.message} />
-          <CometChatReadReceipt {...this.props} message={this.state.message} />
-        </div>
-      </div>
-    )
-  }
+		let toolTipView = null;
+		if (this.state.isHovering) {
+			toolTipView = <CometChatMessageActions message={this.props.message} actionGenerated={this.props.actionGenerated} />;
+		}
+
+		return (
+			<div css={messageContainerStyle()} className="sender__message__container message__audio" onMouseEnter={this.handleMouseHover} onMouseLeave={this.handleMouseHover}>
+				{toolTipView}
+				<div css={messageWrapperStyle()} className="message__wrapper">
+					<div css={messageAudioWrapperStyle()} className="message__audio__wrapper">
+						<audio controls src={this.state.fileData?.fileUrl}></audio>
+					</div>
+				</div>
+
+				{messageReactions}
+
+				<div css={messageInfoWrapperStyle()} className="message__info__wrapper">
+					<CometChatThreadedMessageReplyCount message={this.props.message} actionGenerated={this.props.actionGenerated} />
+					<CometChatReadReceipt message={this.props.message} />
+				</div>
+			</div>
+		);
+	}
 }
 
 // Specifies the default values for props:
 CometChatSenderAudioMessageBubble.defaultProps = {
-  theme: theme,
-  message: {}
+	theme: theme,
+	actionGenerated: () => {},
 };
 
 CometChatSenderAudioMessageBubble.propTypes = {
-  theme: PropTypes.object,
-  message: PropTypes.object
-}
+	theme: PropTypes.object,
+	actionGenerated: PropTypes.func.isRequired,
+	message: PropTypes.object.isRequired,
+};
 
-export default CometChatSenderAudioMessageBubble;
+export { CometChatSenderAudioMessageBubble };

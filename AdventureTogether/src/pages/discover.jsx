@@ -44,7 +44,7 @@ const DiscoverPage = () => {
       });
   }, []);
 
-  // Page content
+  // Page content - A display of potential matches, with a side match list component
   return (
     <div className="grid grid-cols-3 md:grid-cols-9 h-screen w-screen overflow-hidden">
       <div className="hidden md:block col-span-2 bg-pink-500 shadow-lg">

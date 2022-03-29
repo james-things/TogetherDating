@@ -2,10 +2,13 @@ export const theme = {
     fontFamily: "Inter, sans-serif",
     fontSize: "14px",
     primaryColor: "#39f",
+    secondaryTextColor: "#808080",
     color: {
         primary: "#141414",
         secondary: "#cccccc",
         darkSecondary: "#eaeaea",
+        search: "rgba(20, 20, 20, 0.4)",
+        tertiary: "rgba(20, 20, 20, 0.5)",
         grey: "rgba(20,20,20,0.04)",
         helpText: "rgba(20, 20, 20, 0.6)",
         blue: "#39f",

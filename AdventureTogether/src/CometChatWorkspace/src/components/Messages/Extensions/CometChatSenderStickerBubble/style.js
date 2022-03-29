@@ -11,11 +11,6 @@ export const messageContainerStyle = () => {
         display: "flex",
         flexDirection: "column",
         flexShrink: "0",
-        ":hover": {
-            "ul.message__actions": {
-                display: "flex"
-            }
-        }
     }
 }
 
@@ -29,39 +24,45 @@ export const messageWrapperStyle = () => {
     }
 }
 
-export const messageImgWrapper = (props) => {
+export const messageImgWrapper = context => {
 
-    const mq = [`@media (min-width : 320px) and (max-width: 767px)`];
+	const mq = [...context.theme.breakPoints];
 
-    return {
-        display: "inline-block",
-        alignSelf: "flex-end",
-        maxWidth: "128px",
-        height: "128px",
-        cursor: "pointer",
-        flexShrink: "0",
-        [mq[0]]: {
-            maxWidth: "128px",
-            height: "128px",
-            padding: "2px 2px",
-        }
-    }
-}
+	return {
+		display: "inline-block",
+		alignSelf: "flex-end",
+		maxWidth: "128px",
+		height: "128px",
+		cursor: "pointer",
+		flexShrink: "0",
+		[`@media ${mq[1]}, ${mq[2]}`]: {
+			maxWidth: "128px",
+			height: "128px",
+			padding: "2px 2px",
+		},
+	};
+};
 
 export const messageInfoWrapperStyle = () => {
 
     return {
         alignSelf: "flex-end",
+        display: "flex",
+        justifyContent: "flex-end",
+        alignItems: "center",
+        padding: "4px 8px",
+        height: "25px",
     }
 }
 
 export const messageReactionsWrapperStyle = () => {
 
     return {
-        display: "inline-flex",
+        display: "flex",
         alignSelf: "flex-end",
         width: "100%",
         flexWrap: "wrap",
         justifyContent: "flex-end",
+        minHeight: "36px",
     }
 }
