@@ -7,12 +7,19 @@ export default function MatchSortList(personCollection, user) {
     const scoreArray = [];
     const person = [];
     personCollection.forEach((element) => {
-      // console.log(element.outdoorActivities);
       const outdoor = element.outdoorActivities;
       let score = 0;
       if (typeof outdoor !== 'undefined') {
         outdoor.forEach((activity) => {
-          if (userActivites.indexOf(activity) > 0) {
+          const indx = userActivites.map((e) => {
+            const actName = e.name;
+            return actName;
+          }).indexOf(activity.name);
+          const indxLegacy = userActivites.map((e) => {
+            const actName = e.name;
+            return actName;
+          }).indexOf(activity);
+          if (indx > -1 || indxLegacy > -1) {
             score += 1;
           }
         });
