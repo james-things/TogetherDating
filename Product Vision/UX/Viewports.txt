@@ -1,0 +1,5 @@
+The following viewport definitions need to be supported by our app:
+
+Phone: <= 767
+Tablet: 768-1439
+Desktop: >= 1440
