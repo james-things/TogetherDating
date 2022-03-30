@@ -1,3 +1,4 @@
+// The old login handler for google, not in use currently
 // Description: A page which handles logging a user in to CometChat and
 // redirecting to discover upon completion for a Google SSO sign-in
 import React, { useEffect } from 'react';

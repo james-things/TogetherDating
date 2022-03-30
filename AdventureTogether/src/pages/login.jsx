@@ -1,5 +1,5 @@
 // Description: A page which allows a user to log in to an existing account
-import React, { useReducer, useState } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
@@ -40,6 +40,19 @@ const LoginPage = () => {
       payload: target.value,
     });
   };
+
+  // This is a "catch" for SSO login. When the auth state changes,
+  // the user is logged in to CometChat async and then redirected
+  useEffect(() => {
+    firebase
+      .auth()
+      .onAuthStateChanged(async (user) => {
+        if (user) {
+          await loginCometChatUser(user.uid);
+          history.push('/discover');
+        }
+      });
+  }, []);
 
   // Log in function, called on submit (email/pw only)
   // If the user opts to log in with SSO, this is bypassed
