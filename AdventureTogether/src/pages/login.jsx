@@ -1,8 +1,12 @@
 // Description: A page which allows a user to log in to an existing account
-import React, { useEffect, useReducer, useState } from 'react';
+import React, {
+  useCallback, useEffect, useReducer, useState,
+} from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { FirebaseAuthConsumer } from '@react-firebase/auth';
 import FirebaseUI from '../components/FirebaseUI';
 import { loginCometChatUser } from '../cometchat';
 import { withLayout } from '../wrappers/layout';
@@ -28,9 +32,27 @@ const reducer = (state, action) => {
 
 // Main func
 const LoginPage = () => {
+  let userId = useState('');
+  const [user] = useAuthState(firebase.auth());
   const [state, dispatch] = useReducer(reducer, initialState);
   const [error, setError] = useState('');
   const history = useHistory();
+
+  // This is a "catch" for SSO login. When the auth state changes,
+  // the user is logged in to CometChat async and then redirected
+  // this will fire only when userId reference has been updated
+  const doCometLoginOnce = useCallback(async () => {
+    await loginCometChatUser(userId);
+    history.push('/discover');
+  }, [userId]);
+  // this will fire only when the user reference changes
+  useEffect(() => {
+    if (user) {
+      userId = user.uid;
+      doCometLoginOnce();
+    }
+  }, [user]);
+  // End SSO login code
 
   // Link reducer
   const handleOnChange = (evt) => {
@@ -40,19 +62,6 @@ const LoginPage = () => {
       payload: target.value,
     });
   };
-
-  // This is a "catch" for SSO login. When the auth state changes,
-  // the user is logged in to CometChat async and then redirected
-  useEffect(() => {
-    firebase
-      .auth()
-      .onAuthStateChanged(async (user) => {
-        if (user) {
-          await loginCometChatUser(user.uid);
-          history.push('/discover');
-        }
-      });
-  }, []);
 
   // Log in function, called on submit (email/pw only)
   // If the user opts to log in with SSO, this is bypassed
@@ -68,7 +77,7 @@ const LoginPage = () => {
       history.push('/discover');
     } catch (err) {
       setError(err.message);
-      console.log(`Unable to login: ${err.message}`);
+      console.log(`Unable to login: ${error.message}`);
     }
   };
 
@@ -200,7 +209,7 @@ const LoginPage = () => {
           <br />
           Sign in with Google:
           {/* The passed props set this as a LOGIN component */}
-          <FirebaseUI props={uiConfigLogin} />
+          <FirebaseAuthConsumer><FirebaseUI props={uiConfigLogin} /></FirebaseAuthConsumer>
         </form>
         <div className="py-4">
           <h3 className="text-2xl font-extrabold italic uppercase my-4">
