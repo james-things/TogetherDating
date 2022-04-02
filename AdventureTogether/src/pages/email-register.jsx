@@ -2,9 +2,11 @@
 // register their dating profile
 import React, { useReducer, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
+import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/storage';
 import 'firebase/compat/firestore';
+import { useAuthState } from 'react-firebase-hooks/auth';
 import registerEmailProfile from '../methods/registerEmailProfile';
 import { withLayout } from '../wrappers/layout';
 
@@ -31,6 +33,7 @@ const reducer = (state, action) => {
 
 // Page main function
 const EmailRegisterPage = () => {
+  const [user] = useAuthState(firebase.auth());
   const [state, dispatch] = useReducer(reducer, initialState);
   const [error, setError] = useState('');
   const history = useHistory();
@@ -57,8 +60,9 @@ const EmailRegisterPage = () => {
   async function registerUser(evt) {
     // prevent default inputs
     evt.preventDefault();
+    const userId = user.uid;
     // await dating profile creation
-    await registerEmailProfile(state.image, state.name, state.description);
+    await registerEmailProfile(userId, state.image, state.name, state.description);
     // once done, redirect user to discover page
     history.push('/configure-profile');
   }
