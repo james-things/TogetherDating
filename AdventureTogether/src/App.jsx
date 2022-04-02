@@ -15,6 +15,7 @@ import SorryPage from './pages/sorry';
 import SignupPage from './pages/signup';
 import GoogleRegisterPage from './pages/google-register';
 import ProfilePage from './pages/profile';
+import ConfigureProfilePage from './pages/configure-profile';
 
 function App() {
   useEffect(() => {
@@ -65,6 +66,9 @@ function App() {
           </Route>
           <Route path="/google-register">
             <GoogleRegisterPage />
+          </Route>
+          <Route path="/configure-profile">
+            <ConfigureProfilePage />
           </Route>
           <Route path="/age">
             <AgePage />
