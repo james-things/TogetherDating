@@ -38,21 +38,21 @@ const LoginPage = () => {
   const [error, setError] = useState('');
   const history = useHistory();
 
-  // This is a "catch" for SSO login. When the auth state changes,
-  // the user is logged in to CometChat async and then redirected
-  // this will fire only when userId reference has been updated
+  // useCallback hook to log user into CometChat and redirect
+  // fires when userId reference changes
   const doCometLoginOnce = useCallback(async () => {
     await loginCometChatUser(userId);
     history.push('/discover');
   }, [userId]);
-  // this will fire only when the user reference changes
+
+  // useEffect hook to catch firebase logged in state
+  // this will fire when user is not null
   useEffect(() => {
     if (user) {
       userId = user.uid;
       doCometLoginOnce();
     }
   }, [user]);
-  // End SSO login code
 
   // Link reducer
   const handleOnChange = (evt) => {
@@ -63,18 +63,14 @@ const LoginPage = () => {
     });
   };
 
-  // Log in function, called on submit (email/pw only)
-  // If the user opts to log in with SSO, this is bypassed
+  // Log in function, called on button click (email/pw only)
   const loginUser = async (evt) => {
     evt.preventDefault();
-
     try {
-      const doc = await firebase
+      await firebase
         .auth()
         .signInWithEmailAndPassword(state.email, state.password);
-
-      await loginCometChatUser(doc.user.uid);
-      history.push('/discover');
+      // After this, the useEffect hook takes over
     } catch (err) {
       setError(err.message);
       console.log(`Unable to login: ${error.message}`);
@@ -162,7 +158,7 @@ const LoginPage = () => {
         </div>
       </div>
       <div className="text-center w-full divide-y-2 divide-gray-100 divide-solid">
-        <form className="my-5 w-full" onSubmit={loginUser}>
+        <form className="my-5 w-full">
           {error && (
             <p className="text-red-500 font-bold text-base py-2 ">{error}</p>
           )}
@@ -201,7 +197,8 @@ const LoginPage = () => {
             placeholder="Password"
           />
           <button
-            type="submit"
+            type="button"
+            onClick={loginUser}
             className="w-full bg-gradient-to-r from-pink-600 to-yellow-500 rounded-full hover:bg-gray-200 py-4 px-16 block whitespace-no-wrap text-white font-bold uppercase"
           >
             Continue
@@ -209,7 +206,7 @@ const LoginPage = () => {
           <br />
           Sign in with Google:
           {/* The passed props set this as a LOGIN component */}
-          <FirebaseAuthConsumer><FirebaseUI props={uiConfigLogin} /></FirebaseAuthConsumer>
+          <FirebaseUI props={uiConfigLogin} />
         </form>
         <div className="py-4">
           <h3 className="text-2xl font-extrabold italic uppercase my-4">
