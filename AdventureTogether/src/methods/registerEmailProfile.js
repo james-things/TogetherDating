@@ -1,21 +1,21 @@
 // Description: An async function to create a dating profile for an email-registered user
-import firebase from 'firebase/compat';
+import React from 'react';
+import firebase from 'firebase/compat/app';
+import { useAuthState } from 'react-firebase-hooks/auth';
 import localStoreGet from './localStoreGet';
 import { loginCometChatUser, registerCometChatUser } from '../cometchat';
 
-export default async function registerEmailProfile(imageState, nameState, descState) {
+export default async function registerEmailProfile(userId, imageState, nameState, descState) {
   // Prepare the profile data already collected
   const bDay = localStoreGet('localBirthdate');
-  const doc = localStoreGet('doc');
-  const { uid } = doc.user;
-  const imageRef = firebase.storage().ref(`/profiles/${uid}`);
+  const imageRef = firebase.storage().ref(`/profiles/${userId}`);
 
   await imageRef.put(imageState);
 
   const imageUrl = await imageRef.getDownloadURL();
 
   // Await firebase profile storage
-  await firebase.firestore().collection('users').doc(uid).set({
+  await firebase.firestore().collection('users').doc(userId).set({
     name: nameState,
     description: descState,
     imageUrl,
@@ -38,13 +38,13 @@ export default async function registerEmailProfile(imageState, nameState, descSt
     smoking: '',
     childStatus: '',
     astrologySign: '',
-    id: uid,
+    id: userId,
   })
     .catch((err) => {
       console.log(`Unable to register user: ${err.message}`);
     });
 
   // Then register and log the user in to CometChat
-  await registerCometChatUser(nameState, uid);
-  await loginCometChatUser(uid);
+  await registerCometChatUser(nameState, userId);
+  await loginCometChatUser(userId);
 }
