@@ -48,21 +48,26 @@ const SignupPage = () => {
 
   // Async function to register email/password user with firebase
   // The function is NOT called for SSO registration, which is handled at component level
-  async function registerUser(evt) {
+  const aRegisterUser = async () => {
+    await createEmailUser(state.email, state.password);
+    history.push('/email-register');
+  };
+
+  // Form onSubmit method, synchronous for return escape
+  function registerUser(evt) {
     evt.preventDefault();
     if (state.password !== state.confirmPassword) {
       setError('Error: Passwords do not match.');
       return;
     }
-    await createEmailUser(state.email, state.password);
-    history.push('/email-register');
+    aRegisterUser();
   }
 
   // Page content
   // You will notice <FirebaseLogin props={...} /> in the code. This singular line links
   // in the Firebase UI SSO component.
   return (
-    <div className="my-10 bg-white rounded-2xl border-2 border-gray-200 flex flex-col justify-center items-center mx-auto p-10 w-9/12 lg:w-1/2 md:w-7/12 sm:w-8/12">
+    <div className="my-10 bg-white rounded-2xl border-2 border-gray-200 flex flex-col justify-center items-center mx-auto p-10 w-full md:w-7/12">
       <div className="flex flex-col justify-center items-center">
         <Link to="/">
           <svg

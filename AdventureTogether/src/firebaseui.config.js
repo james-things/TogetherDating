@@ -20,7 +20,7 @@ const uiConfigRegister = {
 const uiConfigLogin = {
   // When the sign in is successful, don't redirect automatically
   callbacks: {
-    signInSuccess() {
+    signInSuccessWithAuthResult() {
       // Return false to not redirect
       return false;
     },

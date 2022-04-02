@@ -43,7 +43,7 @@ const GoogleRegisterPage = () => {
     // Await dating profile creation for google sign-in type
     await registerGoogleProfile(state.description);
     // Once user has been registered, then redirct the to /discover
-    history.push('/discover');
+    history.push('/configure-profile');
   }
 
   // Page content - Collect a description for the user's profile
