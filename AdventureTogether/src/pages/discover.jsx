@@ -1,5 +1,6 @@
 // Description: A page which allows the user to browse potential matches
 import React, { useEffect, useState } from 'react';
+import { async } from 'regenerator-runtime';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
 import { Link } from 'react-router-dom';
@@ -7,12 +8,16 @@ import PersonSlider from '../components/PersonSlider';
 import SideMatchList from '../components/SideMatchList';
 import MatchSortList from '../methods/MatchSort';
 import { withLayout } from '../wrappers/layout';
-import getImplicitInterests from '../methods/getImplicitInterests';
+import machineLearningSort from '../methods/machineLearningSort';
+import localStorePut from '../methods/localStorePut';
+// import getImplicitInterests from '../methods/getImplicitInterests';
 
 // Page main function
 const DiscoverPage = () => {
   const [persons, setPersons] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [sorting, setSort] = useState(true);
+  const [interest, setInterests] = useState([]);
   const {
     likes = [], dislikes = [], favorites = [], id, name, imageUrl,
   } = JSON.parse(
@@ -25,7 +30,7 @@ const DiscoverPage = () => {
     firebase
       .firestore()
       .collection('users')
-      .where('id', 'not-in', [id, ...likes, ...dislikes, ...favorites])
+      // .where('id', 'not-in', [id, ...likes, ...dislikes, ...favorites])
       .get()
       .then((querySnapshot) => {
         const newPersons = [];
@@ -33,13 +38,13 @@ const DiscoverPage = () => {
         // had to add a user object to send to compare against activities
         // the previous above area removes already liked people
         const user = JSON.parse(localStorage.getItem('user'));
-        const implicit = getImplicitInterests();
-        const show = MatchSortList(newPersons, user);
+        const show = machineLearningSort(newPersons, user);
         // need to set people to compare - unsure what the function does for sure
         setPersons(newPersons);
-        console.log('CALL', show, newPersons);
+        // console.log('CALL', show);
         // i am able to get the people then swap the persons
         setPersons(show);
+        // localStorePut('people', persons);
         setLoading(false);
       });
   }, []);
