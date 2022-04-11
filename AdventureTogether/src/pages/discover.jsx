@@ -44,6 +44,7 @@ const DiscoverPage = () => {
         // console.log('CALL', show);
         // i am able to get the people then swap the persons
         setPersons(show);
+        console.log('SORTED ARRAY', show);
         // localStorePut('people', persons);
         setLoading(false);
       });

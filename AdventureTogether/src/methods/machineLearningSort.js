@@ -51,7 +51,7 @@ export default function MatchSortList(personCollection, user) {
       });
       countInterests.push({ name: a, count: ct });
     });
-    console.log(countInterests);
+    // console.log(countInterests);
     const scoreArray = [];
     const person = [];
     newUsers.forEach((element) => {
@@ -103,6 +103,7 @@ export default function MatchSortList(personCollection, user) {
     scoreArray.forEach((item) => {
       person.push(item.person);
     });
+    console.log('ML Score', scoreArray);
     return person;
   }
 }
