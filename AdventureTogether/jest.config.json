@@ -21,7 +21,7 @@
       "statements": 50
     }
   },
-    "testEnvironment": "jsdom",
+  "testEnvironment": "jsdom",
   "transform": {
     "\\.(js|jsx|ts|tsx)$": "babel-jest"
   },

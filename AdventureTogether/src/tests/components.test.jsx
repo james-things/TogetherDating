@@ -10,11 +10,13 @@ import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import { firebaseConfig } from '../environment';
 import Navbar from '../components/Navbar';
+import ButtonMap from '../components/ButtonMap';
+import CollapsibleMultiSelect from '../components/CollapsibleMultiSelect';
 
 let container = null;
 beforeEach(() => {
   // setup a DOM element as a render target
-  container = document.createElement('div');
+  container = document.createElement('root');
   document.body.appendChild(container);
 });
 
@@ -30,6 +32,28 @@ describe('Navbar', () => {
     act(() => {
       firebase.initializeApp(firebaseConfig);
       render(<Router><Navbar /></Router>, container);
+    });
+    // expect(paragraph).toHaveLength(1);
+    expect(container.toBeVisible);
+  });
+});
+
+describe('ButtonMap', () => {
+  it('Should render successfully', () => {
+    act(() => {
+      firebase.initializeApp(firebaseConfig);
+      render(<Router><ButtonMap /></Router>, container);
+    });
+    // expect(paragraph).toHaveLength(1);
+    expect(container.toBeVisible);
+  });
+});
+
+describe('CollapsibleMultiSelect', () => {
+  it('Should render successfully', () => {
+    act(() => {
+      firebase.initializeApp(firebaseConfig);
+      render(<Router><CollapsibleMultiSelect /></Router>, container);
     });
     // expect(paragraph).toHaveLength(1);
     expect(container.toBeVisible);
