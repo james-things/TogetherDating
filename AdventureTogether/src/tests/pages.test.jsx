@@ -2,12 +2,15 @@
 // Description: A unit test for the successful rendering of IndexPage
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
+import Adapter from 'enzyme-adapter-react-16';
+import Enzyme, { mount, shallow } from 'enzyme';
 import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { render, unmountComponentAtNode } from 'react-dom';
 import { act } from 'react-dom/test-utils';
 import 'firebase/compat/auth';
 import firebase from 'firebase/compat';
+import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import IndexPage from '../pages';
 import { firebaseConfig } from '../environment';
 import Navbar from '../components/Navbar';
@@ -16,6 +19,10 @@ import SorryPage from '../pages/sorry';
 import ConfigureProfilePage from '../pages/configure-profile';
 import DiscoverPage from '../pages/discover';
 import EmailRegisterPage from '../pages/email-register';
+import { uiConfigRegister } from '../firebaseui.config';
+import App from '../App';
+import {FirestoreProvider} from '@react-firebase/firestore';
+import {FirebaseAuthProvider} from '@react-firebase/auth';
 
 let container = null;
 
@@ -23,6 +30,7 @@ beforeEach(() => {
   // setup a DOM element as a render target
   container = document.createElement('root');
   document.body.appendChild(container);
+  Enzyme.configure({ adapter: new Adapter() });
 });
 
 afterEach(() => {
@@ -68,3 +76,4 @@ describe('SorryPage', () => {
     expect(container.toBeVisible);
   });
 });
+

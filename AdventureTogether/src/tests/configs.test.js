@@ -5,7 +5,8 @@ import 'regenerator-runtime/runtime';
 import React from 'react';
 import 'firebase/compat/auth';
 import { cometConfig, firebaseConfig } from '../environment';
-import {uiConfigLogin, uiConfigRegister} from '../firebaseui.config';
+import { uiConfigLogin, uiConfigRegister } from '../firebaseui.config';
+import * as opts from '../outdoorInterests.options';
 
 beforeEach(() => {
 });
@@ -27,7 +28,7 @@ describe('firebaseConfig', () => {
 });
 
 describe('cometConfig', () => {
-  it('Testing environment cometchat configuration', () => {
+  it('Tests environment cometchat configuration', () => {
     expect(cometConfig.appId).toBe('2039006cd8fea42f');
     expect(cometConfig.region).toBe('us');
     expect(cometConfig.authKey).toBe('5ba93b125c840b04a61a8b528f517eb418ed6cbc');
@@ -35,13 +36,115 @@ describe('cometConfig', () => {
 });
 
 describe('uiConfigLogin', () => {
-  it('Testing firebaseui component login configuration', () => {
+  it('Tests firebaseui component login configuration', () => {
     expect(uiConfigLogin.signInSuccessUrl).toBe('/discover');
   });
 });
 
 describe('uiConfigRegister', () => {
-  it('Testing firebaseui component login configuration', () => {
+  it('Tests firebaseui component login configuration', () => {
     expect(uiConfigRegister.signInSuccessUrl).toBe('/google-register');
+  });
+});
+
+describe('optionAnimal', () => {
+  it('Option list for outdoor interests type: Animal', () => {
+    expect(opts.optionAnimal.name).toBe('Animals');
+  });
+});
+
+describe('optionCycling', () => {
+  it('Option list for outdoor interests type: Cycling', () => {
+    expect(opts.optionCycling.name).toBe('Cycling');
+  });
+});
+
+describe('optionBoardingSkiing', () => {
+  it('Option list for outdoor interests type: Boarding/Skiing', () => {
+    expect(opts.optionBoardingSkiing.name).toBe('Boarding/Skiing');
+  });
+});
+
+describe('optionLargeBoating', () => {
+  it('Option list for outdoor interests type: Boating (Large)', () => {
+    expect(opts.optionLargeBoating.name).toBe('Boating (Large)');
+  });
+});
+
+describe('optionSmallBoating', () => {
+  it('Option list for outdoor interests type: Boating (Small)', () => {
+    expect(opts.optionSmallBoating.name).toBe('Boating (Small)');
+  });
+});
+
+describe('optionCamping', () => {
+  it('Option list for outdoor interests type: Camping', () => {
+    expect(opts.optionCamping.name).toBe('Camping');
+  });
+});
+
+describe('optionClimbing', () => {
+  it('Option list for outdoor interests type: Climbing', () => {
+    expect(opts.optionClimbing.name).toBe('Climbing');
+  });
+});
+
+describe('optionFishing', () => {
+  it('Option list for outdoor interests type: Animal', () => {
+    expect(opts.optionFishing.name).toBe('Fishing');
+  });
+});
+
+describe('optionFlying', () => {
+  it('Option list for outdoor interests type: Flying', () => {
+    expect(opts.optionFlying.name).toBe('Flying');
+  });
+});
+
+describe('optionHunting', () => {
+  it('Option list for outdoor interests type: Hunting', () => {
+    expect(opts.optionHunting.name).toBe('Hunting');
+  });
+});
+
+describe('optionMotorSports', () => {
+  it('Option list for outdoor interests type: Motor Sports', () => {
+    expect(opts.optionMotorSports.name).toBe('Motor Sports');
+  });
+});
+
+describe('optionRestorationConservation', () => {
+  it('Option list for outdoor interests type: Nature', () => {
+    expect(opts.optionRestorationConservation.name).toBe('Nature');
+  });
+});
+
+describe('optionShooting', () => {
+  it('Option list for outdoor interests type: Shooting', () => {
+    expect(opts.optionShooting.name).toBe('Shooting');
+  });
+});
+
+describe('optionSwimming', () => {
+  it('Option list for outdoor interests type: Swimming', () => {
+    expect(opts.optionSwimming.name).toBe('Swimming');
+  });
+});
+
+describe('optionTeam', () => {
+  it('Option list for outdoor interests type: Team Sports', () => {
+    expect(opts.optionTeam.name).toBe('Team Sports');
+  });
+});
+
+describe('optionWalkRun', () => {
+  it('Option list for outdoor interests type: Walking/Running', () => {
+    expect(opts.optionWalkRun.name).toBe('Walking/Running');
+  });
+});
+
+describe('optionLeisureOther', () => {
+  it('Option list for outdoor interests type: Leisure', () => {
+    expect(opts.optionLeisureOther.name).toBe('Leisure');
   });
 });

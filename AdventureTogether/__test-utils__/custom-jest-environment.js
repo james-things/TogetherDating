@@ -1,11 +1,13 @@
-// __test-utils__/custom-jest-environment.js
-// Stolen from: https://github.com/ipfs/jest-environment-aegir/blob/master/src/index.js
-// Overcomes error from jest internals.. this thing: https://github.com/facebook/jest/issues/6248
+/* eslint-disable class-methods-use-this,no-empty-function */
 'use strict';
 
-const NodeEnvironment = require('jest-environment-node');
+/**
+ * Correct Jest bug that prevents the Firestore tests from running. More info here:
+ * https://github.com/firebase/firebase-js-sdk/issues/3096#issuecomment-637584185
+ */
+import BrowserEnvironment from 'jest-environment-jsdom';
 
-class MyEnvironment extends NodeEnvironment {
+class MyEnvironment extends BrowserEnvironment {
   constructor(config) {
     super(
       {
@@ -20,10 +22,8 @@ class MyEnvironment extends NodeEnvironment {
     );
   }
 
-  // eslint-disable-next-line class-methods-use-this,no-empty-function
   async setup() {}
 
-  // eslint-disable-next-line class-methods-use-this,no-empty-function
   async teardown() {}
 }
 
