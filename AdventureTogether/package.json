@@ -6,8 +6,10 @@
     "@cometchat-pro/chat": "^3.0.6",
     "@craco/craco": "^6.1.1",
     "@emotion/core": "^10.0.35",
+    "@firebase/rules-unit-testing": "^2.0.2",
     "@react-firebase/auth": "^0.2.10",
     "@react-firebase/firestore": "^0.5.5",
+    "@reduxjs/toolkit": "^1.8.1",
     "@tailwindcss/postcss7-compat": "^2.0.3",
     "@testing-library/dom": "^8.11.3",
     "@testing-library/jest-dom": "^5.11.9",
@@ -19,11 +21,15 @@
     "core-js": "^3.21.1",
     "dateformat": "^4.0.0",
     "emoji-mart": "^3.0.0",
+    "enzyme": "^3.0.0",
+    "enzyme-adapter-react-16": "^1.15.6",
+    "enzyme-to-json": "^3.0.1",
     "firebase": "^9.6.8",
     "firebaseui": "^6.0.1",
     "google-auth-library": "^7.14.0",
     "html-react-parser": "^1.4.8",
     "jest-canvas-mock": "^2.3.1",
+    "jest-environment-jsdom": "^27.5.1",
     "multiselect-react-dropdown": "^2.0.21",
     "node-sass": "^4.12.1",
     "open": "^8.4.0",
@@ -33,6 +39,7 @@
     "react-firebaseui": "^6.0.0",
     "react-hook-form": "^7.27.1",
     "react-html-parser": "^2.0.2",
+    "react-redux": "^7.2.8",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^4.0.0",
@@ -81,9 +88,7 @@
     "@babel/preset-flow": "^7.16.7",
     "@babel/preset-react": "^7.16.7",
     "amex-jest-preset-react": "^7.0.0",
-    "enzyme": "^3.0.0",
-    "enzyme-adapter-react-16": "^1.15.6",
-    "enzyme-to-json": "^3.0.1",
+    "babel-polyfill": "^6.26.0",
     "eslint": "^7.25.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-plugin-import": "^2.22.1",
@@ -98,5 +103,8 @@
   "peerDependencies": {
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
+  },
+  "jest": {
+    "testEnvironment": "./__test-utils__/custom-jest-environment.js"
   }
 }
