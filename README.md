@@ -103,3 +103,6 @@ Definition of Done (DoD) Checklist:
 Backlog link
 
 https://dev.azure.com/KSUSWE6733-3/TogetherDating/_backlogs/backlog/TogetherDating%20Team/Stories
+
+
+The site in its development state can be viewed at:  https://webappcometchatdating.firebaseapp.com/ 
