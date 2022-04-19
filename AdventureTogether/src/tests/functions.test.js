@@ -45,13 +45,13 @@ describe('isOfAge', () => {
 describe('localStorePut', () => {
   it('Tests local store retrieval by key', () => {
     localStorePut('keyName', 'testString');
-    expect(localStoreGet('keyName')).toBe('testString');
+    expect(localStoreGet('keyName')).toContain('testString');
   });
 });
 
 describe('localStoreGet', () => {
   it('Tests local store storage by key,value pair', () => {
     localStorePut('keyName', 'testString');
-    expect(localStoreGet('keyName')).toBe('testString');
+    expect(localStoreGet('keyName')).toContain('testString');
   });
 });

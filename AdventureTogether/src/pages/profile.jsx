@@ -67,7 +67,7 @@ function onListChange(selectedList) {
   console.log(activity);
 }
 
-const RegisterPage = () => {
+const WIPProfilePage = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [error, setError] = useState('');
   const history = useHistory();
@@ -242,4 +242,4 @@ const RegisterPage = () => {
   );
 };
 
-export default withLayout(RegisterPage, { bgImage: true });
+export default withLayout(WIPProfilePage, { bgImage: true });
