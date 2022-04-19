@@ -13,7 +13,7 @@ export default async function getImplicitInterests() {
   firebase
     .firestore()
     .collection('users')
-    //.where('id', 'in', [id, ...likes, ...dislikes, ...favorites])
+    // .where('id', 'in', [id, ...likes, ...dislikes, ...favorites])
     .get()
     .then((querySnapshot) => {
       const oldPersons = [];

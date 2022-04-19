@@ -1,4 +1,5 @@
-// Get an age value returned from an ISO formatted date string
+// Description: Get an age value returned from an ISO formatted date string
+
 export default function getAge(dateString) {
   const today = new Date();
   const birthDate = new Date(dateString);

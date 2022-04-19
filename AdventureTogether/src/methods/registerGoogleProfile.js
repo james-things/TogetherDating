@@ -1,20 +1,26 @@
 // Description: An async function to create a dating profile from a google SSO login
-import firebase from 'firebase/compat';
+// refactored to firebase v9 code
+
+import { getAuth } from 'firebase/auth';
+import { doc, getFirestore, setDoc } from 'firebase/firestore';
 import localStoreGet from './localStoreGet';
 import { loginCometChatUser, registerCometChatUser } from '../cometchat';
 
 export default async function registerGoogleProfile(descState) {
+  const db = getFirestore();
+  const auth = getAuth();
   // Prepare available data from google login
   const bDay = localStoreGet('localBirthdate');
-  const user = firebase.auth().currentUser;
-  const userid = user.uid;
-  const uname = firebase.auth().currentUser.displayName;
+  const user = auth.currentUser;
+  const userId = user.uid;
+  const uname = user.displayName;
+  const image = user.photoURL;
 
   // Await firestore creation of profile
-  await firebase.firestore().collection('users').doc(userid).set({
+  await setDoc(doc(db, `users/${userId}`), ({
     name: uname,
     description: descState,
-    imageUrl: firebase.auth().currentUser.photoURL,
+    imageUrl: image,
     likes: [],
     dislikes: [],
     favorites: [],
@@ -34,13 +40,13 @@ export default async function registerGoogleProfile(descState) {
     smoking: '',
     childStatus: '',
     astrologySign: '',
-    id: userid,
-  })
+    id: userId,
+  }))
     .catch((err) => {
       console.log(`Unable to register user: ${err.message}`);
     });
 
   // Then register and log the user in to CometChat
-  await registerCometChatUser(uname, userid);
-  await loginCometChatUser(userid);
+  await registerCometChatUser(uname, userId);
+  await loginCometChatUser(userId);
 }

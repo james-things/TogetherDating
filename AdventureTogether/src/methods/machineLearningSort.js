@@ -1,3 +1,5 @@
+// Description: Improved matching algorithm used to generate a set of potential matches for a user
+
 export default function MatchSortList(personCollection, user) {
   let newUsers = [];
   let returnUsers = [];

@@ -1,7 +1,8 @@
 // Description: A page which allows the user to select a sign-up method and create
 // a firebase account with our app. This does not create a firestore dating profile.
+
 import React, { useReducer, useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import 'firebase/compat/auth';
 import 'firebase/compat/storage';
 import 'firebase/compat/firestore';
@@ -35,7 +36,7 @@ const reducer = (state, action) => {
 const SignupPage = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [error, setError] = useState('');
-  const history = useHistory();
+  const navigate = useNavigate();
 
   // Link reducer
   const handleOnChange = (evt) => {
@@ -50,7 +51,7 @@ const SignupPage = () => {
   // The function is NOT called for SSO registration, which is handled at component level
   const aRegisterUser = async () => {
     await createEmailUser(state.email, state.password);
-    history.push('/email-register');
+    navigate('/email-register');
   };
 
   // Form onSubmit method, synchronous for return escape

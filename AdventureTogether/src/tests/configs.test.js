@@ -55,7 +55,7 @@ describe('optionAnimal', () => {
 
 describe('optionCycling', () => {
   it('Option list for outdoor interests type: Cycling', () => {
-    expect(opts.optionCycling.name).toBe('Cycling');
+    expect(opts.optionBicycling.name).toBe('Cycling');
   });
 });
 
@@ -67,7 +67,7 @@ describe('optionBoardingSkiing', () => {
 
 describe('optionLargeBoating', () => {
   it('Option list for outdoor interests type: Boating (Large)', () => {
-    expect(opts.optionLargeBoating.name).toBe('Boating (Large)');
+    expect(opts.optionLargeBoat.name).toBe('Boating (Large)');
   });
 });
 

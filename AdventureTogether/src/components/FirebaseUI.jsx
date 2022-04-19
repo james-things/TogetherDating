@@ -1,17 +1,18 @@
 // Description: SSO login component handling firebase authentication
-// Import FirebaseAuth and firebase.
+// Refactored to use reactfire
+
 import React, { useEffect, useState } from 'react';
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
-import firebase from 'firebase/compat/app';
-import 'firebase/compat/auth';
+import { useAuth } from 'reactfire';
 
 // Component main function - now accepts configuration "props"
 // this configuration determines if it is a login or registration component
 function FirebaseUI({ props }) {
   const [isSignedIn, setIsSignedIn] = useState(false); // Local signed-in state.
+  const auth = useAuth();
 
   useEffect(() => {
-    const unregisterAuthObserver = firebase.auth().onAuthStateChanged((user) => {
+    const unregisterAuthObserver = auth.onAuthStateChanged((user) => {
       setIsSignedIn(!!user);
     });
     // Make sure we un-register Firebase observers when the component unmounts.
@@ -22,7 +23,7 @@ function FirebaseUI({ props }) {
   if (!isSignedIn) {
     return (
       <div className="flex flex-col items-center w-full">
-        <StyledFirebaseAuth uiConfig={props} firebaseAuth={firebase.auth()} />
+        <StyledFirebaseAuth uiConfig={props} firebaseAuth={auth} />
       </div>
     );
   }
@@ -32,7 +33,7 @@ function FirebaseUI({ props }) {
       <p>
         Welcome to AdventureTogether
         {' '}
-        {firebase.auth().currentUser.displayName}
+        {auth.currentUser.displayName}
       </p>
       {/* code to enable a sign-out button currently not in use
       <a onClick={() => firebase.auth().signOut()}>Sign-out</a> */}

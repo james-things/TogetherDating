@@ -1,4 +1,5 @@
-// Description: Not in use, but retaining for a good example of how to use map correctly
+// Description: Not in use, but a good example of how to perform a number of basic operations
+
 import React, { Component } from 'react';
 
 const BUTTONS = [

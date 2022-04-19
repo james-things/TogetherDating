@@ -1,20 +1,24 @@
-// Description: a page which informs the user they are not old enough to sign up with our service
+// Description: A host page for testing the user profile component
 
-import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useUser } from 'reactfire';
 import { withLayout } from '../wrappers/layout';
+import UserProfile from '../components/UserProfile';
 
-// Page main function
-const SorryPage = () => {
-  const navigate = useNavigate();
+function UserProfilePage() {
+  const [loading, setLoading] = useState(false);
+  // Subscribe to user session
+  const { status, data: user } = useUser();
 
-  const goHome = () => {
-    navigate('/');
-  };
+  useEffect(() => {
+    if (user && (user.uid.length > 0)) {
+      setLoading(false);
+    }
+  }, [user]);
 
-  // Page content - Present information and link back to main page
   return (
-    <div className="my-10 bg-white rounded-2xl border-2 border-gray-200 flex flex-col justify-center items-center mx-auto p-10 w-full md:w-7/12">
+    <div className="min-w-full my-10 bg-white rounded-2xl border-2 border-gray-200 flex flex-col justify-center items-center mx-auto p-10 w-9/12 lg:w-1/2 md:w-6/12 sm:w-7/12">
       <div className="flex flex-col justify-center items-center">
         <Link to="/">
           <svg
@@ -47,40 +51,24 @@ const SorryPage = () => {
           </svg>
         </Link>
         <h3 className="text-2xl font-extrabold italic uppercase my-4">
-          Sorry!
+          User Profile
         </h3>
         <div
           className="text-sm text-gray-800 text-center"
           data-nosnippet="true"
         >
-          Unfortunately you must be at least 18 years of age to register with our service.
+          Some text...
         </div>
       </div>
       <div className="text-center w-full divide-y-2 divide-gray-100 divide-solid">
-        <form className="my-5 w-full" onSubmit={goHome}>
-          <button
-            type="submit"
-            className="w-full bg-gradient-to-r from-pink-600 to-yellow-500 rounded-full hover:bg-gray-200 py-4 px-16 block whitespace-no-wrap text-white font-bold uppercase"
-          >
-            Cancel Sign-Up
-          </button>
-        </form>
+        {(user) && <UserProfile userId={user?.uid} />}
         <div className="py-4">
-          <h3 className="text-2xl font-extrabold italic uppercase my-4">
-            Get the app!
-          </h3>
-          <div className="flex justify-between items-center">
-            <img width="130" src="/appStore.webp" alt="AppStore Download" />
-            <img
-              width="170"
-              src="/playStore.webp"
-              alt="PlayStore Download"
-            />
-          </div>
+          <div className="flex justify-between items-center"> </div>
         </div>
+        {(user) && user?.uid}
       </div>
     </div>
   );
-};
+}
 
-export default withLayout(SorryPage, { bgImage: true });
+export default withLayout(UserProfilePage, { bgImage: true });

@@ -1,9 +1,8 @@
 // Description: A page to support profile creation for a Google SSO registration
+// no longer utilizes any firebase functions
+
 import React, { useReducer, useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
-import 'firebase/compat/auth';
-import 'firebase/compat/storage';
-import 'firebase/compat/firestore';
+import { Link, useNavigate } from 'react-router-dom';
 import registerGoogleProfile from '../methods/registerGoogleProfile';
 import { withLayout } from '../wrappers/layout';
 
@@ -26,7 +25,7 @@ const reducer = (state, action) => {
 const GoogleRegisterPage = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [error] = useState('');
-  const history = useHistory();
+  const navigate = useNavigate();
 
   // Call in reducer to handle input
   const handleOnChange = (evt) => {
@@ -43,7 +42,7 @@ const GoogleRegisterPage = () => {
     // Await dating profile creation for google sign-in type
     await registerGoogleProfile(state.description);
     // Once user has been registered, then redirct the to /discover
-    history.push('/configure-profile');
+    navigate('/configure-profile');
   }
 
   // Page content - Collect a description for the user's profile

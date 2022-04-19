@@ -1,15 +1,21 @@
-// Description: a navigation bar component which appears at the top of the page
-import { FirebaseAuthConsumer } from '@react-firebase/auth';
+/* eslint-disable max-len */
+
+// Description: a navigation bar component with links which appears at the top of the page
+
+// todo: apply conditional css styling to ensure navbar provides positive value for all viewports
+
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useUser } from 'reactfire';
 
 // Component main function
 export default function Navbar() {
+  const { status, data: user } = useUser();
   return (
     <nav className="w-full px-1 absolute bg-gradient-to-b from-black to-transparent z-10">
-      <div className="w-full flex justify-between items-center mx-auto p-6 pb-24">
-        {/* <!-- logo --> */}
-        <div className="inline-flex">
+      <div className="grid grid-cols-3 w-full flex justify-between items-center mx-auto p-6 pb-24">
+        {/* <!-- logo + links --> */}
+        <div className="col-span-2 inline-flex">
           <a className="_o6689fn" href="/">
             <svg className="inline-flex align-middle mb-1.5 mr-0.5" width="24px" height="24px" viewBox="0 0 24 24" id="Layer_1" data-name="Layer 1" fill="white" xmlns="http://www.w3.org/2000/svg">
               <defs>
@@ -25,27 +31,57 @@ export default function Navbar() {
                 <path d="M13.55,22.55H8.63a4,4,0,0,1-4-4V15.18a1,1,0,0,1,1-1H16.55a1,1,0,0,1,1,1v3.37A4,4,0,0,1,13.55,22.55ZM6.63,16.18v2.37a2,2,0,0,0,2,2h4.92a2,2,0,0,0,2-2V16.18Z" />
               </g>
             </svg>
-            <h1 className="inline-flex text-2xl mb-2 md:text-2xl text-white font-bold tracking-thin align-middle">
-              Adventure Together
-            </h1>
           </a>
+          <h1 className="inline-flex text-2xl mb-2 md:text-2xl font-bold text-white tracking-thin align-middle">
+            Adventure Together&nbsp;&nbsp;&nbsp;|
+          </h1>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+          <Link
+            className="hover:text-pink-600 inline-flex text-xl mb-2 md:text-xl text-white tracking-thin align-middle"
+            to={user ? '/user-profile' : '/login'}
+          >
+            {user ? 'My Profile' : 'Log In'}
+          </Link>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+          <Link
+            className="hover:text-pink-600 inline-flex text-xl mb-2 md:text-xl text-white tracking-thin align-middle"
+            to={user ? '/inbox' : '/age'}
+          >
+            {user ? 'Inbox' : 'Create Account'}
+          </Link>
+           &nbsp;&nbsp;&nbsp;&nbsp;
+          <Link
+            className="hover:text-pink-600 inline-flex text-xl mb-2 md:text-xl text-white tracking-thin align-middle"
+            to={user ? '/discover' : ''}
+          >
+            {user ? 'Discover' : ''}
+          </Link>
+          &nbsp;&nbsp;&nbsp;&nbsp;
+          <Link
+            className="hover:text-pink-600 inline-flex text-xl mb-2 md:text-xl text-white tracking-thin align-middle"
+            to={user ? '/data-test' : ''}
+          >
+            {user ? 'Data Test' : ''}
+          </Link>
+          {/* end navigation links */}
         </div>
-
-        {/* <!-- end logo --> */}
-
+        {/* <!-- end logo + links --> */}
+        {/*
+        <div className="col-span-1 inline-flex">
+          <div className="inline-flex text-2xl mb-2 md:text-2xl text-white font-bold tracking-thin align-middle">
+            {' '}
+          </div>
+        </div>
+        */}
         {/* <!-- login --> */}
         <div className="md:block flex mx-1">
-          <div className="text-md uppercase leading-none text-left group inline-block relative">
-            <FirebaseAuthConsumer>
-              {({ isSignedIn }) => (
-                <Link
-                  className="bg-white rounded hover:bg-gray-200 py-3 px-6 block whitespace-no-wrap text-pink-400 font-bold"
-                  to={isSignedIn ? '/logout' : '/login'}
-                >
-                  {isSignedIn ? 'Log Out' : 'Log In'}
-                </Link>
-              )}
-            </FirebaseAuthConsumer>
+          <div className="float-right text-right text-md uppercase leading-none group inline-block relative">
+            <Link
+              className="bg-white rounded hover:bg-gray-200 py-3 px-6 block whitespace-no-wrap text-pink-400 font-bold"
+              to={user ? '/logout' : '/login'}
+            >
+              {user ? 'Log Out' : 'Log In'}
+            </Link>
           </div>
         </div>
         {/* <!-- end login --> */}
