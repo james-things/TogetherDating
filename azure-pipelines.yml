@@ -4,34 +4,35 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 
 trigger:
-- master
+  - master
 
 pool:
   vmImage: ubuntu-latest
 
 variables:
-- group: Firebase
+  - group: Firebase
 
 steps:
-- task: NodeTool@0
-  inputs:
-    versionSpec: '16.x'
-  displayName: 'Install Node.js'
+  - task: NodeTool@0
+    inputs:
+      versionSpec: "16.x"
+    displayName: "Install Node.js"
 
-- script: |
-    cd AdventureTogether
-    npm install yarn
-    yarn install
-    yarn run build
-  workingDirectory: $(System.DefaultWorkingDirectory)
-  displayName: 'install yarn, restore packages, and build'
+  - script: |
+      cd AdventureTogether
+      npm install yarn
+      yarn install
+      yarn test
+      yarn run build
+    workingDirectory: $(System.DefaultWorkingDirectory)
+    displayName: "install yarn, restore packages, and build"
 
-#- task: PublishBuildArtifacts@1
-#  inputs:
-#    PathtoPublish: '$(Build.ArtifactStagingDirectory)/AdventureDating'
-#    ArtifactName: 'drop'
-#
-- task: PowerShell@2
-  inputs:
-    filePath: '$(System.DefaultWorkingDirectory)/AdventureTogether/deploy.ps1'
-    arguments: '-firebaseToken $(fb_ci_token) -firebaseProject $(fb_projectId)'
+  #- task: PublishBuildArtifacts@1
+  #  inputs:
+  #    PathtoPublish: '$(Build.ArtifactStagingDirectory)/AdventureDating'
+  #    ArtifactName: 'drop'
+  #
+  - task: PowerShell@2
+    inputs:
+      filePath: "$(System.DefaultWorkingDirectory)/AdventureTogether/deploy.ps1"
+      arguments: "-firebaseToken $(fb_ci_token) -firebaseProject $(fb_projectId)"
