@@ -1,9 +1,13 @@
+/* eslint-disable global-require */
 module.exports = {
+  reactScriptsVersion: 'react-scripts',
   style: {
-    postcss: {
+    postcssOptions: {
       plugins: [
-        require('@tailwindcss/postcss7-compat'),
+        require('tailwindcss'),
         require('autoprefixer'),
+        require('babel-core/register'),
+        require('babel-polyfill'),
       ],
     },
   },

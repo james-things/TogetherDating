@@ -1,4 +1,5 @@
-/* eslint-disable import/prefer-default-export */
+// Description: A style wrapper for displayed pages (adds navbar)
+
 import React from 'react';
 import Navbar from '../components/Navbar';
 
@@ -26,4 +27,5 @@ const withLayout = (
   </>
 );
 
+// eslint-disable-next-line import/prefer-default-export
 export { withLayout };

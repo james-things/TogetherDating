@@ -1,12 +1,20 @@
+// Description: A component which displays a list of matches and provides a link to the inbox
+// (firebase v8 compat page)
+
+// todo: investigate potential issue with react not liking the approach to
+//  creating matches as child elements (non-breaking error message on match)
+
 import React, { useEffect, useState } from 'react';
 import firebase from 'firebase/compat/app';
 import 'firebase/firestore';
 import { Link } from 'react-router-dom';
 
+// Main function
 export default function SideMatchList({ person }) {
   const [matches, setMatches] = useState([]);
   const { id, name, imageUrl } = person;
 
+  // useEffect with empty array for deps should run only once
   useEffect(() => {
     const matchListener = firebase.firestore().collection('/users').doc(id).onSnapshot((doc) => {
       const currentMatchIds = doc.data().matches || [];
@@ -50,26 +58,26 @@ export default function SideMatchList({ person }) {
         <div className=" p-4">
           {matches.length === 0 && <p className="text-gray-400">Still no matches were found :/</p>}
           {matches.length > 0
-        && (
-        <>
-          <h3 className="font-bold text-pink-500 mr-auto">Matches</h3>
-          <div className="flex flex-col justify-center items-center">
-            {React.Children.toArray(matches.map((match) => (
-              <div className="w-full my-2 flex justify-start items-center">
-                <img src={match.imageUrl} className="rounded-full h-20 w-20 shadow" alt="Match Person" />
-                <div className="">
-                  <p className="ml-4 font-bold text-gray-600">{match.name}</p>
-                  <p className="ml-4 text-gray-400 text-sm tracking-tight leading-tight">
-                    You have connected with
-                    {' '}
-                    {match.name}
-                  </p>
+            && (
+              <>
+                <h3 className="font-bold text-pink-500 mr-auto">Matches</h3>
+                <div className="flex flex-col justify-center items-center">
+                  {React.Children.toArray(matches.map((match) => (
+                    <div className="w-full my-2 flex justify-start items-center">
+                      <img src={match.imageUrl} className="rounded-full h-20 w-20 shadow" alt="Match Person" />
+                      <div className="">
+                        <p className="ml-4 font-bold text-gray-600">{match.name}</p>
+                        <p className="ml-4 text-gray-400 text-sm tracking-tight leading-tight">
+                          You have connected with
+                          {' '}
+                          {match.name}
+                        </p>
+                      </div>
+                    </div>
+                  )))}
                 </div>
-              </div>
-            )))}
-          </div>
-        </>
-        )}
+              </>
+            )}
         </div>
       </Link>
     </aside>
