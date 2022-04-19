@@ -1,16 +1,21 @@
-// Description: As I understand it, this is our entry point. Significant changes to this page,
-// if any, should not be necessary in this project.
+// Description: Highest-level project component
+// Reactfire/Firebase v9 is implemented here through FirebaseAppProvider
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { FirebaseAuthProvider } from '@react-firebase/auth';
-import { FirestoreProvider } from '@react-firebase/firestore';
-import firebase from 'firebase/compat';
+import { render } from 'react-dom';
+import firebase from 'firebase/compat/app';
 import { CometChat } from '@cometchat-pro/chat';
+import { ThemeProvider } from '@primer/react';
+import { FirebaseAppProvider } from 'reactfire';
 import { firebaseConfig, cometConfig } from './environment';
 
 import './styles/index.css';
 import './styles/tailwind.css';
 import App from './App';
+
+const container = document.getElementById('root');
+
+// this line allows us to use firebase v8 code when it is more convenient
+firebase.initializeApp(firebaseConfig);
 
 const appSetting = new CometChat.AppSettingsBuilder()
   .subscribePresenceForAllUsers()
@@ -23,16 +28,15 @@ CometChat.init(cometConfig.appId, appSetting).then(
       CometChat.setSource('ui-kit', 'web', 'reactjs');
     }
     console.log('Initialization completed successfully');
-
-    ReactDOM.render(
+    render(
       <React.StrictMode>
-        <FirebaseAuthProvider {...firebaseConfig} firebase={firebase}>
-          <FirestoreProvider {...firebaseConfig} firebase={firebase}>
+        <FirebaseAppProvider firebaseConfig={firebaseConfig}>
+          <ThemeProvider>
             <App />
-          </FirestoreProvider>
-        </FirebaseAuthProvider>
+          </ThemeProvider>
+        </FirebaseAppProvider>
       </React.StrictMode>,
-      document.getElementById('root'),
+      container,
     );
   },
   (error) => {

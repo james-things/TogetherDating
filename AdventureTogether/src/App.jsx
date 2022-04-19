@@ -1,9 +1,18 @@
-import React, { useEffect } from 'react';
-import firebase from 'firebase/compat';
-import 'firebase/compat/auth';
+// A component which sets the composition and routing structure of the site
+// and allows providers to provide services to child components
+
+// todo: determine value offered by PrivateRoute functionality and re-implement if desired
+//  (this functionality redirects the user if they manually navigate to a disallowed page based on
+//  logged in state. it should not be difficult to restore, I just haven't gotten to it since I did
+//  my react 17 update!)
+
+import React from 'react';
+import { getFirestore } from 'firebase/firestore';
+import { FirestoreProvider, AuthProvider, useFirebaseApp } from 'reactfire';
 import {
-  Route, BrowserRouter, Switch, Redirect,
+  Route, BrowserRouter as Router, Routes,
 } from 'react-router-dom';
+import { getAuth } from 'firebase/auth';
 import IndexPage from './pages';
 import AgePage from './pages/age';
 import DiscoverPage from './pages/discover';
@@ -14,80 +23,51 @@ import EmailRegisterPage from './pages/email-register';
 import SorryPage from './pages/sorry';
 import SignupPage from './pages/signup';
 import GoogleRegisterPage from './pages/google-register';
-import ProfilePage from './pages/profile';
 import ConfigureProfilePage from './pages/configure-profile';
+import OutdoorInterestsPage from './pages/outdoor-interests';
+import LocalStoreManager from './components/LocalStoreManager';
+import DataTest from './components/DataTest';
+import UserProfilePage from './pages/user-profile';
+import DiscoverTestingPage from './pages/discover-testing';
 
+// React v17 routing - this was necessary to implement other core upgrades
 function App() {
-  useEffect(() => {
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        // store the user on local storage
-        firebase
-          .firestore()
-          .doc(`/users/${user.uid}`)
-          .get()
-          .then((doc) => {
-            localStorage.setItem('user', JSON.stringify({
-              ...doc.data(),
-              id: doc.id,
-            }));
-          });
-      } else {
-        // removes the user from local storage on logOut
-        localStorage.removeItem('user');
-      }
-    });
-  }, []);
-
+  const app = useFirebaseApp(); // assumes a parent component contains a `FirebaseAppProvider`
+  const auth = getAuth(app);
+  const firestoreInstance = getFirestore(app);
   return (
     <>
-      <BrowserRouter>
-        <Switch>
-          <Route exact path="/">
-            <IndexPage />
-          </Route>
-          <PrivateRoute path="/discover">
-            <DiscoverPage />
-          </PrivateRoute>
-          <PrivateRoute path="/inbox">
-            <InboxPage />
-          </PrivateRoute>
-          <Route path="/login">
-            <LoginPage />
-          </Route>
-          <Route path="/logout">
-            <LogoutPage />
-          </Route>
-          <Route path="/email-register">
-            <EmailRegisterPage />
-          </Route>
-          <Route path="/profile">
-            <ProfilePage />
-          </Route>
-          <Route path="/google-register">
-            <GoogleRegisterPage />
-          </Route>
-          <Route path="/configure-profile">
-            <ConfigureProfilePage />
-          </Route>
-          <Route path="/age">
-            <AgePage />
-          </Route>
-          <Route path="/sorry">
-            <SorryPage />
-          </Route>
-          <Route path="/signup">
-            <SignupPage />
-          </Route>
-          <Route path="*">
-            <IndexPage />
-          </Route>
-        </Switch>
-      </BrowserRouter>
+      <AuthProvider sdk={auth}>
+        <FirestoreProvider sdk={firestoreInstance}>
+          <LocalStoreManager>
+            <Router>
+              <Routes>
+                <Route path="/" element={<IndexPage />} />
+                <Route path="/discover" element={<DiscoverPage />} />
+                <Route path="/discover-testing" element={<DiscoverTestingPage />} />
+                <Route path="/inbox" element={<InboxPage />} />
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/logout" element={<LogoutPage />} />
+                <Route path="/email-register" element={<EmailRegisterPage />} />
+                <Route path="/google-register" element={<GoogleRegisterPage />} />
+                <Route path="/configure-profile" element={<ConfigureProfilePage />} />
+                <Route path="/outdoor-interests" element={<OutdoorInterestsPage />} />
+                <Route path="/age" element={<AgePage />} />
+                <Route path="/sorry" element={<SorryPage />} />
+                <Route path="/signup" element={<SignupPage />} />
+                <Route path="/data-test" element={<DataTest />} />
+                <Route path="/user-profile" element={<UserProfilePage />} />
+                <Route path="*" element={<IndexPage />} />
+              </Routes>
+            </Router>
+          </LocalStoreManager>
+        </FirestoreProvider>
+      </AuthProvider>
     </>
   );
 }
 
+/* TODO: Restore PrivateRoute functionality using react-router-dom v6 syntax if desired.
 function PrivateRoute({ children, ...rest }) {
   return (
     <Route
@@ -95,7 +75,7 @@ function PrivateRoute({ children, ...rest }) {
       render={({ location }) => (localStorage.getItem('user') ? (
         children
       ) : (
-        <Redirect
+        <Navigate
           to={{
             pathname: '/login',
             state: { from: location },
@@ -105,5 +85,6 @@ function PrivateRoute({ children, ...rest }) {
     />
   );
 }
+*/
 
 export default App;

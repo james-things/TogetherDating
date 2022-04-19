@@ -1,15 +1,16 @@
 // Description: a page for a user who signed up with the e-mail/password flow
 // register their dating profile
+
+// todo: style with CSS to provide a cleaner look
+
 import React, { useEffect, useReducer, useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
-import firebase from 'firebase/compat/app';
+import { Link, useNavigate } from 'react-router-dom';
 import 'firebase/compat/auth';
 import 'firebase/compat/storage';
 import 'firebase/compat/firestore';
-import { useAuthState } from 'react-firebase-hooks/auth';
+import { useUser } from 'reactfire';
 import { withLayout } from '../wrappers/layout';
 import updateUserData from '../methods/updateUserData';
-import localStoreGet from '../methods/localStoreGet';
 
 // Document initial state
 const initialState = {
@@ -19,6 +20,9 @@ const initialState = {
   childStatus: '',
   education: '',
   ethnicity: '',
+  gender: '',
+  hairColor: '',
+  eyeColor: '',
   religion: '',
   smokingStatus: '',
 };
@@ -42,6 +46,12 @@ const reducer = (state, action) => {
       return { ...state, education: action.payload };
     case 'ethnicity':
       return { ...state, ethnicity: action.payload };
+    case 'hairColor':
+      return { ...state, hairColor: action.payload };
+    case 'eyeColor':
+      return { ...state, eyeColor: action.payload };
+    case 'gender':
+      return { ...state, gender: action.payload };
     default:
       throw new Error();
   }
@@ -50,16 +60,17 @@ const reducer = (state, action) => {
 // Page main function
 const ConfigureProfilePage = () => {
   const [userId, setUserId] = useState('');
-  const [user] = useAuthState(firebase.auth());
+  const { status, data: user } = useUser();
   const [state, dispatch] = useReducer(reducer, initialState);
   const [error, setError] = useState('');
-  const history = useHistory();
+  const navigate = useNavigate();
 
   // React UseEffect hook to capture firebase auth session
   useEffect(() => {
     // Once user session is available, pull userId from it
-    setUserId(user.uid);
-    console.log(userId);
+    if (user) {
+      setUserId(user.uid);
+    }
   }, [user]);
 
   // Link reducer to input
@@ -78,7 +89,7 @@ const ConfigureProfilePage = () => {
     // Submit data to update
     await updateUserData(userId, state);
     // once done, redirect user to discover page
-    history.push('/discover');
+    navigate('/discover');
   }
 
   // Page content - Allow the user to select and initiate a registration process
@@ -164,7 +175,7 @@ const ConfigureProfilePage = () => {
           {error && (
             <p className="text-red-500 font-bold text-base py-2 ">{error}</p>
           )}
-          {/*
+          {/* todo: add height
           1 education: '',
           2 ethnicity: '',
           3 astrologySign: '',
@@ -174,6 +185,68 @@ const ConfigureProfilePage = () => {
           7 smokingStatus: '',
           8 alchoholUse: '',
           */}
+          <label htmlFor="gender" className="sr-only font-bold text-base md:ml-1">
+            Gender
+          </label>
+          <select
+            id="gender"
+            name="gender"
+            autoComplete="gender"
+            required
+            onChange={handleOnChange}
+            value={state.gender}
+            className="my-5 appearance-none rounded-full relative block w-full py-3 px-4 font-bold border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 text-base"
+            placeholder="Name"
+          >
+            <option value="">Select your gender...</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Non-Binary/Other">Non-Binary/Other</option>
+            <option value="Decline to Specify">Decline to Specify</option>
+          </select>
+          <label htmlFor="hairColor" className="sr-only font-bold text-base md:ml-1">
+            Hair Color
+          </label>
+          <select
+            id="hairColor"
+            name="hairColor"
+            autoComplete="hairColor"
+            required
+            onChange={handleOnChange}
+            value={state.hairColor}
+            className="my-5 appearance-none rounded-full relative block w-full py-3 px-4 font-bold border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 text-base"
+            placeholder="Name"
+          >
+            <option value="">Select your hair color...</option>
+            <option value="Blond">Blond</option>
+            <option value="Brown">Brown</option>
+            <option value="Black">Black</option>
+            <option value="Red">Red</option>
+            <option value="Gray">Gray</option>
+            <option value="White">White</option>
+            <option value="Other">Other</option>
+            <option value="What Hair?">What Hair?</option>
+          </select>
+          <label htmlFor="eyeColor" className="sr-only font-bold text-base md:ml-1">
+            Eye Color
+          </label>
+          <select
+            id="eyeColor"
+            name="eyeColor"
+            autoComplete="eyeColor"
+            required
+            onChange={handleOnChange}
+            value={state.eyeColor}
+            className="my-5 appearance-none rounded-full relative block w-full py-3 px-4 font-bold border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 text-base"
+            placeholder="Name"
+          >
+            <option value="">Select your eye color...</option>
+            <option value="Blue">Blue</option>
+            <option value="Green">Green</option>
+            <option value="Hazel">Hazel</option>
+            <option value="Brown">Brown</option>
+            <option value="Other">Other</option>
+          </select>
           <label htmlFor="education" className="sr-only font-bold text-base md:ml-1">
             Education
           </label>

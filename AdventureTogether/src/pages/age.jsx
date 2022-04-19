@@ -1,5 +1,8 @@
+// Description: A page which requires a user to enter MM-DD-YYYY birthdate
+// and rejects navigation to registration if the user is younger than 18 years old
+
 import React, { useReducer } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import 'firebase/compat/auth';
 import 'firebase/compat/storage';
 import 'firebase/compat/firestore';
@@ -32,7 +35,7 @@ const reducer = (state, action) => {
 // Page main function
 const AgePage = () => {
   // Initialize history routing and reducer
-  const history = useHistory();
+  const navigate = useNavigate();
   const [state, dispatch] = useReducer(reducer, initialState);
 
   // Call in reducer to handle inputs
@@ -49,7 +52,7 @@ const AgePage = () => {
     evt.preventDefault();
     const bday = buildIsoDateString(state.month, state.day, state.year);
     localStorePut('localBirthdate', bday);
-    const t = (isOfAge(bday) === true) ? history.push('/signup') : history.push('/sorry');
+    const t = (isOfAge(bday) === true) ? navigate('/signup') : navigate('/sorry');
   };
 
   // Page content - Accepts input for the users MM, DD, and YYYY of birth

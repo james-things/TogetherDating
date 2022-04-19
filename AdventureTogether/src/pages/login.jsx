@@ -1,12 +1,11 @@
 // Description: A page which allows a user to log in to an existing account
+
 import React, {
-  useCallback, useEffect, useReducer, useState,
+  useEffect, useReducer, useState,
 } from 'react';
-import { Link, useHistory } from 'react-router-dom';
-import firebase from 'firebase/compat/app';
+import { Link, useNavigate } from 'react-router-dom';
 import 'firebase/compat/auth';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { FirebaseAuthConsumer } from '@react-firebase/auth';
+import { useAuth, useUser } from 'reactfire';
 import FirebaseUI from '../components/FirebaseUI';
 import { loginCometChatUser } from '../cometchat';
 import { withLayout } from '../wrappers/layout';
@@ -32,27 +31,21 @@ const reducer = (state, action) => {
 
 // Main func
 const LoginPage = () => {
-  let userId = useState('');
-  const [user] = useAuthState(firebase.auth());
+  const { status, data: user } = useUser();
+  const auth = useAuth();
+  const navigate = useNavigate();
+
   const [state, dispatch] = useReducer(reducer, initialState);
   const [error, setError] = useState('');
-  const history = useHistory();
-
-  // useCallback hook to log user into CometChat and redirect
-  // fires when userId reference changes
-  const doCometLoginOnce = useCallback(async () => {
-    await loginCometChatUser(userId);
-    history.push('/discover');
-  }, [userId]);
 
   // useEffect hook to catch firebase logged in state
   // this will fire when user is not null
-  useEffect(() => {
-    if (user) {
-      userId = user.uid;
-      doCometLoginOnce();
+  useEffect(async () => {
+    if (user?.uid) {
+      await loginCometChatUser(user?.uid);
+      navigate('/');
     }
-  }, [user]);
+  }, [user?.uid]);
 
   // Link reducer
   const handleOnChange = (evt) => {
@@ -67,8 +60,7 @@ const LoginPage = () => {
   const loginUser = async (evt) => {
     evt.preventDefault();
     try {
-      await firebase
-        .auth()
+      await auth
         .signInWithEmailAndPassword(state.email, state.password);
       // After this, the useEffect hook takes over
     } catch (err) {

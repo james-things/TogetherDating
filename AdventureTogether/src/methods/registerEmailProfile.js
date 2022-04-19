@@ -1,21 +1,27 @@
 // Description: An async function to create a dating profile for an email-registered user
+// refactored to firebase v9 code
+
 import React from 'react';
-import firebase from 'firebase/compat/app';
-import { useAuthState } from 'react-firebase-hooks/auth';
+import { doc, setDoc, getFirestore } from 'firebase/firestore';
+import {
+  getStorage, ref, uploadBytes, getDownloadURL,
+} from 'firebase/storage';
 import localStoreGet from './localStoreGet';
 import { loginCometChatUser, registerCometChatUser } from '../cometchat';
 
 export default async function registerEmailProfile(userId, imageState, nameState, descState) {
+  const db = getFirestore();
+  const storage = getStorage();
   // Prepare the profile data already collected
   const bDay = localStoreGet('localBirthdate');
-  const imageRef = firebase.storage().ref(`/profiles/${userId}`);
+  const imageRef = ref(storage, `/profiles/${userId}`);
 
-  await imageRef.put(imageState);
+  await uploadBytes(imageRef, imageState);
 
-  const imageUrl = await imageRef.getDownloadURL();
+  const imageUrl = await getDownloadURL(imageRef);
 
   // Await firebase profile storage
-  await firebase.firestore().collection('users').doc(userId).set({
+  await setDoc(doc(db, `users/${userId}`), ({
     name: nameState,
     description: descState,
     imageUrl,
@@ -39,7 +45,7 @@ export default async function registerEmailProfile(userId, imageState, nameState
     childStatus: '',
     astrologySign: '',
     id: userId,
-  })
+  }))
     .catch((err) => {
       console.log(`Unable to register user: ${err.message}`);
     });

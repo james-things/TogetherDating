@@ -1,17 +1,15 @@
 // Description: a page which informs the user they are not old enough to sign up with our service
+
 import React from 'react';
-import { Link, useHistory } from 'react-router-dom';
-import 'firebase/compat/auth';
-import 'firebase/compat/storage';
-import 'firebase/compat/firestore';
+import { Link, useNavigate } from 'react-router-dom';
 import { withLayout } from '../wrappers/layout';
 
 // Page main function
 const SorryPage = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const goHome = () => {
-    history.push('/');
+    navigate('/');
   };
 
   // Page content - Present information and link back to main page
