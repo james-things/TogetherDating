@@ -1,0 +1,13 @@
+body {
+    overflow: hidden;
+}
+
+.swipe {
+    position: absolute;
+    overflow: hidden; /* Hide scrollbars */
+    margin-top: -15%;
+}
+
+.swipe:last-of-type {
+
+}

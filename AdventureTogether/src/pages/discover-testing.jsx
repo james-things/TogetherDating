@@ -1,17 +1,19 @@
-// Description: A page which allows the user to browse potential matches
+// Description: A testing page which allows the user to browse potential matches
+// using the swipable card component PersonSlider-Testing
+
+// todo: delete this page when "PersonSlider V2" is finished
 
 import React, { useEffect, useState } from 'react';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
 import { Link } from 'react-router-dom';
-import PersonSlider from '../components/PersonSlider';
 import SideMatchList from '../components/SideMatchList';
 import { withLayout } from '../wrappers/layout';
 import machineLearningSort from '../methods/machineLearningSort';
-// import getImplicitInterests from '../methods/getImplicitInterests';
+import PersonSliderTesting from '../components/PersonSlider-Testing';
 
 // Page main function
-const DiscoverPage = () => {
+const DiscoverTestingPage = () => {
   const [persons, setPersons] = useState([]);
   const [loading, setLoading] = useState(true);
   const [sorting, setSort] = useState(true);
@@ -84,7 +86,7 @@ const DiscoverPage = () => {
         <section className="flex my-auto">
           {loading && <h3>Loading</h3>}
           {!loading
-            && <PersonSlider persons={persons} userId={id} />}
+            && <PersonSliderTesting persons={persons} userId={id} />}
           <Link to="/inbox" className="block md:hidden absolute shadow-3xl inset-0 top-auto font-bold text-white flex items-center justify-center uppercase p-4 h-12 bg-gradient-to-r from-pink-600 via-pink-600 to-yellow-500">Inbox</Link>
         </section>
       </div>
@@ -92,4 +94,4 @@ const DiscoverPage = () => {
   );
 };
 
-export default withLayout(DiscoverPage, { hideNavbar: true });
+export default withLayout(DiscoverTestingPage, { hideNavbar: true });
