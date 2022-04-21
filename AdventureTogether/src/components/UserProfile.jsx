@@ -18,7 +18,7 @@ export default function UserProfile({ userId }) {
   const { status, data: user } = useUser();
 
   // Set document reference using user session (currently using testing value)
-  const userRef = doc(useFirestore(), 'users/17aeqVDSRSd1Zf1tME57sIUAlwy2'); //  // `users/${userId}`
+  const userRef = doc(useFirestore(), `users/${userId}`);
 
   // Subscribe to referenced document
   const { refstatus, data } = useFirestoreDocData(userRef);

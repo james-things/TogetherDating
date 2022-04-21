@@ -4,7 +4,7 @@ import React, {
   useEffect, useReducer, useState,
 } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import 'firebase/compat/auth';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useAuth, useUser } from 'reactfire';
 import FirebaseUI from '../components/FirebaseUI';
 import { loginCometChatUser } from '../cometchat';
@@ -60,8 +60,7 @@ const LoginPage = () => {
   const loginUser = async (evt) => {
     evt.preventDefault();
     try {
-      await auth
-        .signInWithEmailAndPassword(state.email, state.password);
+      await signInWithEmailAndPassword(auth, state.email, state.password);
       // After this, the useEffect hook takes over
     } catch (err) {
       setError(err.message);
