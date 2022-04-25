@@ -8,7 +8,6 @@ const withLayout = (
   { hideNavbar = false, bgImage = false } = {},
 ) => (props) => (
   <>
-    {!hideNavbar && <Navbar />}
     <main className="bg-gray-100">
       <div
         style={{
@@ -16,8 +15,10 @@ const withLayout = (
         }}
         className="w-full min-h-screen bg-no-repeat bg-cover bg-center flex justify-center items-center"
       >
-        {bgImage && (
-          <div className="absolute inset-0 bg-black opacity-25 h-full flex flex-col z-0" />
+        {!hideNavbar && (
+          <div className="absolute inset-0 flex flex-col z-0">
+            <Navbar />
+          </div>
         )}
         <div className="z-10">
           <BaseComponent {...props} />
