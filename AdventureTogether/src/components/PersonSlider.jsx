@@ -226,8 +226,8 @@ const PersonSlider = ({ persons, userId }) => {
       {!loading && currentIndex === -1 && <p>No more people to match with.</p>}
       {!loading && currentIndex >= 0
         && (
-          <div className="grid grid-rows-2 items-center">
-            <div className="flex flex-col">
+          <div className="">
+            <div className="">
               {personsArray.map((person, index) => (
                 <div key={person.id.slice(0, -5)}>
                   <TinderCard
@@ -239,13 +239,15 @@ const PersonSlider = ({ persons, userId }) => {
                     preventSwipe="up down"
                   >
                     <div
-                      className="group relative rounded-lg overflow-hidden w-72 h-96 bg-cover bg-center bg-no-repeat"
+                      className="group relative rounded-lg overflow-hidden w-96 h-144 bg-cover bg-center bg-no-repeat"
                       style={{
                         backgroundImage: `url(${person.imageUrl})`,
                       }}
                     >
-                      <div className="absolute inset-0 top-auto bg-gradient-to-t from-black opacity-75 h-1/4 group-hover:h-full group-hover:bg-gradient-to-b transition-all duration-500" />
-                      <p className="absolute bottom-0 group-hover:top-0 m-4 pb-0 md:pb-5 text-white text-lg font-bold transition-all">{person.name}</p>
+                      <p className="absolute bottom-12 group-hover:top-0 m-4 pb-0 text-white text-lg font-bold transition-all">{person.name}</p>
+                      <p className="hidden md:block absolute bottom-6 group-hover:top-0 m-4 pt-6 pr-8 text-white text-md truncate group-hover:whitespace-normal transition-all w-full">
+                        {`Age: ${getAge(currentPerson.birthdate)}`}
+                      </p>
                       <p className="hidden md:block absolute bottom-0 group-hover:top-0 m-4 pt-6 pr-8 text-white text-md truncate group-hover:whitespace-normal transition-all w-full">{person.description}</p>
                     </div>
                     <p className="block md:hidden text-gray-500 my-2 text-center">{person.description}</p>
@@ -253,36 +255,38 @@ const PersonSlider = ({ persons, userId }) => {
                 </div>
               ))}
             </div>
-            <div className="flex flex-col items-center topCard">
-              <div className="actionButtons flex justify-around w-4/5">
+            <div className="top-card-info align-middle w-96">
+              <div className="action-buttons w-full">
                 <ActionButton action="back" />
                 <ActionButton action="dislike" />
                 <ActionButton action="like" />
                 <ActionButton action="skip" />
               </div>
-              {`Name: ${currentPerson.name}`}
-              <br />
-              {`Common Interests: ${(sharedInterests.length > 0) ? sharedInterests : 'The Great Outdoors'}`}
-              <br />
-              {`Eye Color: ${currentPerson.eyeColor}`}
-              <br />
-              {`Hair Color: ${currentPerson.hairColor}`}
-              <br />
-              {`Height: ${currentPerson.height}`}
-              <br />
-              {`Ethnicity: ${currentPerson.ethnicity}`}
-              <br />
-              {`Sign: ${currentPerson.astrologySign}`}
-              <br />
-              {`Gender: ${currentPerson.gender}`}
-              <br />
-              {`Age: ${getAge(currentPerson.birthdate)}`}
-              <br />
-              {`Kids?: ${currentPerson.childStatus}`}
-              <br />
-              {`Drinking: ${currentPerson.alcoholUse}`}
-              <br />
-              {`Smoking: ${currentPerson.smoking}`}
+              <div className="top-card-info-text text-left bg-white border-black border-2">
+                {`Name: ${currentPerson.name}`}
+                <br />
+                {`Common Interests: ${(sharedInterests.length > 0) ? sharedInterests : 'The Great Outdoors'}`}
+                <br />
+                {`Eye Color: ${currentPerson.eyeColor}`}
+                <br />
+                {`Hair Color: ${currentPerson.hairColor}`}
+                <br />
+                {`Height: ${currentPerson.height}`}
+                <br />
+                {`Ethnicity: ${currentPerson.ethnicity}`}
+                <br />
+                {`Sign: ${currentPerson.astrologySign}`}
+                <br />
+                {`Gender: ${currentPerson.gender}`}
+                <br />
+                {`Age: ${getAge(currentPerson.birthdate)}`}
+                <br />
+                {`Kids?: ${currentPerson.childStatus}`}
+                <br />
+                {`Drinking: ${currentPerson.alcoholUse}`}
+                <br />
+                {`Smoking: ${currentPerson.smoking}`}
+              </div>
             </div>
           </div>
         )}

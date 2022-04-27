@@ -102,7 +102,7 @@ const DiscoverPage = () => {
           {!loading
             // eslint-disable-next-line react/jsx-no-bind,max-len
             && <PersonSlider persons={persons} userId={id} />}
-          <Link to="/inbox" className="block md:hidden absolute shadow-3xl inset-0 top-auto font-bold text-white flex items-center justify-center uppercase p-4 h-12 bg-gradient-to-r from-pink-600 via-pink-600 to-yellow-500">Inbox</Link>
+          <Link to="/inbox" className="block absolute shadow-3xl inset-0 top-auto font-bold text-white flex items-center justify-center uppercase p-4 h-12 bg-gradient-to-r from-pink-600 via-pink-600 to-yellow-500">Inbox</Link>
         </section>
       </div>
     </div>
