@@ -5,20 +5,22 @@
 //  successful retrieval from firebase, then build remaining features. this is the most
 //  incomplete component currently.
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useFirestore, useFirestoreDocData, useUser } from 'reactfire';
-import { doc, getDoc, getFirestore } from 'firebase/firestore';
+import {
+  doc, getDoc, getFirestore,
+} from 'firebase/firestore';
 
 export default function FriendsList({ userId }) {
-  // Define array constants
+  const [loading, setLoading] = useState(true);
+  const myInterests = [];
   const friendIds = [];
-  const friends = [];
+
+  // Define array constants
+  const [friends, setFriends] = useState([]);
 
   // Get firestore
   const db = getFirestore();
-
-  // Subscribe to user session
-  const { status, data: user } = useUser();
 
   // Subscribe to document associated with user session (passed as props)
   // 'users/17aeqVDSRSd1Zf1tME57sIUAlwy2' // `users/${user?.uid}` // (test strings)
@@ -26,36 +28,61 @@ export default function FriendsList({ userId }) {
   const { refstatus, data } = useFirestoreDocData(userRef);
 
   // If there is an error, it will end up status
-  if (status === 'error' || refstatus === 'error') {
+  if (refstatus === 'error' || refstatus === 'error') {
     return <span>Error Loading Projects.</span>;
   }
 
   // If we are still waiting on data, that will be in status too
-  if (status === 'loading' || refstatus === 'loading') {
+  if (refstatus === 'loading' || refstatus === 'loading') {
     return <span>Loading...</span>;
   }
 
-  // Build a list of friends and obtain their documents
-  // todo: figure out why friends object wont appear in component below
-  if (data) {
-    data.likes.map((match) => friendIds.push(match)); // this works
+  // for each friend, fetch their data and shared interests and build a list
+  function fetchFriendDetails() {
     friendIds.forEach(async (id) => {
-      console.log(id); // working through here
-      const docRef = doc(db, `users/${id}`); // this works
-      const docSnap = await getDoc(docRef); // this code is from firebase documentation
-      friends.push(docSnap.data()); // <-- problem might be here
-      console.log('Friends Log:');
-      console.log(friends); // this is a problem maybe bc nested array into array?
+      const sharedInterests = [];
+      const docRef = doc(db, `users/${id}`);
+      const curFriend = await getDoc(docRef);
+      const friendInterests = curFriend.data().outdoorActivities;
+
+      myInterests.forEach((interest) => {
+        friendInterests.forEach((friendInterest) => {
+          if (interest === friendInterest) sharedInterests.push(friendInterest);
+        });
+      });
+
+      const friendInfo = {
+        name: curFriend.data().name,
+        id: curFriend.data().id,
+        image: curFriend.data().imageUrl,
+        sharedInterests,
+      };
+
+      setFriends((oldFriends) => [friendInfo, ...oldFriends]);
+      console.log(`added person: \n name: ${friendInfo.name} \n sharedInterests: ${friendInfo.sharedInterests} \n imageRef: ${friendInfo.image}`);
     });
   }
 
-  // If it is a timing issue, useEffect may be the solution
-  // useEffect(() => {}, [friends]);
+  // will clean this up after further testing
+  useEffect(() => {
+    // handle early potential early firing of useEffect
+    if (refstatus === 'error' || refstatus === 'loading') {
+      console.log('handled early firing of useEffect!');
+    } else if (data && friends.length === 0) {
+      // Build a list of friends and obtain their documents
+      // todo: perform additional testing to confirm timings work as expected
+      const temp = data.outdoorActivities;
+      temp.forEach((i) => myInterests.push(i));
+      data.likes.map((match) => friendIds.push(match)); // this works
+      fetchFriendDetails();
+    }
+    if (friends.length > 0) setLoading(false);
+  }, [data]);
 
   // Just some testing stuff for now
   return (
     <pre>
-      {(data) && (friends.length > 0)
+      {(!!loading) && (data) && (friends.length > 0)
         && (
           <div className="container mx-auto">
             <div className="grid grid-cols-4 font-sans">
@@ -75,11 +102,28 @@ export default function FriendsList({ userId }) {
                   {data.name}
                 </div>
               </div>
+              <div className="font-medium cols-auto">
+                Friends:
+                {' '}
+                {friends.map((friend) => (
+                  <div key={friend.id}>
+                    <div className="">
+                      {friend.name}
+                    </div>
+                    <div className="">
+                      {friend.sharedInterests}
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
             <div>
-              Friends:
-              {' '}
-              {(JSON.stringify(friends))}
+              <button
+                type="button"
+                className="w-full bg-gradient-to-r from-pink-600 to-yellow-500 rounded-full hover:bg-gray-200 py-4 px-16 block whitespace-no-wrap text-white font-bold uppercase"
+              >
+                Print Stuff
+              </button>
             </div>
           </div>
         )}
