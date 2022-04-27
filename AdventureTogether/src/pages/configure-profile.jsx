@@ -89,7 +89,7 @@ const ConfigureProfilePage = () => {
     // Submit data to update
     await updateUserData(userId, state);
     // once done, redirect user to discover page
-    navigate('/discover');
+    navigate('/outdoor-interests');
   }
 
   // Page content - Allow the user to select and initiate a registration process

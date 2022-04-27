@@ -76,7 +76,7 @@ const OutdoorInterestsPage = () => {
     // Submit data to update
     await updateUserData(user?.uid, state);
     // once done, redirect user to discover page
-    navigate('/discover');
+    navigate('/configure-profile');
   }
 
   // Page content - Allow the user to select and initiate a registration process
