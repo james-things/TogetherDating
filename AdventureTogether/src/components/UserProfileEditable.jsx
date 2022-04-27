@@ -124,46 +124,169 @@ export default function UserProfileEditable({ userId }) {
     <pre>
       {(data)
         && (
-          <div className="container mx-auto">
+          <div className="container">
             <button
               type="button"
-              className="uppercase p-4 h-12 bg-white"
+              className="font-sans p-4 h-12 bg-white"
               onClick={() => toggleEditable()}
             >
               Edit Profile
               <img className="icon-edit" src={editIcon} alt="edit" />
             </button>
-            <div className="grid grid-cols-4 font-sans">
+            <div className="grid grid-cols-4 gap-x-5 font-sans">
               {/* above this */}
-              <div className="flex items-stretch justify-center">
-                <div className="col-span-1 self-center">
-                  <img
-                    className="self-auto rounded-full"
-                    width="150"
-                    src={data.imageUrl}
-                    alt="User Profile Pic"
-                  />
-                </div>
+              <div className="items-stretch justify-center col-span-1 self-center">
+                <img
+                  className="self-auto rounded-full"
+                  width="150"
+                  src={data.imageUrl}
+                  alt="User Profile Pic"
+                />
               </div>
               <div className="col-span-3 self-center">
                 <div className="text-center text-4xl">
                   {data.name}
                 </div>
               </div>
-              <div className="text-left col-span-1 text-xl h-8">
-                <u>Age:</u>
-              </div>
-              <div className="text-left col-span-1 text-xl h-8">
-                {(editState.editable === false) && getAge(data.birthdate)}
-                {(editState.editable === true)
+              <div className="col-span-2">
+                <div className="col-span-2">
+                  <div className="text-left text-xl h-8">
+                    <u>Age:</u>
+                  </div>
+                  <div className="text-left text-xl h-8">
+                    {(editState.editable === false) && getAge(data.birthdate)}
+                    {(editState.editable === true)
                   && ('We keep this current!')}
+                  </div>
+                  <div className="text-left text-xl h-8">
+                    <u>
+                      Gender:
+                    </u>
+                  </div>
+                  <div className="text-left text-xl h-8">
+                    {(editState.editable === false) && data.gender}
+                    {(editState.editable === true)
+                      && (
+                        <select
+                          id="gender"
+                          name="gender"
+                          autoComplete="gender"
+                          required
+                          onChange={handleOnChange}
+                          value={state.gender}
+                          className="h-8 text-xs appearance-none rounded-full relative block w-full px-4 border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 text-base"
+                          placeholder="Name"
+                        >
+                          <option value={data.gender}>Keep as-is</option>
+                          <option value="Male">Male</option>
+                          <option value="Female">Female</option>
+                          <option value="Non-Binary/Other">Non-Binary/Other</option>
+                          <option value="Decline to Specify">Decline to Specify</option>
+                        </select>
+                      )}
+                  </div>
+                  <div className="text-left text-xl h-8">
+                    <u>Height:</u>
+                  </div>
+                  <div className="text-left text-xl h-8">
+                    {(editState.editable === false) && `${heightFeet}' ${heightInches}"`}
+                    {(editState.editable === true)
+                      && ('You cant edit height yet :(')}
+                  </div>
+                  <div className="text-left text-xl h-8">
+                    <u>Body Type:</u>
+                  </div>
+                  <div className="text-left text-xl h-8">
+                    {(editState.editable === false) && data.bodyType}
+                    {(editState.editable === true)
+                      && (
+                        <select
+                          id="bodyType"
+                          name="bodyType"
+                          autoComplete="bodyType"
+                          required
+                          onChange={handleOnChange}
+                          value={state.bodyType}
+                          className="h-8 text-xs appearance-none rounded-full relative block w-full px-4 border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 text-base"
+                          placeholder="bodyType"
+                        >
+                          <option value={data.bodyType}>Keep as-is</option>
+                          <option value="Athletic">Athletic</option>
+                          <option value="Average">Average</option>
+                          <option value="Curvy">Curvy</option>
+                          <option value="Muscular">Muscular</option>
+                          <option value="Relaxed">Relaxed</option>
+                          <option value="Slim">Slim</option>
+                          <option value="Solid">Solid</option>
+
+                        </select>
+                      )}
+                  </div>
+                  <div className="text-left text-xl h-8">
+                    <u>Religion:</u>
+                  </div>
+                  <div className="text-left text-xl h-8">
+                    {(editState.editable === false) && data.religion}
+                    {(editState.editable === true)
+                      && (
+                        <select
+                          id="religion"
+                          name="religion"
+                          autoComplete="religion"
+                          required
+                          onChange={handleOnChange}
+                          value={state.religion}
+                          className="h-8 text-xs appearance-none rounded-full relative block w-full px-4 border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 text-base"
+                          placeholder="religion"
+                        >
+                          <option value={data.religion}>Keep as-is</option>
+                          <option value="Christian">Christian</option>
+                          <option value="Muslim">Muslim</option>
+                          <option value="Hindi">Hindi</option>
+                          <option value="Buddhist">Buddhist</option>
+                          <option value="Non-dogmatic">Non-dogmatic</option>
+                          <option value="Other">Other</option>
+                        </select>
+                      )}
+                  </div>
+                  <div className="text-left text-xl h-8">
+                    <u>Ethnicity:</u>
+                  </div>
+                  <div className="text-left text-xl h-8">
+                    {(editState.editable === false) && data.ethnicity}
+                    {(editState.editable === true)
+                      && (
+                        <select
+                          id="ethnicity"
+                          name="ethnicity"
+                          autoComplete="ethnicity"
+                          required
+                          onChange={handleOnChange}
+                          value={state.ethnicity}
+                          className="h-8 text-xs appearance-none rounded-full relative block w-full px-4 border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 text-base"
+                          placeholder="Ethnicity"
+                        >
+                          <option value={data.ethnicity}>Keep as-is</option>
+                          <option value="American Indian">American Indian</option>
+                          <option value="Asian">Asian</option>
+                          <option value="Black">Black</option>
+                          <option value="Hispanic">Hispanic</option>
+                          <option value="Middle Eastern">Middle Eastern, Indian</option>
+                          <option value="Pacific Islander">Pacific Islander, Hawaiian</option>
+                          <option value="White">White</option>
+                        </select>
+                      )}
+                  </div>
+                </div>
               </div>
-              <div className="text-left col-span-1 text-xl h-8">
-                <u>Hair Color:</u>
-              </div>
-              <div className="text-left col-span-1 text-xl h-8">
-                {(editState.editable === false) && data.hairColor}
-                {(editState.editable === true)
+              <div className="col-span-2">
+                <div className="col-span-2">
+                  <div className="text-left text-xl h-8">
+                    <u>Hair Color:</u>
+                  </div>
+                  <div className="text-left text-xl h-8">
+                    {(editState.editable === false) && data.hairColor}
+                    {(editState.editable === true)
                   && (
                   <select
                     id="hairColor"
@@ -172,7 +295,7 @@ export default function UserProfileEditable({ userId }) {
                     required
                     onChange={handleOnChange}
                     value={state.hairColor}
-                    className="profileSelect my-5 appearance-none rounded-full relative block w-full py-3 px-4 font-bold border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 text-base"
+                    className="h-8 text-xs appearance-none rounded-full relative block w-full px-4 border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 text-base"
                     placeholder="Name"
                   >
                     <option value={data.hairColor}>Keep as-is</option>
@@ -186,40 +309,13 @@ export default function UserProfileEditable({ userId }) {
                     <option value="What Hair?">What Hair?</option>
                   </select>
                   )}
-              </div>
-              <div className="text-left col-span-1 text-xl h-8">
-                <u>
-                  Gender:
-                </u>
-              </div>
-              <div className="text-left col-span-1 text-xl h-8">
-                {(editState.editable === false) && data.gender}
-                {(editState.editable === true)
-                  && (
-                    <select
-                      id="gender"
-                      name="gender"
-                      autoComplete="gender"
-                      required
-                      onChange={handleOnChange}
-                      value={state.gender}
-                      className="profileSelect my-5 appearance-none rounded-full relative block w-full py-3 px-4 font-bold border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 text-base"
-                      placeholder="Name"
-                    >
-                      <option value={data.gender}>Keep as-is</option>
-                      <option value="Male">Male</option>
-                      <option value="Female">Female</option>
-                      <option value="Non-Binary/Other">Non-Binary/Other</option>
-                      <option value="Decline to Specify">Decline to Specify</option>
-                    </select>
-                  )}
-              </div>
-              <div className="text-left col-span-1 text-xl h-8">
-                <u>Eye Color:</u>
-              </div>
-              <div className="text-left col-span-1 text-xl h-8">
-                {(editState.editable === false) && data.eyeColor}
-                {(editState.editable === true)
+                  </div>
+                  <div className="text-left text-xl h-8">
+                    <u>Eye Color:</u>
+                  </div>
+                  <div className="text-left text-xl h-8">
+                    {(editState.editable === false) && data.eyeColor}
+                    {(editState.editable === true)
                   && (
                   <select
                     id="eyeColor"
@@ -228,7 +324,7 @@ export default function UserProfileEditable({ userId }) {
                     required
                     onChange={handleOnChange}
                     value={state.eyeColor}
-                    className="profileSelect my-5 appearance-none rounded-full relative block w-full py-3 px-4 border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 text-base"
+                    className="h-8 text-xs appearance-none rounded-full relative block w-full px-4 border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 text-base"
                     placeholder="Name"
                   >
                     <option value={data.eyeColor}>Keep as-is</option>
@@ -239,21 +335,13 @@ export default function UserProfileEditable({ userId }) {
                     <option value="Other">Other</option>
                   </select>
                   )}
-              </div>
-              <div className="text-left col-span-1 text-xl h-8">
-                <u>Height:</u>
-              </div>
-              <div className="text-left col-span-1 text-xl h-8">
-                {(editState.editable === false) && `${heightFeet}' ${heightInches}"`}
-                {(editState.editable === true)
-                  && ('You cant edit height yet :(')}
-              </div>
-              <div className="text-left col-span-1 text-xl h-8">
-                <u>Zodiac Sign:</u>
-              </div>
-              <div className="text-left col-span-1 text-xl h-8">
-                {(editState.editable === false) && data.astrologySign}
-                {(editState.editable === true)
+                  </div>
+                  <div className="text-left text-xl h-8">
+                    <u>Zodiac Sign:</u>
+                  </div>
+                  <div className="text-left text-xl h-8">
+                    {(editState.editable === false) && data.astrologySign}
+                    {(editState.editable === true)
                   && (
                   <select
                     id="astrologySign"
@@ -262,7 +350,7 @@ export default function UserProfileEditable({ userId }) {
                     required
                     onChange={handleOnChange}
                     value={state.astrologySign}
-                    className="profileSelect my-5 appearance-none rounded-full relative block w-full py-3 px-4 font-bold border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 text-base"
+                    className="h-8 text-xs appearance-none rounded-full relative block w-full px-4 border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 text-base"
                     placeholder="astrologySign"
                   >
                     <option value={data.astrologySign}>Keep as-is</option>
@@ -280,42 +368,13 @@ export default function UserProfileEditable({ userId }) {
                     <option value="Pisces">Pisces</option>
                   </select>
                   )}
-              </div>
-              <div className="text-left col-span-1 text-xl h-8">
-                <u>Body Type:</u>
-              </div>
-              <div className="text-left col-span-1 text-xl h-8">
-                {(editState.editable === false) && data.bodyType}
-                {(editState.editable === true)
-                  && (
-                  <select
-                    id="bodyType"
-                    name="bodyType"
-                    autoComplete="bodyType"
-                    required
-                    onChange={handleOnChange}
-                    value={state.bodyType}
-                    className="profileSelect my-5 appearance-none rounded-full relative block w-full py-3 px-4 font-bold border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 text-base"
-                    placeholder="bodyType"
-                  >
-                    <option value={data.bodyType}>Keep as-is</option>
-                    <option value="Athletic">Athletic</option>
-                    <option value="Average">Average</option>
-                    <option value="Curvy">Curvy</option>
-                    <option value="Muscular">Muscular</option>
-                    <option value="Relaxed">Relaxed</option>
-                    <option value="Slim">Slim</option>
-                    <option value="Solid">Solid</option>
-
-                  </select>
-                  )}
-              </div>
-              <div className="text-left col-span-1 text-xl h-8">
-                <u>Parental Status:</u>
-              </div>
-              <div className="text-left col-span-1 text-xl h-8">
-                {(editState.editable === false) && data.childStatus}
-                {(editState.editable === true)
+                  </div>
+                  <div className="text-left text-xl h-8">
+                    <u>Parental Status:</u>
+                  </div>
+                  <div className="text-left text-xl h-8">
+                    {(editState.editable === false) && data.childStatus}
+                    {(editState.editable === true)
                   && (
                   <select
                     id="childStatus"
@@ -324,7 +383,7 @@ export default function UserProfileEditable({ userId }) {
                     required
                     onChange={handleOnChange}
                     value={state.childStatus}
-                    className="profileSelect my-5 appearance-none rounded-full relative block w-full py-3 px-4 font-bold border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 text-base"
+                    className="h-8 text-xs appearance-none rounded-full relative block w-full px-4 border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 text-base"
                     placeholder="Child Status"
                   >
                     <option value={data.childStatus}>Keep as-is</option>
@@ -336,40 +395,13 @@ export default function UserProfileEditable({ userId }) {
                     <option value="Done with Parenting">Done with Parenting</option>
                   </select>
                   )}
-              </div>
-              <div className="text-left col-span-1 text-xl h-8">
-                <u>Religion:</u>
-              </div>
-              <div className="text-left col-span-1 text-xl h-8">
-                {(editState.editable === false) && data.religion}
-                {(editState.editable === true)
-                  && (
-                  <select
-                    id="religion"
-                    name="religion"
-                    autoComplete="religion"
-                    required
-                    onChange={handleOnChange}
-                    value={state.religion}
-                    className="profileSelect my-5 appearance-none rounded-full relative block w-full py-3 px-4 font-bold border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 text-base"
-                    placeholder="religion"
-                  >
-                    <option value={data.religion}>Keep as-is</option>
-                    <option value="Christian">Christian</option>
-                    <option value="Muslim">Muslim</option>
-                    <option value="Hindi">Hindi</option>
-                    <option value="Buddhist">Buddhist</option>
-                    <option value="Non-dogmatic">Non-dogmatic</option>
-                    <option value="Other">Other</option>
-                  </select>
-                  )}
-              </div>
-              <div className="text-left col-span-1 text-xl h-8">
-                <u>Tobacco Use:</u>
-              </div>
-              <div className="text-left col-span-1 text-xl h-8">
-                {(editState.editable === false) && data.smoking}
-                {(editState.editable === true)
+                  </div>
+                  <div className="text-left text-xl h-8">
+                    <u>Tobacco Use:</u>
+                  </div>
+                  <div className="text-left text-xl h-8">
+                    {(editState.editable === false) && data.smoking}
+                    {(editState.editable === true)
                   && (
                   <select
                     id="smokingStatus"
@@ -378,7 +410,7 @@ export default function UserProfileEditable({ userId }) {
                     required
                     onChange={handleOnChange}
                     value={state.smoking}
-                    className="profileSelect my-5 appearance-none rounded-full relative block w-full py-3 px-4 font-bold border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 text-base"
+                    className="h-8 text-xs appearance-none rounded-full relative block w-full px-4 border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 text-base"
                     placeholder="NameSmokingStatus"
                   >
                     <option value={data.smoking}>Keep as-is</option>
@@ -387,41 +419,13 @@ export default function UserProfileEditable({ userId }) {
                     <option value="Quitting">Quitting</option>
                   </select>
                   )}
-              </div>
-              <div className="text-left col-span-1 text-xl h-8">
-                <u>Ethnicity:</u>
-              </div>
-              <div className="text-left col-span-1 text-xl h-8">
-                {(editState.editable === false) && data.ethnicity}
-                {(editState.editable === true)
-                  && (
-                  <select
-                    id="ethnicity"
-                    name="ethnicity"
-                    autoComplete="ethnicity"
-                    required
-                    onChange={handleOnChange}
-                    value={state.ethnicity}
-                    className="profileSelect my-5 appearance-none rounded-full relative block w-full py-3 px-4 font-bold border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 text-base"
-                    placeholder="Ethnicity"
-                  >
-                    <option value={data.ethnicity}>Keep as-is</option>
-                    <option value="American Indian">American Indian</option>
-                    <option value="Asian">Asian</option>
-                    <option value="Black">Black</option>
-                    <option value="Hispanic">Hispanic</option>
-                    <option value="Middle Eastern">Middle Eastern, Indian</option>
-                    <option value="Pacific Islander">Pacific Islander, Hawaiian</option>
-                    <option value="White">White</option>
-                  </select>
-                  )}
-              </div>
-              <div className="text-left col-span-1 text-xl h-8">
-                <u>Alcohol Use:</u>
-              </div>
-              <div className="text-left col-span-1 text-xl h-8">
-                {(editState.editable === false) && data.alcoholUse}
-                {(editState.editable === true)
+                  </div>
+                  <div className="text-left text-xl h-8">
+                    <u>Alcohol Use:</u>
+                  </div>
+                  <div className="text-left text-xl h-8">
+                    {(editState.editable === false) && data.alcoholUse}
+                    {(editState.editable === true)
                   && (
                   <select
                     id="alcoholUse"
@@ -430,7 +434,7 @@ export default function UserProfileEditable({ userId }) {
                     required
                     onChange={handleOnChange}
                     value={state.alcoholUse}
-                    className="profileSelect my-5 appearance-none rounded-full relative block w-full py-3 px-4 font-bold border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 text-base"
+                    className="h-8 text-xs appearance-none rounded-full relative block w-full px-4 border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 text-base"
                     placeholder="AlcoholUse"
                   >
                     <option value={data.alcoholUse}>Keep as-is</option>
@@ -443,36 +447,33 @@ export default function UserProfileEditable({ userId }) {
                     <option value="Heavy">Heavy</option>
                   </select>
                   )}
+                  </div>
+                </div>
+              </div>
+              <div className="col-span-4">
+                <div className="py-5">
+                  {(editState.editable === true)
+                    && (
+                    <button
+                      type="button"
+                      className="uppercase w-40 h-12 right-0 bg-blue-600 text-white rounded-full"
+                      onClick={() => handleConfirmButton()}
+                    >
+                      Confirm
+                    </button>
+                    )}
+                  {(editState.editable === false)
+                    && (
+                      <button
+                        type="button"
+                        className="uppercase w-40 h-12 right-0 bg-white text-white rounded-full"
+                      >
+                        Confirm
+                      </button>
+                    )}
+                </div>
               </div>
             </div>
-            {/*
-            something like:
-            map editable states and for editable:true display
-            popover for that editable...should only ever be one at one time
-            */}
-            {(editState.editable === true)
-              && (
-                <button
-                  type="button"
-                  className="uppercase p-4 h-12 bg-blue-600 text-white"
-                  onClick={() => handleConfirmButton()}
-                >
-                  Confirm
-                </button>
-              )}
-            {/*
-            <div>
-              Outdoor Interests:
-              {' '}
-              {JSON.stringify(data.outdoorActivities)}
-            </div>
-
-            <div>
-              Matches (UIDs):
-              {' '}
-              {JSON.stringify(data.matches)}
-            </div>
-            */}
           </div>
         )}
     </pre>

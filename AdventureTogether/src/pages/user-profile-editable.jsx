@@ -65,10 +65,6 @@ function UserProfileEditablePage() {
       </div>
       <div className="text-center w-full divide-y-2 divide-gray-100 divide-solid">
         {(user) && <UserProfileEditable userId={user?.uid} />}
-        <div className="py-4">
-          <div className="flex justify-between items-center"> </div>
-        </div>
-        {(user) && user?.uid}
       </div>
     </div>
   );
