@@ -1,13 +1,16 @@
-body {
-    overflow: hidden;
-}
-
 .swipe {
     position: absolute;
-    overflow: hidden; /* Hide scrollbars */
-    margin-top: -15%;
+    /* overflow: hidden;  Hide scrollbars */
+    margin-left: -8em;
+    margin-top: -16em;
 }
 
 .swipe:last-of-type {
 
 }
+
+.topCard {
+    margin-top: 10em;
+    margin-left: -8em;
+}
+

@@ -20,7 +20,7 @@ export default function LocalStoreManager(props) {
       const userArray = { user };
       const userId = userArray.user.uid;
       localStorage.setItem('uid', userId);
-      console.log(`Current UID: ${userId}`);
+      // console.log(`Current UID: ${userId}`);
       if (data) {
         localStorage.setItem('user', JSON.stringify(data));
         localStorage.setItem('userName', data.name);

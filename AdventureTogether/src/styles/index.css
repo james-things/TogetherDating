@@ -29,3 +29,19 @@ code {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+[class^="icon"] {
+  width: 15px;
+  height: 15px;
+  position: relative;
+  top: -25px;
+  right: 15px;
+  margin-right: 0px;
+  fill: #fff;
+}
+
+[class^="profileSelect"] {
+  top: -20px;
+  height: 28px;
+  right: 15px;
+}

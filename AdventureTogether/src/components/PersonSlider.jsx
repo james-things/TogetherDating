@@ -1,72 +1,99 @@
-/* eslint-disable jsx-a11y/control-has-associated-label */
+/* eslint-disable jsx-a11y/control-has-associated-label, max-len */
 
-// Description: a component which builds and displays a stack of persons (firebase v8 compat page)
-// A possible implementation of tinder-like card swiping is explored here, but the implementation
-// which appears in PersonSlider-Testing is more viable and should replace this one when completed
+// Description: A WIP tinder-like stack of swipeable cards which triggers like/dislike actions
 
-// Note: it is simple to revert this page to non-swipeable if needed
+// todo: style per figma diagram
 
-import React, { useState } from 'react';
+import React, {
+  useEffect, useMemo, useRef, useState,
+} from 'react';
 import firebase from 'firebase/compat/app';
+import TinderCard from 'react-tinder-card';
 import 'firebase/compat/firestore';
-import ReactSwing from 'react-swing';
+
+import { doc } from 'firebase/firestore';
+import { useFirestore, useFirestoreDocData } from 'reactfire';
 import { sendCometChatMessage } from '../cometchat';
 
-const initialState = {
-  stack: null,
-};
+import '../styles/tindercard.css';
+import skip from '../icons/skip.svg';
+import back from '../icons/back.svg';
+import getAge from '../methods/getAge';
 
 // Component main function
-export default function PersonSlider({ persons, userId }) {
-  const [personsArray, setPersonsArray] = useState(persons);
-  const [stack, setStack] = useState(initialState);
-  const stackEl = React.createRef();
+const PersonSlider = ({ persons, userId }) => {
+  function componentWillUnmount() { window.console.log('leaving discover'); }
 
-  function throwCard() {
-    const targetEl = stackEl.current.childElements[1];
+  let ratedUid;
+  let shouldRate = true;
 
-    if (targetEl && targetEl.current) {
-      // stack.getCard
-      const card = stack.getCard(targetEl.current);
+  // Subscribe to user document
+  const userRef = doc(useFirestore(), `users/${userId}`);
+  const { refstatus, data } = useFirestoreDocData(userRef);
 
-      console.log('card', card);
+  // Various states
+  const [personsArray, setPersonsArray] = useState(persons); // array of people from matching algo
+  const [currentIndex, setCurrentIndex] = useState(personsArray.length - 1); // index of current person
+  const [lastDirection, setLastDirection] = useState(); // last card direction
+  const [sharedInterests, setSharedInterests] = useState([]); // temporary state storage for shared interests
+  const [myInterests, setMyInterests] = useState([]); // interests of current logged in user
+  const [loading, setLoading] = useState(true); // loading state of component
 
-      // throwOut method call
-      card.throwOut(100, 200, ReactSwing.DIRECTION.RIGHT);
-    }
-  }
+  // Used for outOfFrame closure
+  const currentIndexRef = useRef(currentIndex);
+  let currentPerson = persons[currentIndex];
+
+  // Maintain references for card stack
+  const childRefs = useMemo(
+    () => Array(personsArray.length)
+      .fill(0)
+      .map((i) => React.createRef()),
+    [],
+  );
+
+  // Boolean can-do deck action checks
+  const canGoBack = currentIndex < personsArray.length - 1;
+  const canSwipe = currentIndex >= 0;
 
   // Buttons for actions
   const BUTTON_ICONS = {
     dislike: (<svg width="20" height="20" viewBox="0 0 24 24"><path d="M24 20.188l-8.315-8.209 8.2-8.282-3.697-3.697-8.212 8.318-8.31-8.203-3.666 3.666 8.321 8.24-8.206 8.313 3.666 3.666 8.237-8.318 8.285 8.203z" fill="#E72570" /></svg>),
     like: (<svg width="24" height="24" viewBox="0 0 24 24"><path d="M12 4.248c-3.148-5.402-12-3.825-12 2.944 0 4.661 5.571 9.427 12 15.808 6.43-6.381 12-11.147 12-15.808 0-6.792-8.875-8.306-12-2.944z" fill="#3BF9B3" /></svg>),
-    favorite: (<svg width="24" height="24" viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z" fill="#28CDF3" /></svg>),
+    skip: (<img width="24" height="24" src={skip} alt="skip" />),
+    back: (<img width="24" height="24" src={back} alt="back" />),
   };
 
-  // Handler for like/dislike/favorites actions
+  // Handler for like/dislike actions
+  // Rewrote to handle swipes and only consider like/dislike (remove favorite)
   const takeAction = async (action) => {
     try {
-      const [ratedPerson, ...rest] = personsArray;
+      // update our own document with the action at target user
       await firebase.firestore().collection('/users').doc(userId).update({
-        [`${action}s`]: firebase.firestore.FieldValue.arrayUnion(ratedPerson.id),
+        [`${action}s`]: firebase.firestore.FieldValue.arrayUnion(ratedUid),
       });
-      setPersonsArray(rest);
+      console.log('added rating to logged in user\'s document');
 
-      // todo: investigate this function (from original codebase)
-      if (action === 'like' || action === 'favorite') {
+      // if the action was a like, we need to check for and handle the potential formation of a match
+      if (action === 'like') {
         try {
-          const ratedPersonDocument = await (await firebase.firestore().collection('/users').doc(ratedPerson.id).get()).data();
-          if (ratedPersonDocument.likes.includes(userId)
-            || ratedPersonDocument.favorites.includes(userId)) {
+          // fetch the rated person's document
+          const ratedPersonDocument = await (await firebase.firestore().collection('/users').doc(ratedUid).get()).data();
+          console.log('retrieved rated user\'s document successfully');
+          // if that person's document contains a like for our uid
+          if (ratedPersonDocument.likes.includes(userId)) {
+            console.log('match found! updating docs');
+            // add our new match to our own document's matches list
             await firebase.firestore().collection('/users').doc(userId).update({
-              matches: firebase.firestore.FieldValue.arrayUnion(ratedPerson.id),
+              matches: firebase.firestore.FieldValue.arrayUnion(ratedUid),
             });
-            await firebase.firestore().collection('/users').doc(ratedPerson.id).update({
+            // also add this new match to our rated user's document
+            await firebase.firestore().collection('/users').doc(ratedUid).update({
               matches: firebase.firestore.FieldValue.arrayUnion(userId),
             });
+            console.log('update doc calls made, check for promise errors!');
           }
-
-          await sendCometChatMessage(ratedPerson.id, "We're a match!");
+          // whether we matched or not, we send a message to the other user
+          await sendCometChatMessage(ratedUid, "We're a match!");
         } catch (error) {
           console.error(JSON.stringify(error));
         }
@@ -76,46 +103,192 @@ export default function PersonSlider({ persons, userId }) {
     }
   };
 
-  const currentPerson = personsArray[0];
+  // Update the index of both currentIndex and card stack reference
+  const updateCurrentIndex = (val) => {
+    setCurrentIndex(val);
+    currentIndexRef.current = val;
+  };
 
+  // Handles card leaving screen event
+  const outOfFrame = (name, idx) => {
+    console.log(`${name} (${idx}) left the screen!`, currentIndexRef.current);
+    // handle the case in which go back is pressed before card goes outOfFrame
+    if (currentIndexRef.current >= idx) {
+      childRefs[idx].current.restoreCard();
+    }
+    document.body.style.overflow = 'visible';
+  };
+
+  // update shared interest state based on currentPerson
+  function updateSharedInterests() {
+    const targetUserInterests = currentPerson.outdoorActivities;
+    const tempShared = [];
+    myInterests.forEach((interest) => {
+      targetUserInterests.forEach((targetInterest) => {
+        if (targetInterest === interest) {
+          tempShared.push(interest);
+        }
+      });
+    });
+    setSharedInterests(tempShared);
+  }
+
+  // For programmatic swiping ( can replace or call actions ) - not currently in use
+  const swipe = async (action, shouldRateBool) => {
+    let dir;
+    shouldRate = shouldRateBool;
+    if ((action === 'like') || (action === 'skip')) dir = 'right';
+    if ((action === 'dislike') || (action === 'back')) dir = 'left';
+    if (canSwipe && currentIndex < personsArray.length) {
+      await childRefs[currentIndex].current.swipe(dir); // Swipe the card!
+    }
+  };
+
+  // increase current index and show card (should be decrease?) - not currently in use
+  const goBack = async () => {
+    const newIndex = currentIndex + 1;
+    updateCurrentIndex(newIndex);
+    updateSharedInterests();
+    await childRefs[newIndex].current.restoreCard();
+  };
+
+  // Handle swipes and call action functions when appropriate
+  const swiped = (direction, uidToDelete, index) => {
+    document.body.style.overflow = 'hidden';
+    console.log(`swiped shouldRate: ${shouldRate}`);
+    if (direction === ('down' || 'up')) {
+      console.log(`??? Blocked Swipe ${direction} detected`);
+    }
+    if ((direction === 'right') && (shouldRate === true)) {
+      console.log('Swipe right event!');
+      ratedUid = uidToDelete;
+      takeAction('like').then(() => console.log('tookAction like'));
+    }
+    if ((direction === 'right') && (shouldRate === false)) {
+      console.log('Skip event!');
+      ratedUid = uidToDelete;
+    }
+    if ((direction === 'left') && (shouldRate === true)) {
+      console.log('Swipe left event!');
+      ratedUid = uidToDelete;
+      takeAction('dislike').then(() => console.log('tookAction dislike'));
+    }
+    if ((direction === 'left') && (shouldRate === false)) {
+      if (!canGoBack) {
+        console.log('cant go back!');
+        return;
+      }
+      goBack().then(() => console.log('called goBack'));
+      return; // potential race condition!
+    }
+    setLastDirection(direction);
+    updateCurrentIndex(index - 1);
+    updateSharedInterests();
+    shouldRate = true;
+
+    // update current person (so we know which user is on top of the deck!)
+    currentPerson = persons[currentIndex];
+  };
+
+  // Load in the logged-in user's interests once their document is available
+  useEffect(() => {
+    if ((data.outdoorActivities !== undefined) && (myInterests.length <= 0)) {
+      setMyInterests(data.outdoorActivities);
+      setLoading(false);
+    }
+    if ((myInterests.length > 0) && currentPerson) {
+      updateSharedInterests();
+    }
+  }, [data, loading, currentPerson]);
+
+  // Action button component
   const ActionButton = ({ action }) => (
-    <button className="bg-white transform transition duration-500 hover:scale-110 rounded-full shadow-md p-4" type="button" onClick={() => takeAction(action)}>
+    <button
+      className="bg-white transform transition duration-500 hover:scale-110 rounded-full shadow-md p-4"
+      type="button"
+      onClick={async () => swipe(action, ((action !== 'skip') && (action !== 'back')))}
+    >
       {BUTTON_ICONS[action]}
     </button>
   );
 
+  // Component renders:
+  // Note: for work on CSS, some explanation for how this works -
+  // The collection of users "persons" is mapped to individual TinderCard elements.
+  // The mapped TinderCard elements are displayed on top of one another based on their reference index.
+  // When a swipe happens or the page is first loaded, the functions called update the persons[person] which
+  // is stored in currentPerson. The user info display for the top card pulls from currentPerson. Additional
+  // data elements can be added in the same form. A complete list of potential data elements can be found in
+  // ./methods/registerGoogleProfile.js. Currently. when the size of this top card data element changes, the
+  // position of the stack also changes, which is the primary issue to solve here.
   return (
     <>
-      {personsArray.length === 0 && <p>No more people to match with.</p>}
-      {personsArray.length > 0
+      {!loading && currentIndex === -1 && <p>No more people to match with.</p>}
+      {!loading && currentIndex >= 0
         && (
-          <div className="flex flex-col items-center">
-            <ReactSwing
-              className="stack"
-              tagName="div"
-              setStack={(newStack) => setStack({ newStack })}
-              ref={stackEl}
-              throwout={(e) => console.log('throwout', e)} // need to get throwDirection from e
-            >
-              <div
-                className="group relative rounded-lg overflow-hidden shadow-xl w-72 h-96 bg-cover bg-center bg-no-repeat"
-                style={{
-                  backgroundImage: `url(${currentPerson.imageUrl})`,
-                }}
-              >
-                <div className="absolute inset-0 top-auto bg-gradient-to-t from-black opacity-75 h-1/4 group-hover:h-full group-hover:bg-gradient-to-b transition-all duration-500" />
-                <p className="absolute bottom-0 group-hover:top-0 m-4 pb-0 md:pb-5 text-white text-lg font-bold transition-all">{currentPerson.name}</p>
-                <p className="hidden md:block absolute bottom-0 group-hover:top-0 m-4 pt-6 pr-8 text-white text-md truncate group-hover:whitespace-normal transition-all w-full">{currentPerson.description}</p>
+          <div className="grid grid-rows-2 items-center">
+            <div className="flex flex-col">
+              {personsArray.map((person, index) => (
+                <div key={person.id.slice(0, -5)}>
+                  <TinderCard
+                    ref={childRefs[index]}
+                    className="swipe"
+                    key={person.id}
+                    onSwipe={(dir) => swiped(dir, person.id, index)}
+                    onCardLeftScreen={() => outOfFrame(person.id, index)}
+                    preventSwipe="up down"
+                  >
+                    <div
+                      className="group relative rounded-lg overflow-hidden w-72 h-96 bg-cover bg-center bg-no-repeat"
+                      style={{
+                        backgroundImage: `url(${person.imageUrl})`,
+                      }}
+                    >
+                      <div className="absolute inset-0 top-auto bg-gradient-to-t from-black opacity-75 h-1/4 group-hover:h-full group-hover:bg-gradient-to-b transition-all duration-500" />
+                      <p className="absolute bottom-0 group-hover:top-0 m-4 pb-0 md:pb-5 text-white text-lg font-bold transition-all">{person.name}</p>
+                      <p className="hidden md:block absolute bottom-0 group-hover:top-0 m-4 pt-6 pr-8 text-white text-md truncate group-hover:whitespace-normal transition-all w-full">{person.description}</p>
+                    </div>
+                    <p className="block md:hidden text-gray-500 my-2 text-center">{person.description}</p>
+                  </TinderCard>
+                </div>
+              ))}
+            </div>
+            <div className="flex flex-col items-center topCard">
+              <div className="actionButtons flex justify-around w-4/5">
+                <ActionButton action="back" />
+                <ActionButton action="dislike" />
+                <ActionButton action="like" />
+                <ActionButton action="skip" />
               </div>
-            </ReactSwing>
-            <p className="block md:hidden text-gray-500 my-2 text-center">{currentPerson.description}</p>
-            <div className="flex justify-around my-4 w-4/5">
-              <ActionButton action="dislike" />
-              <ActionButton action="favorite" />
-              <ActionButton action="like" />
+              {`Name: ${currentPerson.name}`}
+              <br />
+              {`Common Interests: ${(sharedInterests.length > 0) ? sharedInterests : 'The Great Outdoors'}`}
+              <br />
+              {`Eye Color: ${currentPerson.eyeColor}`}
+              <br />
+              {`Hair Color: ${currentPerson.hairColor}`}
+              <br />
+              {`Height: ${currentPerson.height}`}
+              <br />
+              {`Ethnicity: ${currentPerson.ethnicity}`}
+              <br />
+              {`Sign: ${currentPerson.astrologySign}`}
+              <br />
+              {`Gender: ${currentPerson.gender}`}
+              <br />
+              {`Age: ${getAge(currentPerson.birthdate)}`}
+              <br />
+              {`Kids?: ${currentPerson.childStatus}`}
+              <br />
+              {`Drinking: ${currentPerson.alcoholUse}`}
+              <br />
+              {`Smoking: ${currentPerson.smoking}`}
             </div>
           </div>
         )}
+      {/* ADDING DATA ELEMENTS: add elements of currentPerson to display below image */}
     </>
   );
-}
+};
+
+export default PersonSlider;

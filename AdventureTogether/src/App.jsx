@@ -27,8 +27,8 @@ import ConfigureProfilePage from './pages/configure-profile';
 import OutdoorInterestsPage from './pages/outdoor-interests';
 import LocalStoreManager from './components/LocalStoreManager';
 import DataTest from './components/DataTest';
-import UserProfilePage from './pages/user-profile';
-import DiscoverTestingPage from './pages/discover-testing';
+import UserProfileEditablePage from './pages/user-profile-editable';
+import MyFriendsPage from './pages/my-friends';
 
 // React v17 routing - this was necessary to implement other core upgrades
 function App() {
@@ -44,7 +44,6 @@ function App() {
               <Routes>
                 <Route path="/" element={<IndexPage />} />
                 <Route path="/discover" element={<DiscoverPage />} />
-                <Route path="/discover-testing" element={<DiscoverTestingPage />} />
                 <Route path="/inbox" element={<InboxPage />} />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/logout" element={<LogoutPage />} />
@@ -56,7 +55,8 @@ function App() {
                 <Route path="/sorry" element={<SorryPage />} />
                 <Route path="/signup" element={<SignupPage />} />
                 <Route path="/data-test" element={<DataTest />} />
-                <Route path="/user-profile" element={<UserProfilePage />} />
+                <Route path="/user-profile" element={<UserProfileEditablePage />} />
+                <Route path="/my-friends" element={<MyFriendsPage />} />
                 <Route path="*" element={<IndexPage />} />
               </Routes>
             </Router>
