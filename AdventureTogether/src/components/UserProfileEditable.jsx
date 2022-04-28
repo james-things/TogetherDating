@@ -174,7 +174,7 @@ export default function UserProfileEditable({ userId }) {
                           required
                           onChange={handleOnChange}
                           value={state.gender}
-                          className="h-6 text-xs appearance-none rounded-full relative block w-full px-4 border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 text-base"
+                          className="h-6 text-xs appearance-none rounded-full relative block w-full px-4 border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 font-bold"
                           placeholder="Name"
                         >
                           <option value={data.gender}>Keep as-is</option>
@@ -207,7 +207,7 @@ export default function UserProfileEditable({ userId }) {
                           required
                           onChange={handleOnChange}
                           value={state.bodyType}
-                          className="h-6 text-xs appearance-none rounded-full relative block w-full px-4 border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 text-base"
+                          className="h-6 text-xs appearance-none rounded-full relative block w-full px-4 border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 font-bold"
                           placeholder="bodyType"
                         >
                           <option value={data.bodyType}>Keep as-is</option>
@@ -236,7 +236,7 @@ export default function UserProfileEditable({ userId }) {
                           required
                           onChange={handleOnChange}
                           value={state.religion}
-                          className="h-6 text-xs appearance-none rounded-full relative block w-full px-4 border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 text-base"
+                          className="h-6 text-xs appearance-none rounded-full relative block w-full px-4 border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 font-bold"
                           placeholder="religion"
                         >
                           <option value={data.religion}>Keep as-is</option>
@@ -263,7 +263,7 @@ export default function UserProfileEditable({ userId }) {
                           required
                           onChange={handleOnChange}
                           value={state.ethnicity}
-                          className="h-6 text-xs appearance-none rounded-full relative block w-full px-4 border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 text-base"
+                          className="h-6 text-xs appearance-none rounded-full relative block w-full px-4 border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 font-bold"
                           placeholder="Ethnicity"
                         >
                           <option value={data.ethnicity}>Keep as-is</option>
@@ -295,7 +295,7 @@ export default function UserProfileEditable({ userId }) {
                     required
                     onChange={handleOnChange}
                     value={state.hairColor}
-                    className="h-6 text-xs appearance-none rounded-full relative block w-full px-4 border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 text-base"
+                    className="h-6 text-xs appearance-none rounded-full relative block w-full px-4 border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 font-bold"
                     placeholder="Name"
                   >
                     <option value={data.hairColor}>Keep as-is</option>
@@ -324,7 +324,7 @@ export default function UserProfileEditable({ userId }) {
                     required
                     onChange={handleOnChange}
                     value={state.eyeColor}
-                    className="h-6 text-xs appearance-none rounded-full relative block w-full px-4 border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 text-base"
+                    className="h-6 text-xs appearance-none rounded-full relative block w-full px-4 border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 font-bold"
                     placeholder="Name"
                   >
                     <option value={data.eyeColor}>Keep as-is</option>
@@ -350,7 +350,7 @@ export default function UserProfileEditable({ userId }) {
                     required
                     onChange={handleOnChange}
                     value={state.astrologySign}
-                    className="h-6 text-xs appearance-none rounded-full relative block w-full px-4 border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 text-base"
+                    className="h-6 text-xs appearance-none rounded-full relative block w-full px-4 border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 font-bold"
                     placeholder="astrologySign"
                   >
                     <option value={data.astrologySign}>Keep as-is</option>
@@ -383,7 +383,7 @@ export default function UserProfileEditable({ userId }) {
                     required
                     onChange={handleOnChange}
                     value={state.childStatus}
-                    className="h-6 text-xs appearance-none rounded-full relative block w-full px-4 border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 text-base"
+                    className="h-6 text-xs appearance-none rounded-full relative block w-full px-4 border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 font-bold"
                     placeholder="Child Status"
                   >
                     <option value={data.childStatus}>Keep as-is</option>
@@ -410,7 +410,7 @@ export default function UserProfileEditable({ userId }) {
                     required
                     onChange={handleOnChange}
                     value={state.smoking}
-                    className="h-6 text-xs appearance-none rounded-full relative block w-full px-4 border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 text-base"
+                    className="h-6 text-xs appearance-none rounded-full relative block w-full px-4 border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 font-bold"
                     placeholder="NameSmokingStatus"
                   >
                     <option value={data.smoking}>Keep as-is</option>
@@ -434,7 +434,7 @@ export default function UserProfileEditable({ userId }) {
                     required
                     onChange={handleOnChange}
                     value={state.alcoholUse}
-                    className="h-6 text-xs appearance-none rounded-full relative block w-full px-4 border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 text-base"
+                    className="h-6 text-xs appearance-none rounded-full relative block w-full px-4 border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 font-bold"
                     placeholder="AlcoholUse"
                   >
                     <option value={data.alcoholUse}>Keep as-is</option>
@@ -451,7 +451,7 @@ export default function UserProfileEditable({ userId }) {
                 </div>
               </div>
               <div className="col-span-4">
-                <div className="py-5">
+                <div className="py-4 right-0">
                   {(editState.editable === true)
                     && (
                     <button
