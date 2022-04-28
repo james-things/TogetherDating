@@ -66,8 +66,8 @@ const OutdoorInterestsPage = () => {
   useEffect(() => {
     if (data && (interests.length === 0)) {
       setInterests(data.outdoorActivities);
+      setLoading(false);
     }
-    if (interests.length > 0) setLoading(false);
   }, [data, interests]);
 
   // Link reducer to input
