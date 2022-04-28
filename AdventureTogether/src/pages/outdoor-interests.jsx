@@ -13,7 +13,7 @@ import { useFirestore, useFirestoreDocData, useUser } from 'reactfire';
 import { doc } from 'firebase/firestore';
 import { withLayout } from '../wrappers/layout';
 import updateUserData from '../methods/updateUserData';
-import PrimerMultiSelect from '../components/PrimerMultiSelect';
+import OutdoorInterestPicker from '../components/OutdoorInterestPicker';
 import * as interestOptions from '../outdoorInterests.options';
 import localStoreGet from '../methods/localStoreGet';
 
@@ -86,7 +86,7 @@ const OutdoorInterestsPage = () => {
     // Submit data to update
     await updateUserData(user?.uid, state);
     // once done, redirect user to discover page
-    navigate('/configure-profile');
+    navigate(data.completedRegistration ? '/index' : '/configure-profile');
   }
 
   // Page content - Allow the user to select and initiate a registration process
@@ -148,58 +148,58 @@ const OutdoorInterestsPage = () => {
           <br />
           <Box display="grid" gridTemplateColumns="1fr 1fr 1fr" gap={1}>
             <Box p={1} borderColor="border.default" borderWidth={1} borderStyle="solid">
-              <PrimerMultiSelect dataset={interestOptions.optionAnimal} interests={interests} />
+              <OutdoorInterestPicker dataset={interestOptions.optionAnimal} interests={interests} />
             </Box>
             <Box p={1} borderColor="border.default" borderWidth={1} borderStyle="solid">
-              <PrimerMultiSelect dataset={interestOptions.optionBicycling} interests={interests} />
+              <OutdoorInterestPicker dataset={interestOptions.optionBicycling} interests={interests} />
             </Box>
             <Box p={1} borderColor="border.default" borderWidth={1} borderStyle="solid">
-              <PrimerMultiSelect dataset={interestOptions.optionBoardingSkiing} interests={interests} />
+              <OutdoorInterestPicker dataset={interestOptions.optionBoardingSkiing} interests={interests} />
             </Box>
             <Box p={1} borderColor="border.default" borderWidth={1} borderStyle="solid">
-              <PrimerMultiSelect dataset={interestOptions.optionLargeBoat} interests={interests} />
+              <OutdoorInterestPicker dataset={interestOptions.optionLargeBoat} interests={interests} />
             </Box>
             <Box p={1} borderColor="border.default" borderWidth={1} borderStyle="solid">
-              <PrimerMultiSelect dataset={interestOptions.optionSmallBoating} interests={interests} />
+              <OutdoorInterestPicker dataset={interestOptions.optionSmallBoating} interests={interests} />
             </Box>
             <Box p={1} borderColor="border.default" borderWidth={1} borderStyle="solid">
-              <PrimerMultiSelect dataset={interestOptions.optionCamping} interests={interests} />
+              <OutdoorInterestPicker dataset={interestOptions.optionCamping} interests={interests} />
             </Box>
             <Box p={1} borderColor="border.default" borderWidth={1} borderStyle="solid">
-              <PrimerMultiSelect dataset={interestOptions.optionClimbing} interests={interests} />
+              <OutdoorInterestPicker dataset={interestOptions.optionClimbing} interests={interests} />
             </Box>
             <Box p={1} borderColor="border.default" borderWidth={1} borderStyle="solid">
-              <PrimerMultiSelect dataset={interestOptions.optionFishing} interests={interests} />
+              <OutdoorInterestPicker dataset={interestOptions.optionFishing} interests={interests} />
             </Box>
             <Box p={1} borderColor="border.default" borderWidth={1} borderStyle="solid">
-              <PrimerMultiSelect dataset={interestOptions.optionFlying} interests={interests} />
+              <OutdoorInterestPicker dataset={interestOptions.optionFlying} interests={interests} />
             </Box>
             <Box p={1} borderColor="border.default" borderWidth={1} borderStyle="solid">
-              <PrimerMultiSelect dataset={interestOptions.optionHunting} interests={interests} />
+              <OutdoorInterestPicker dataset={interestOptions.optionHunting} interests={interests} />
             </Box>
             <Box p={1} borderColor="border.default" borderWidth={1} borderStyle="solid">
-              <PrimerMultiSelect dataset={interestOptions.optionMotorSports} interests={interests} />
+              <OutdoorInterestPicker dataset={interestOptions.optionMotorSports} interests={interests} />
             </Box>
             <Box p={1} borderColor="border.default" borderWidth={1} borderStyle="solid">
-              <PrimerMultiSelect dataset={interestOptions.optionFlying} interests={interests} />
+              <OutdoorInterestPicker dataset={interestOptions.optionFlying} interests={interests} />
             </Box>
             <Box p={1} borderColor="border.default" borderWidth={1} borderStyle="solid">
-              <PrimerMultiSelect dataset={interestOptions.optionRestorationConservation} interests={interests} />
+              <OutdoorInterestPicker dataset={interestOptions.optionRestorationConservation} interests={interests} />
             </Box>
             <Box p={1} borderColor="border.default" borderWidth={1} borderStyle="solid">
-              <PrimerMultiSelect dataset={interestOptions.optionShooting} interests={interests} />
+              <OutdoorInterestPicker dataset={interestOptions.optionShooting} interests={interests} />
             </Box>
             <Box p={1} borderColor="border.default" borderWidth={1} borderStyle="solid">
-              <PrimerMultiSelect dataset={interestOptions.optionSwimming} interests={interests} />
+              <OutdoorInterestPicker dataset={interestOptions.optionSwimming} interests={interests} />
             </Box>
             <Box p={1} borderColor="border.default" borderWidth={1} borderStyle="solid">
-              <PrimerMultiSelect dataset={interestOptions.optionTeam} interests={interests} />
+              <OutdoorInterestPicker dataset={interestOptions.optionTeam} interests={interests} />
             </Box>
             <Box p={1} borderColor="border.default" borderWidth={1} borderStyle="solid">
-              <PrimerMultiSelect dataset={interestOptions.optionWalkRun} interests={interests} />
+              <OutdoorInterestPicker dataset={interestOptions.optionWalkRun} interests={interests} />
             </Box>
             <Box p={1} borderColor="border.default" borderWidth={1} borderStyle="solid">
-              <PrimerMultiSelect dataset={interestOptions.optionLeisureOther} interests={interests} />
+              <OutdoorInterestPicker dataset={interestOptions.optionLeisureOther} interests={interests} />
             </Box>
           </Box>
           <br />

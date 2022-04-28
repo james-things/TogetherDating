@@ -13,7 +13,7 @@ import firebaseRemoveInterest from '../methods/firebaseRemoveInterest';
 import firebaseAddInterest from '../methods/firebaseAddInterest';
 
 // Main function
-export default function PrimerMultiSelect({ dataset, interests }) {
+export default function OutdoorInterestPicker({ dataset, interests }) {
   // Set up necessary states
   const [state, setState] = useState(dataset);
   const [curFirestoreInterests, setCurFirestoreInterests] = useState(interests);

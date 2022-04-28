@@ -25,6 +25,7 @@ const initialState = {
   eyeColor: '',
   religion: '',
   smokingStatus: '',
+  completedRegistration: true,
 };
 
 // Reducer to process inputs

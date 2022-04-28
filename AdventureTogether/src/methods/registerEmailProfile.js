@@ -44,6 +44,7 @@ export default async function registerEmailProfile(userId, imageState, nameState
     smoking: '',
     childStatus: '',
     astrologySign: '',
+    completedRegistration: false,
     id: userId,
   }))
     .catch((err) => {
