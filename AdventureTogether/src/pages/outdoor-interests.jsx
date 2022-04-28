@@ -3,13 +3,14 @@
 // Description: a page for a user who signed up with the e-mail/password flow
 // register their dating profile
 
-import React, { useReducer, useState } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import 'firebase/compat/auth';
 import 'firebase/compat/storage';
 import 'firebase/compat/firestore';
 import { ActionList, Box } from '@primer/react';
-import { useUser } from 'reactfire';
+import { useFirestore, useFirestoreDocData, useUser } from 'reactfire';
+import { doc } from 'firebase/firestore';
 import { withLayout } from '../wrappers/layout';
 import updateUserData from '../methods/updateUserData';
 import PrimerMultiSelect from '../components/PrimerMultiSelect';
@@ -47,9 +48,11 @@ const reducer = (state, action) => {
 
 // Page main function
 const OutdoorInterestsPage = () => {
-  const [interestState, setInterestState] = useState(initialState);
+  const [loading, setLoading] = useState(true);
+  const [interests, setInterests] = useState([]);
   const { status, data: user } = useUser();
-  // const userId = localStoreGet('userId');
+  const userRef = doc(useFirestore(), `users/${user?.uid}`);
+  const { refstatus, data } = useFirestoreDocData(userRef);
   const navigate = useNavigate();
 
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -59,6 +62,13 @@ const OutdoorInterestsPage = () => {
   const handleChange = () => {
     setChecked(!checked);
   };
+
+  useEffect(() => {
+    if (data && (interests.length === 0)) {
+      setInterests(data.outdoorActivities);
+    }
+    if (interests.length > 0) setLoading(false);
+  }, [data, interests]);
 
   // Link reducer to input
   const handleOnChange = (evt) => {
@@ -115,6 +125,8 @@ const OutdoorInterestsPage = () => {
         </Link>
       </div>
       <div className="text-center w-full divide-y-2 divide-gray-100 divide-solid">
+        {loading && ('Loading. Please wait.')}
+        {!loading && (
         <form className="my-5 w-full">
           {error && (
             <p className="text-red-500 font-bold text-base py-2 ">{error}</p>
@@ -136,58 +148,58 @@ const OutdoorInterestsPage = () => {
           <br />
           <Box display="grid" gridTemplateColumns="1fr 1fr 1fr" gap={1}>
             <Box p={1} borderColor="border.default" borderWidth={1} borderStyle="solid">
-              <PrimerMultiSelect dataset={interestOptions.optionAnimal} />
+              <PrimerMultiSelect dataset={interestOptions.optionAnimal} interests={interests} />
             </Box>
             <Box p={1} borderColor="border.default" borderWidth={1} borderStyle="solid">
-              <PrimerMultiSelect dataset={interestOptions.optionBicycling} />
+              <PrimerMultiSelect dataset={interestOptions.optionBicycling} interests={interests} />
             </Box>
             <Box p={1} borderColor="border.default" borderWidth={1} borderStyle="solid">
-              <PrimerMultiSelect dataset={interestOptions.optionBoardingSkiing} />
+              <PrimerMultiSelect dataset={interestOptions.optionBoardingSkiing} interests={interests} />
             </Box>
             <Box p={1} borderColor="border.default" borderWidth={1} borderStyle="solid">
-              <PrimerMultiSelect dataset={interestOptions.optionLargeBoat} />
+              <PrimerMultiSelect dataset={interestOptions.optionLargeBoat} interests={interests} />
             </Box>
             <Box p={1} borderColor="border.default" borderWidth={1} borderStyle="solid">
-              <PrimerMultiSelect dataset={interestOptions.optionSmallBoating} />
+              <PrimerMultiSelect dataset={interestOptions.optionSmallBoating} interests={interests} />
             </Box>
             <Box p={1} borderColor="border.default" borderWidth={1} borderStyle="solid">
-              <PrimerMultiSelect dataset={interestOptions.optionCamping} />
+              <PrimerMultiSelect dataset={interestOptions.optionCamping} interests={interests} />
             </Box>
             <Box p={1} borderColor="border.default" borderWidth={1} borderStyle="solid">
-              <PrimerMultiSelect dataset={interestOptions.optionClimbing} />
+              <PrimerMultiSelect dataset={interestOptions.optionClimbing} interests={interests} />
             </Box>
             <Box p={1} borderColor="border.default" borderWidth={1} borderStyle="solid">
-              <PrimerMultiSelect dataset={interestOptions.optionFishing} />
+              <PrimerMultiSelect dataset={interestOptions.optionFishing} interests={interests} />
             </Box>
             <Box p={1} borderColor="border.default" borderWidth={1} borderStyle="solid">
-              <PrimerMultiSelect dataset={interestOptions.optionFlying} />
+              <PrimerMultiSelect dataset={interestOptions.optionFlying} interests={interests} />
             </Box>
             <Box p={1} borderColor="border.default" borderWidth={1} borderStyle="solid">
-              <PrimerMultiSelect dataset={interestOptions.optionHunting} />
+              <PrimerMultiSelect dataset={interestOptions.optionHunting} interests={interests} />
             </Box>
             <Box p={1} borderColor="border.default" borderWidth={1} borderStyle="solid">
-              <PrimerMultiSelect dataset={interestOptions.optionMotorSports} />
+              <PrimerMultiSelect dataset={interestOptions.optionMotorSports} interests={interests} />
             </Box>
             <Box p={1} borderColor="border.default" borderWidth={1} borderStyle="solid">
-              <PrimerMultiSelect dataset={interestOptions.optionFlying} />
+              <PrimerMultiSelect dataset={interestOptions.optionFlying} interests={interests} />
             </Box>
             <Box p={1} borderColor="border.default" borderWidth={1} borderStyle="solid">
-              <PrimerMultiSelect dataset={interestOptions.optionRestorationConservation} />
+              <PrimerMultiSelect dataset={interestOptions.optionRestorationConservation} interests={interests} />
             </Box>
             <Box p={1} borderColor="border.default" borderWidth={1} borderStyle="solid">
-              <PrimerMultiSelect dataset={interestOptions.optionShooting} />
+              <PrimerMultiSelect dataset={interestOptions.optionShooting} interests={interests} />
             </Box>
             <Box p={1} borderColor="border.default" borderWidth={1} borderStyle="solid">
-              <PrimerMultiSelect dataset={interestOptions.optionSwimming} />
+              <PrimerMultiSelect dataset={interestOptions.optionSwimming} interests={interests} />
             </Box>
             <Box p={1} borderColor="border.default" borderWidth={1} borderStyle="solid">
-              <PrimerMultiSelect dataset={interestOptions.optionTeam} />
+              <PrimerMultiSelect dataset={interestOptions.optionTeam} interests={interests} />
             </Box>
             <Box p={1} borderColor="border.default" borderWidth={1} borderStyle="solid">
-              <PrimerMultiSelect dataset={interestOptions.optionWalkRun} />
+              <PrimerMultiSelect dataset={interestOptions.optionWalkRun} interests={interests} />
             </Box>
             <Box p={1} borderColor="border.default" borderWidth={1} borderStyle="solid">
-              <PrimerMultiSelect dataset={interestOptions.optionLeisureOther} />
+              <PrimerMultiSelect dataset={interestOptions.optionLeisureOther} interests={interests} />
             </Box>
           </Box>
           <br />
@@ -199,6 +211,7 @@ const OutdoorInterestsPage = () => {
             Continue
           </button>
         </form>
+        )}
         <div className="py-4">
           <h3 className="text-2xl font-extrabold italic uppercase my-4">
             Get the app!

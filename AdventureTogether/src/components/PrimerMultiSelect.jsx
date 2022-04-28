@@ -13,9 +13,10 @@ import firebaseRemoveInterest from '../methods/firebaseRemoveInterest';
 import firebaseAddInterest from '../methods/firebaseAddInterest';
 
 // Main function
-export default function PrimerMultiSelect({ dataset }) {
+export default function PrimerMultiSelect({ dataset, interests }) {
   // Set up necessary states
   const [state, setState] = useState(dataset);
+  const [curFirestoreInterests, setCurFirestoreInterests] = useState(interests);
   const [selectedInterestNames, setSelectedInterestNames] = useState([]);
   const [optionList, setOptionList] = useState(dataset.options);
   const [selectionList, setSelectionList] = useState(dataset.selections);
@@ -34,8 +35,8 @@ export default function PrimerMultiSelect({ dataset }) {
     }
   }, [user]);
 
-  // a testing function build list of names from number array
-  function getSelectedInterestNames() {
+  // Update state tracking of selected interest names
+  function updateSelectedInterestNames() {
     let count = -1;
     const newSelectionList = [];
     selectionList.forEach((selection) => {
@@ -44,17 +45,16 @@ export default function PrimerMultiSelect({ dataset }) {
         newSelectionList.push(optionList[count]);
       }
     });
-    console.log(newSelectionList);
     setSelectedInterestNames(newSelectionList);
+    setCurFirestoreInterests(newSelectionList);
   }
 
-  // a testing function to interact with state
+  // Toggle selected state in number array from option name
   function toggleState(targetName) {
-    const target = targetName;
-    const index = optionList.indexOf(target);
-    console.log(`target index: ${index}`);
+    const index = optionList.indexOf(targetName);
     const tempList = selectionList;
     const targetSelection = tempList[index];
+
     if (targetSelection === 1) {
       tempList[index] = 0;
       firebaseRemoveInterest(targetName, userId);
@@ -63,33 +63,53 @@ export default function PrimerMultiSelect({ dataset }) {
       tempList[index] = 1;
       firebaseAddInterest(targetName, userId);
     }
-    setSelectionList(tempList);
 
-    getSelectedInterestNames();
+    setSelectionList(tempList);
+    updateSelectedInterestNames();
   }
 
-  // a testing function to get selected state of name from number array
+  // Return selected state from selection target's name
   function getIsSelected(targetName) {
-    const target = targetName;
-    const indexToCheck = optionList.indexOf(target);
+    const indexToCheck = optionList.indexOf(targetName);
     return selectionList[indexToCheck];
+  }
+
+  // Compare options against current interest data and update state
+  function loadExistingSelections() {
+    console.log(curFirestoreInterests);
+    const newSelectionList = [];
+    optionList.forEach((option) => {
+      console.log(`looking for ${option}`);
+      let found = 0;
+      curFirestoreInterests.forEach((interest) => {
+        if (option === interest) {
+          found = 1;
+          console.log(`found ${interest}`);
+        }
+      });
+      console.log(`pushing ${found} to list`);
+      newSelectionList.push(found);
+    });
+    console.log(`new: ${newSelectionList}`);
+    setSelectionList(newSelectionList);
+    console.log(`after set: ${selectionList}`);
   }
 
   // On-click expansion handler
   // Applies to all children elements, so a filter is applied to determine if the header was clicked
   function handleOnClick(element) {
-    // Do more stuff with the click event!
-    // Or, set isExpanded conditionally
     if (element.target.outerText) {
       console.log(element.target.outerText);
-      // this is clunky but I can't get logical or to work so it checks twice
+      // this is clunky, but I can't get logical or to work, so it checks twice
       if (element.target.outerText.includes('(collapse)')) {
         if (!isExpanded) setExpanded(true);
         else setExpanded(false);
       }
       if (element.target.outerText.includes('(expand)')) {
-        if (!isExpanded) setExpanded(true);
-        else setExpanded(false);
+        if (!isExpanded) {
+          loadExistingSelections(); // this is when the existing selections are brought in
+          setExpanded(true);
+        } else setExpanded(false);
       }
     }
   }
