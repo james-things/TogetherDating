@@ -239,7 +239,7 @@ const PersonSlider = ({ persons, userId }) => {
                     preventSwipe="up down"
                   >
                     <div
-                      className="group relative rounded-lg overflow-hidden w-96 h-144 bg-cover bg-center bg-no-repeat"
+                      className="group relative rounded-lg overflow-hidden w-72 h-96 bg-cover bg-center bg-no-repeat"
                       style={{
                         backgroundImage: `url(${person.imageUrl})`,
                       }}
@@ -255,14 +255,14 @@ const PersonSlider = ({ persons, userId }) => {
                 </div>
               ))}
             </div>
-            <div className="top-card-info align-middle w-96">
+            <div className="top-card-info align-middle w-72">
               <div className="action-buttons w-full">
                 <ActionButton action="back" />
                 <ActionButton action="dislike" />
                 <ActionButton action="like" />
                 <ActionButton action="skip" />
               </div>
-              <div className="top-card-info-text text-left bg-white border-black border-2">
+              <div className="top-card-info-text text-xs text-left bg-white border-black border-2">
                 {`Name: ${currentPerson.name}`}
                 <br />
                 {`Common Interests: ${(sharedInterests.length > 0) ? sharedInterests : 'The Great Outdoors'}`}

@@ -50,7 +50,7 @@ function UserProfilePage() {
             />
           </svg>
         </Link>
-        <h3 className="text-2xl font-extrabold italic uppercase my-4">
+        <h3 className="text-2xl font-extrabold my-4">
           User Profile
         </h3>
         <div
