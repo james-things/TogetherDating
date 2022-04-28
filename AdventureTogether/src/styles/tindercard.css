@@ -1,13 +1,23 @@
-body {
-    overflow: hidden;
-}
-
 .swipe {
     position: absolute;
-    overflow: hidden; /* Hide scrollbars */
-    margin-top: -15%;
+    /* overflow: hidden;  Hide scrollbars */
+    margin-left: 0em;
+    margin-top: -3em;
 }
 
 .swipe:last-of-type {
 
+}
+
+.top-card-info {
+    margin-top: 21.5em;
+    margin-left: 0em;
+}
+
+.action-buttons {
+    margin-left: 2em;
+}
+
+.top-card-info-text {
+    margin-top: 0.4em;
 }

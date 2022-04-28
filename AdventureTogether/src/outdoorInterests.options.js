@@ -24,71 +24,103 @@ export const optionOutdoor = [
 export const optionAnimal = {
   name: 'Animals',
   options: ['Animal Lover. Any', 'Dogs', 'Dog, Hunting', 'Dog Sledding', 'Farm Animals', 'Herding', 'Horse'],
+  selections: [0, 0, 0, 0, 0, 0, 0],
 };
+
 export const optionBicycling = {
   name: 'Cycling',
   options: ['Biking, Any', 'Biking, BMX', 'Biking, Mountain', 'Cycling, Road', 'Cycling, Winter'],
+  selections: [0, 0, 0, 0, 0],
 };
+
 export const optionBoardingSkiing = {
   name: 'Boarding/Skiing',
   options: ['Boarding, Any', 'Board-sailing/Windsurfing', 'Skiing, Alpine', 'Skiing, Cross Country', 'Skateboarding', 'Sledding', 'Snowboarding', 'Snowshoeing'],
+  selections: [0, 0, 0, 0, 0, 0, 0, 0],
 };
+
 export const optionLargeBoat = {
   name: 'Boating (Large)',
   options: ['Large Boat, Any', 'Sailing', 'Motor-boating', 'Yachting'],
+  selections: [0, 0, 0, 0],
 };
+
 export const optionSmallBoating = {
   name: 'Boating (Small)',
   options: ['Small Boat, Any', 'Canoeing', 'Kayaking, Recreational', 'Kayaking, Sea/Tour', 'Kayaking, White Water', 'Kayaking, Fishing', 'Rafting', 'Stand-up Paddling', 'Surfing', 'Wake-boarding'],
+  selections: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 };
+
 export const optionCamping = {
   name: 'Camping',
-  options: ['Camping, Any', 'Bonfire', 'Camping, RV', 'Camping, local',
-  ],
+  options: ['Camping, Any', 'Bonfire', 'Camping, RV', 'Camping, local'],
+  selections: [0, 0, 0, 0],
 };
+
 export const optionClimbing = {
   name: 'Climbing',
   options: ['Climbing, Any', 'Climbing, Boulder/Sport', 'Climbing, Indoor', 'Climbing, Mountaineering/Ice', 'Climbing, Tree', 'Rappelling'],
+  selections: [0, 0, 0, 0, 0, 0],
 };
+
 export const optionFishing = {
   name: 'Fishing',
   options: ['Fishing, Any', 'Fishing, Deep Water', 'Fishing, Freshwater', 'Fishing, Saltwater', 'Fishing, Ice'],
+  selections: [0, 0, 0, 0, 0],
 };
+
 export const optionFlying = {
   name: 'Flying',
   options: ['Flying, Drones/RC', 'Flying, Airplane', 'Flying, Unpowered/Gliding', 'Kiting'],
+  selections: [0, 0, 0, 0],
 };
+
 export const optionHunting = {
   name: 'Hunting',
   options: ['Hunting, Any', 'Hunting, Bow', 'Hunting, Handgun', 'Hunting, Rifle', 'Hunting, Shotgun', 'Trapping'],
+  selections: [0, 0, 0, 0, 0, 0],
 };
+
 export const optionMotorSports = {
   name: 'Motor Sports',
   options: ['Motor Sports, Any', 'ATV / 4-wheeling', 'Dirt-biking', 'Jet-skiing', 'Off-road Trucking', 'Snowmobiling'],
+  selections: [0, 0, 0, 0, 0, 0],
 };
+
 export const optionRestorationConservation = {
   name: 'Nature',
   options: ['Conservation, Any', 'Restoration, Any', 'Birdwatching', 'Picking/Foraging', 'Gardening', 'Restoration, Historical', 'Volunteer', 'Wildlife Viewing'],
+  selections: [0, 0, 0, 0, 0, 0, 0, 0],
 };
+
 export const optionShooting = {
   name: 'Shooting',
   options: ['Shooting, Any', 'Archery', 'Shooting, Plinking/Target/Range', 'Shooting, Trap', 'Paintball'],
+  selections: [0, 0, 0, 0, 0],
 };
+
 export const optionSwimming = {
   name: 'Swimming',
   options: ['Diving', 'Scuba', 'Snorkeling', 'Sunbathing', 'Swimming, Any', 'Swimming, Wild', 'Swimming, Pool'],
+  selections: [0, 0, 0, 0, 0, 0, 0],
 };
+
 export const optionTeam = {
   name: 'Team Sports',
   options: ['Team, Any', 'Field Sports', 'Frisbee', 'Sport, Playing', 'Sport, Spectator', 'Team Building', 'Ultimate', 'Volleyball'],
+  selections: [0, 0, 0, 0, 0, 0, 0, 0],
 };
+
 export const optionWalkRun = {
   name: 'Walking/Running',
   options: ['Walk / Run, Any', 'Run, Jog', 'Run, Trail', 'Hiking, Day', 'Beach Combing', 'Triathlon', 'Adventure Racing'],
+  selections: [0, 0, 0, 0, 0, 0, 0],
 };
+
 export const optionLeisureOther = {
   name: 'Leisure',
   options: ['Astronomy', 'Golf', 'Photography/Painting', 'Travel'],
+  selections: [0, 0, 0, 0],
 };
 
 export const optionAllCombined = [

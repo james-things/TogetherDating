@@ -27,15 +27,19 @@ export default function DataTest() {
   }
 
   // Arrays can be displayed with stringify
+  // Currently configured to monitor outdoorActivities array
   return (
     <pre>
+      {/*
       <i>USER:</i>
       <br />
       {JSON.stringify(user, null, 2)}
       <br />
-      <i>DOCUMENT:</i>
+      */}
+      <h3>Firestore Live View</h3>
+      <i>Outdoor Interests:</i>
       <br />
-      {JSON.stringify(data, null, 2)}
+      {JSON.stringify(data.outdoorActivities, null, 2)}
     </pre>
   );
 }

@@ -106,6 +106,8 @@ export default function MatchSortList(personCollection, user) {
       person.push(item.person);
     });
     console.log('ML Score', scoreArray);
-    return person;
+
+    // invert persons for PersonSlider
+    return person.reverse();
   }
 }

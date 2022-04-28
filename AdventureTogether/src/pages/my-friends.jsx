@@ -1,15 +1,43 @@
-// Description: A host page for testing the user profile component
+// Description: A host page for testing the editable user profile component
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useReducer } from 'react';
 import { Link } from 'react-router-dom';
 import { useUser } from 'reactfire';
 import { withLayout } from '../wrappers/layout';
-import UserProfile from '../components/UserProfile';
+import FriendsList from '../components/FriendsList';
 
-function UserProfilePage() {
+// Interface state initialization
+const initialState = {
+  targetUid: '',
+  targetName: '',
+};
+
+// Management of document state
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'targetUid':
+      return { ...state, targetUid: action.payload };
+    case 'targetName':
+      return { ...state, targetName: action.payload };
+    default:
+      throw new Error();
+  }
+};
+
+function MyFriendsPage() {
   const [loading, setLoading] = useState(false);
   // Subscribe to user session
   const { status, data: user } = useUser();
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  // Call in reducer to handle inputs
+  const handleOnChange = (evt) => {
+    const { target } = evt;
+    dispatch({
+      type: target.name,
+      payload: target.value,
+    });
+  };
 
   useEffect(() => {
     if (user && (user.uid.length > 0)) {
@@ -50,18 +78,12 @@ function UserProfilePage() {
             />
           </svg>
         </Link>
-        <h3 className="text-2xl font-extrabold my-4">
-          User Profile
+        <h3 className="text-2xl font-extrabold italic uppercase my-4">
+          Friends List Test Page
         </h3>
-        <div
-          className="text-sm text-gray-800 text-center"
-          data-nosnippet="true"
-        >
-          Some text...
-        </div>
       </div>
       <div className="text-center w-full divide-y-2 divide-gray-100 divide-solid">
-        {(user) && <UserProfile userId={user?.uid} />}
+        {(user) && <FriendsList userId={user?.uid} />}
         <div className="py-4">
           <div className="flex justify-between items-center"> </div>
         </div>
@@ -71,4 +93,4 @@ function UserProfilePage() {
   );
 }
 
-export default withLayout(UserProfilePage, { bgImage: true });
+export default withLayout(MyFriendsPage, { bgImage: true });

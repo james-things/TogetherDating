@@ -1,12 +1,13 @@
-// Description: A host page for testing the user profile component
+// Description: A host page for testing the editable user profile component
 
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useUser } from 'reactfire';
 import { withLayout } from '../wrappers/layout';
 import UserProfile from '../components/UserProfile';
+import UserProfileEditable from '../components/UserProfileEditable';
 
-function UserProfilePage() {
+function UserProfileEditablePage() {
   const [loading, setLoading] = useState(false);
   // Subscribe to user session
   const { status, data: user } = useUser();
@@ -50,25 +51,23 @@ function UserProfilePage() {
             />
           </svg>
         </Link>
-        <h3 className="text-2xl font-extrabold my-4">
+        <h3 className="text-2xl font-extrabold italic uppercase my-4">
           User Profile
         </h3>
         <div
           className="text-sm text-gray-800 text-center"
           data-nosnippet="true"
         >
-          Some text...
+          Want to update your profile or made a mistake during registration?
+          <br />
+          You&apos;ve come to the right place!
         </div>
       </div>
       <div className="text-center w-full divide-y-2 divide-gray-100 divide-solid">
-        {(user) && <UserProfile userId={user?.uid} />}
-        <div className="py-4">
-          <div className="flex justify-between items-center"> </div>
-        </div>
-        {(user) && user?.uid}
+        {(user) && <UserProfileEditable userId={user?.uid} />}
       </div>
     </div>
   );
 }
 
-export default withLayout(UserProfilePage, { bgImage: true });
+export default withLayout(UserProfileEditablePage, { bgImage: true });

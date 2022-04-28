@@ -1,3 +1,5 @@
+@tailwind base;
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
@@ -29,3 +31,16 @@ code {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+[class^="icon"] {
+  width: 15px;
+  height: 15px;
+  position: relative;
+  top: -25px;
+  right: 15px;
+  margin-right: 0px;
+  fill: #fff;
+}
+
+@tailwind components;
+@tailwind utilities;

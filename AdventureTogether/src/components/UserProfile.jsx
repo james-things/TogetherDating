@@ -17,8 +17,8 @@ export default function UserProfile({ userId }) {
   // Subscribe to user session
   const { status, data: user } = useUser();
 
-  // Set document reference using user session (currently using testing value)
-  const userRef = doc(useFirestore(), `users/${userId}`);
+  // Set document reference passed to component
+  const userRef = doc(useFirestore(), `users/${userId}`); // 'users/17aeqVDSRSd1Zf1tME57sIUAlwy2' // `users/${userId}`
 
   // Subscribe to referenced document
   const { refstatus, data } = useFirestoreDocData(userRef);
@@ -36,7 +36,7 @@ export default function UserProfile({ userId }) {
   // If the document data is not undefined, calculate the feet/inches from total inches for height
   if (data) {
     // eslint-disable-next-line no-bitwise
-    heightFeet = ~~(Number(data.height) / 12);
+    heightFeet = ~~(Number(data.height) / 12); // bitwise quotient === integer division
     heightInches = (Number(data.height) % 12);
     console.log(`${heightFeet}' ${heightInches}"`);
   }

@@ -1,19 +1,17 @@
-// Description: A testing page which allows the user to browse potential matches
-// using the swipable card component PersonSlider-Testing
-
-// todo: pass user instead of userId to PersonSlider to enable identifying shared interests
+// Description: A page which allows the user to browse potential matches
 
 import React, { useEffect, useState } from 'react';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
 import { Link } from 'react-router-dom';
+import PersonSliderOld from '../components/PersonSlider-old';
 import SideMatchList from '../components/SideMatchList';
 import { withLayout } from '../wrappers/layout';
 import machineLearningSort from '../methods/machineLearningSort';
-import PersonSlider from '../components/PersonSlider';
+// import getImplicitInterests from '../methods/getImplicitInterests';
 
 // Page main function
-const DiscoverPage = () => {
+const DiscoverOldPage = () => {
   const [persons, setPersons] = useState([]);
   const [loading, setLoading] = useState(true);
   const [sorting, setSort] = useState(true);
@@ -25,6 +23,7 @@ const DiscoverPage = () => {
   );
 
   // Iterates through users to generate potential matches
+  // TODO: address bug which causes page loads to fail once you have 10+ likes or dislikes
   useEffect(() => {
     firebase
       .firestore()
@@ -44,26 +43,10 @@ const DiscoverPage = () => {
         // i am able to get the people then swap the persons
         setPersons(show);
         console.log('SORTED ARRAY', show);
+        // localStorePut('people', persons);
         setLoading(false);
       });
   }, []);
-
-  function getTopCardPerson() {
-    if (persons.length > 0) {
-      const returnPerson = persons[persons.length - 1];
-      return returnPerson.name;
-    }
-    return 'no more people to match!';
-  }
-
-  function handleOnChange() {
-    console.log('persons changed!');
-    getTopCardPerson();
-  }
-
-  useEffect(() => {
-    console.log('persons changed');
-  }, [persons]);
 
   // Page content - A display of potential matches, with a side match list component
   return (
@@ -96,17 +79,17 @@ const DiscoverPage = () => {
               </g>
             </svg>
           </Link>
+
         </div>
         <section className="flex my-auto">
           {loading && <h3>Loading</h3>}
           {!loading
-            // eslint-disable-next-line react/jsx-no-bind,max-len
-            && <PersonSlider persons={persons} userId={id} />}
-          <Link to="/inbox" className="block absolute shadow-3xl inset-0 top-auto font-bold text-white flex items-center justify-center uppercase p-4 h-12 bg-gradient-to-r from-pink-600 via-pink-600 to-yellow-500">Inbox</Link>
+            && <PersonSliderOld persons={persons} userId={id} />}
+          <Link to="/inbox" className="block md:hidden absolute shadow-3xl inset-0 top-auto font-bold text-white flex items-center justify-center uppercase p-4 h-12 bg-gradient-to-r from-pink-600 via-pink-600 to-yellow-500">Inbox</Link>
         </section>
       </div>
     </div>
   );
 };
 
-export default withLayout(DiscoverPage, { hideNavbar: true });
+export default withLayout(DiscoverOldPage, { hideNavbar: true });
