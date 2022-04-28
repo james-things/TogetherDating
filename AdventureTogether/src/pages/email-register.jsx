@@ -62,7 +62,7 @@ const EmailRegisterPage = () => {
     // await dating profile creation
     await registerEmailProfile(userId, state.image, state.name, state.description);
     // once done, redirect user to discover page
-    navigate('/configure-profile');
+    navigate('/outdoor-interests');
   }
 
   // Page content - Allow the user to select and initiate a registration process

@@ -84,46 +84,29 @@ export default function FriendsList({ userId }) {
     <pre>
       {(!!loading) && (data) && (friends.length > 0)
         && (
-          <div className="container mx-auto">
+          <div className="container">
             <div className="grid grid-cols-4 font-sans">
               {/* above this */}
-              <div className="flex items-stretch justify-center">
-                <div className="col-span-1 self-center">
-                  <img
-                    className="self-auto rounded-full"
-                    width="150"
-                    src={data.imageUrl}
-                    alt="User Profile Pic"
-                  />
-                </div>
+              <div className="col-span-1 self-center">
+                <img
+                  className="self-auto rounded-full"
+                  width="150"
+                  src={data.imageUrl}
+                  alt="User Profile Pic"
+                />
               </div>
-              <div className="col-span-3 self-center">
-                <div className="text-center text-4xl">
-                  {data.name}
-                </div>
+              <div className="col-span-3 self-center text-center text-4xl">
+                {data.name}
               </div>
-              <div className="font-medium cols-auto">
-                Friends:
-                {' '}
+              <div className="container col-span-4">
                 {friends.map((friend) => (
-                  <div key={friend.id}>
-                    <div className="">
-                      {friend.name}
-                    </div>
-                    <div className="">
-                      {friend.sharedInterests}
-                    </div>
+                  <div className="col-span-1" key={friend.id}>
+                    {friend.name}
+                    {'    '}
+                    {friend.sharedInterests}
                   </div>
                 ))}
               </div>
-            </div>
-            <div>
-              <button
-                type="button"
-                className="w-full bg-gradient-to-r from-pink-600 to-yellow-500 rounded-full hover:bg-gray-200 py-4 px-16 block whitespace-no-wrap text-white font-bold uppercase"
-              >
-                Print Stuff
-              </button>
             </div>
           </div>
         )}

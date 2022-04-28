@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useUser } from 'reactfire';
 import { withLayout } from '../wrappers/layout';
-import UserProfile from '../components/UserProfile';
+import UserProfileEditable from '../components/UserProfileEditable';
 
 function UserProfilePage() {
   const [loading, setLoading] = useState(false);
@@ -50,18 +50,9 @@ function UserProfilePage() {
             />
           </svg>
         </Link>
-        <h3 className="text-2xl font-extrabold my-4">
-          User Profile
-        </h3>
-        <div
-          className="text-sm text-gray-800 text-center"
-          data-nosnippet="true"
-        >
-          Some text...
-        </div>
       </div>
       <div className="text-center w-full divide-y-2 divide-gray-100 divide-solid">
-        {(user) && <UserProfile userId={user?.uid} />}
+        {(user) && <UserProfileEditable userId={user?.uid} />}
         <div className="py-4">
           <div className="flex justify-between items-center"> </div>
         </div>

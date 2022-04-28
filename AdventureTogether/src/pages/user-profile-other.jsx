@@ -7,7 +7,7 @@ import { withLayout } from '../wrappers/layout';
 import UserProfile from '../components/UserProfile';
 import UserProfileEditable from '../components/UserProfileEditable';
 
-function UserProfileEditablePage() {
+function UserProfileOtherPage() {
   const [loading, setLoading] = useState(false);
   // Subscribe to user session
   const { status, data: user } = useUser();
@@ -64,10 +64,10 @@ function UserProfileEditablePage() {
         </div>
       </div>
       <div className="text-center w-full divide-y-2 divide-gray-100 divide-solid">
-        {(user) && <UserProfileEditable userId={user?.uid} />}
+        {(user) && <UserProfile userId={user?.uid} />}
       </div>
     </div>
   );
 }
 
-export default withLayout(UserProfileEditablePage, { bgImage: true });
+export default withLayout(UserProfileOtherPage, { bgImage: true });

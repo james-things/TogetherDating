@@ -191,10 +191,14 @@ const PersonSlider = ({ persons, userId }) => {
   };
 
   // Load in the logged-in user's interests once their document is available
+  // eslint-disable-next-line consistent-return
   useEffect(() => {
     if ((data.outdoorActivities !== undefined) && (myInterests.length <= 0)) {
       setMyInterests(data.outdoorActivities);
-      setLoading(false);
+      const timer = setTimeout(() => {
+        setLoading(false);
+      }, 1000);
+      return () => clearTimeout(timer);
     }
     if ((myInterests.length > 0) && currentPerson) {
       updateSharedInterests();

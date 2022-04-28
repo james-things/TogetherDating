@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import {
   BellIcon, MenuIcon, XIcon, LoginIcon,
@@ -7,7 +7,9 @@ import { useUser } from 'reactfire';
 
 const navigationLoggedIn = [
   { name: 'Discover', href: '/discover', current: true },
-  { name: 'My Profile', href: '/user-profile', current: false },
+  { name: 'Profile', href: '/user-profile', current: false },
+  { name: 'Interests', href: '/outdoor-interests', current: false },
+  { name: 'Friends', href: '/my-friends', current: false },
   { name: 'Inbox', href: '/inbox', current: false },
 ];
 
@@ -23,6 +25,21 @@ function classNames(...classes) {
 export default function Navbar() {
   const { status, data: user } = useUser();
   const navState = user ? navigationLoggedIn : navigationLoggedOut;
+  const [loggedInCur, setLoggedInCur] = useState(navigationLoggedIn);
+  const [loggedOutCur, setLoggedOutCur] = useState(navigationLoggedOut);
+
+  function setCurrent(item) {
+    let tempCur;
+    if (user) tempCur = loggedInCur;
+    else tempCur = loggedOutCur;
+
+    tempCur.forEach((i) => {
+      const curIndex = tempCur.indexOf(i);
+      if (i.name === item.name) tempCur[curIndex].current = true;
+      else tempCur[curIndex].current = false;
+    });
+  }
+
   return (
     <Disclosure as="nav" className="bg-gray-800">
       {({ open }) => (
@@ -78,6 +95,7 @@ export default function Navbar() {
                       <a
                         key={item.name}
                         href={item.href}
+                        onClick={() => setCurrent(item)}
                         className={classNames(
                           item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
                           'px-3 py-2 rounded-md text-sm font-medium',

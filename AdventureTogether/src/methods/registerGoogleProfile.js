@@ -40,6 +40,7 @@ export default async function registerGoogleProfile(descState) {
     smoking: '',
     childStatus: '',
     astrologySign: '',
+    completedRegistration: false,
     id: userId,
   }))
     .catch((err) => {

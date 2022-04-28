@@ -61,78 +61,80 @@ export default function UserProfile({ userId }) {
               <div className="col-span-3 self-center">
                 <div className="text-center text-4xl">
                   {data.name}
+                  {'\'s profile'}
+
                 </div>
               </div>
-              <div className="text-left col-span-1 text-xl h-8">
+              <div className="text-left col-span-1 text-m h-8">
                 <u>Gender:</u>
               </div>
-              <div className="text-left col-span-1 text-xl h-8">
+              <div className="text-left col-span-1 text-m h-8">
                 {data.gender}
               </div>
-              <div className="text-left col-span-1 text-xl h-8">
+              <div className="text-left col-span-1 text-m h-8">
                 <u>Hair Color:</u>
               </div>
-              <div className="text-left col-span-1 text-xl h-8">
+              <div className="text-left col-span-1 text-m h-8">
                 {data.hairColor}
               </div>
-              <div className="text-left col-span-1 text-xl h-8">
+              <div className="text-left col-span-1 text-m h-8">
                 <u>Age:</u>
               </div>
-              <div className="text-left col-span-1 text-xl h-8">
+              <div className="text-left col-span-1 text-m h-8">
                 {getAge(data.birthdate)}
               </div>
-              <div className="text-left col-span-1 text-xl h-8">
+              <div className="text-left col-span-1 text-m h-8">
                 <u>Eye Color:</u>
               </div>
-              <div className="text-left col-span-1 text-xl h-8">
+              <div className="text-left col-span-1 text-m h-8">
                 {data.eyeColor}
               </div>
-              <div className="text-left col-span-1 text-xl h-8">
+              <div className="text-left col-span-1 text-m h-8">
                 <u>Height:</u>
               </div>
-              <div className="text-left col-span-1 text-xl h-8">
+              <div className="text-left col-span-1 text-m h-8">
                 {`${heightFeet}' ${heightInches}"`}
               </div>
-              <div className="text-left col-span-1 text-xl h-8">
+              <div className="text-left col-span-1 text-m h-8">
                 <u>Zodiac Sign:</u>
               </div>
-              <div className="text-left col-span-1 text-xl h-8">
+              <div className="text-left col-span-1 text-m h-8">
                 {data.astrologySign}
               </div>
-              <div className="text-left col-span-1 text-xl h-8">
+              <div className="text-left col-span-1 text-m h-8">
                 <u>Body Type:</u>
               </div>
-              <div className="text-left col-span-1 text-xl h-8">
+              <div className="text-left col-span-1 text-m h-8">
                 {data.bodyType}
               </div>
-              <div className="text-left col-span-1 text-xl h-8">
+              <div className="text-left col-span-1 text-m h-8">
                 <u>Parental Status:</u>
               </div>
-              <div className="text-left col-span-1 text-xl h-8">
+              <div className="text-left col-span-1 text-m h-8">
                 {data.childStatus}
               </div>
-              <div className="text-left col-span-1 text-xl h-8">
+              <div className="text-left col-span-1 text-m h-8">
                 <u>Religion:</u>
               </div>
-              <div className="text-left col-span-1 text-xl h-8">
+              <div className="text-left col-span-1 text-m h-8">
                 {data.religion}
               </div>
-              <div className="text-left col-span-1 text-xl h-8">
+              <div className="text-left col-span-1 text-m h-8">
                 <u>Tobacco Use:</u>
               </div>
-              <div className="text-left col-span-1 text-xl h-8">
+              <div className="text-left col-span-1 text-m h-8">
                 {data.smoking}
               </div>
-              <div className="text-left col-span-1 text-xl h-8">
+              <div className="text-left col-span-1 text-m h-8">
                 <u>Ethnicity:</u>
               </div>
-              <div className="text-left col-span-1 text-xl h-8">
+              <div className="text-left col-span-1 text-m h-8">
                 {data.ethnicity}
               </div>
-              <div className="text-left col-span-1 text-xl h-8">
+              <div className="text-left col-span-1 text-m h-8">
                 <u>Alcohol Use:</u>
               </div>
-              <div className="text-left col-span-1 text-xl h-8">
+              <div className="text-left col-span-1 text-m h-8">
                 {data.alcoholUse}
               </div>
             </div>
@@ -142,7 +144,7 @@ export default function UserProfile({ userId }) {
               {' '}
               {JSON.stringify(data.outdoorActivities)}
             </div>
-
+            {/*
             <div>
               Matches (UIDs):
               {' '}
