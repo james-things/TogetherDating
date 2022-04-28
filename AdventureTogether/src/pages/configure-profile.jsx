@@ -25,6 +25,7 @@ const initialState = {
   eyeColor: '',
   religion: '',
   smokingStatus: '',
+  height: '',
   completedRegistration: true,
 };
 
@@ -53,6 +54,8 @@ const reducer = (state, action) => {
       return { ...state, eyeColor: action.payload };
     case 'gender':
       return { ...state, gender: action.payload };
+    case 'height':
+      return { ...state, height: action.payload };
     default:
       throw new Error();
   }
@@ -90,7 +93,7 @@ const ConfigureProfilePage = () => {
     // Submit data to update
     await updateUserData(userId, state);
     // once done, redirect user to discover page
-    navigate('/outdoor-interests');
+    navigate('/index');
   }
 
   // Page content - Allow the user to select and initiate a registration process
@@ -176,230 +179,240 @@ const ConfigureProfilePage = () => {
           {error && (
             <p className="text-red-500 font-bold text-base py-2 ">{error}</p>
           )}
-          {/* todo: add height
-          1 education: '',
-          2 ethnicity: '',
-          3 astrologySign: '',
-          4 bodyType: '',
-          5 religion: '',
-          6 childStatus: '',
-          7 smokingStatus: '',
-          8 alchoholUse: '',
-          */}
-          <label htmlFor="gender" className="sr-only font-bold text-base md:ml-1">
-            Gender
-          </label>
-          <select
-            id="gender"
-            name="gender"
-            autoComplete="gender"
-            required
-            onChange={handleOnChange}
-            value={state.gender}
-            className="my-5 appearance-none rounded-full relative block w-full py-3 px-4 font-bold border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 text-base"
-            placeholder="Name"
-          >
-            <option value="">Select your gender...</option>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-            <option value="Non-Binary/Other">Non-Binary/Other</option>
-            <option value="Decline to Specify">Decline to Specify</option>
-          </select>
-          <label htmlFor="hairColor" className="sr-only font-bold text-base md:ml-1">
-            Hair Color
-          </label>
-          <select
-            id="hairColor"
-            name="hairColor"
-            autoComplete="hairColor"
-            required
-            onChange={handleOnChange}
-            value={state.hairColor}
-            className="my-5 appearance-none rounded-full relative block w-full py-3 px-4 font-bold border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 text-base"
-            placeholder="Name"
-          >
-            <option value="">Select your hair color...</option>
-            <option value="Blond">Blond</option>
-            <option value="Brown">Brown</option>
-            <option value="Black">Black</option>
-            <option value="Red">Red</option>
-            <option value="Gray">Gray</option>
-            <option value="White">White</option>
-            <option value="Other">Other</option>
-            <option value="What Hair?">What Hair?</option>
-          </select>
-          <label htmlFor="eyeColor" className="sr-only font-bold text-base md:ml-1">
-            Eye Color
-          </label>
-          <select
-            id="eyeColor"
-            name="eyeColor"
-            autoComplete="eyeColor"
-            required
-            onChange={handleOnChange}
-            value={state.eyeColor}
-            className="my-5 appearance-none rounded-full relative block w-full py-3 px-4 font-bold border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 text-base"
-            placeholder="Name"
-          >
-            <option value="">Select your eye color...</option>
-            <option value="Blue">Blue</option>
-            <option value="Green">Green</option>
-            <option value="Hazel">Hazel</option>
-            <option value="Brown">Brown</option>
-            <option value="Other">Other</option>
-          </select>
-          <label htmlFor="education" className="sr-only font-bold text-base md:ml-1">
-            Education
-          </label>
-          <select
-            id="education"
-            name="education"
-            autoComplete="eduction"
-            required
-            onChange={handleOnChange}
-            value={state.education}
-            className="my-5 appearance-none rounded-full relative block w-full py-3 px-4 font-bold border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 text-base"
-            placeholder="Name"
-          >
-            <option value="">Select your education level...</option>
-            <option value="High School">High School</option>
-            <option value="Some College">Some College</option>
-            <option value="Bachelors">Bachelors</option>
-            <option value="Post Graduate">Post Graduate</option>
-          </select>
-          <select
-            id="ethnicity"
-            name="ethnicity"
-            autoComplete="ethnicity"
-            required
-            onChange={handleOnChange}
-            value={state.ethnicity}
-            className="my-5 appearance-none rounded-full relative block w-full py-3 px-4 font-bold border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 text-base"
-            placeholder="Ethnicity"
-          >
-            <option value="">Select your ethnicity...</option>
-            <option value="American Indian">American Indian</option>
-            <option value="Asian">Asian</option>
-            <option value="Black">Black</option>
-            <option value="Hispanic">Hispanic</option>
-            <option value="Middle Eastern">Middle Eastern, Indian</option>
-            <option value="Pacific Islander">Pacific Islander, Hawaiian</option>
-            <option value="White">White</option>
-          </select>
-          <select
-            id="astrologySign"
-            name="astrologySign"
-            autoComplete="astrologySign"
-            required
-            onChange={handleOnChange}
-            value={state.astrologySign}
-            className="my-5 appearance-none rounded-full relative block w-full py-3 px-4 font-bold border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 text-base"
-            placeholder="astrologySign"
-          >
-            <option value="">Select your astrological sign...</option>
-            <option value="Aries">Aries</option>
-            <option value="Taurus">Taurus</option>
-            <option value="Gemini">Gemini</option>
-            <option value="Cancer">Cancer</option>
-            <option value="Leo">Leo</option>
-            <option value="Virgo">Virgo</option>
-            <option value="Libra">Libra</option>
-            <option value="Scorpio">Scorpio</option>
-            <option value="Sagittarius">Sagittarius</option>
-            <option value="Capricorn">Capricorn</option>
-            <option value="Aquarius">Aquarius</option>
-            <option value="Pisces">Pisces</option>
-          </select>
-          <select
-            id="bodyType"
-            name="bodyType"
-            autoComplete="bodyType"
-            required
-            onChange={handleOnChange}
-            value={state.bodyType}
-            className="my-5 appearance-none rounded-full relative block w-full py-3 px-4 font-bold border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 text-base"
-            placeholder="bodyType"
-          >
-            <option value="">Select your body type...</option>
-            <option value="Athletic">Athletic</option>
-            <option value="Average">Average</option>
-            <option value="Curvy">Curvy</option>
-            <option value="Muscular">Muscular</option>
-            <option value="Relaxed">Relaxed</option>
-            <option value="Slim">Slim</option>
-            <option value="Solid">Solid</option>
-
-          </select>
-          <select
-            id="religion"
-            name="religion"
-            autoComplete="religion"
-            required
-            onChange={handleOnChange}
-            value={state.religion}
-            className="my-5 appearance-none rounded-full relative block w-full py-3 px-4 font-bold border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 text-base"
-            placeholder="religion"
-          >
-            <option value="">Select your religion level...</option>
-            <option value="Christian">Christian</option>
-            <option value="Muslim">Muslim</option>
-            <option value="Hindi">Hindi</option>
-            <option value="Buddhist">Buddhist</option>
-            <option value="Non-dogmatic">Non-dogmatic</option>
-            <option value="Other">Other</option>
-          </select>
-          <select
-            id="childStatus"
-            name="childStatus"
-            autoComplete="childStatus"
-            required
-            onChange={handleOnChange}
-            value={state.childStatus}
-            className="my-5 appearance-none rounded-full relative block w-full py-3 px-4 font-bold border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 text-base"
-            placeholder="Child Status"
-          >
-            <option value="">Select your parental status...</option>
-            <option value="Young parent">Young parent</option>
-            <option value="Mature parent">Mature parent</option>
-            <option value="Maybe someday">Maybe someday</option>
-            <option value="Do not want kids">Do not want kids</option>
-            <option value="I want kids">I want kids</option>
-            <option value="Done with Parenting">Done with Parenting</option>
-          </select>
-          <select
-            id="smokingStatus"
-            name="smokingStatus"
-            autoComplete="smokingStatus"
-            required
-            onChange={handleOnChange}
-            value={state.smokingStatus}
-            className="my-5 appearance-none rounded-full relative block w-full py-3 px-4 font-bold border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 text-base"
-            placeholder="NameSmokingStatus"
-          >
-            <option value="">Do you smoke?</option>
-            <option value="Non-smoker">Non-smoker</option>
-            <option value="Smoker">Smoker</option>
-            <option value="Quitting">Quitting</option>
-          </select>
-          <select
-            id="alcoholUse"
-            name="alcoholUse"
-            autoComplete="alcoholUse"
-            required
-            onChange={handleOnChange}
-            value={state.alcoholUse}
-            className="my-5 appearance-none rounded-full relative block w-full py-3 px-4 font-bold border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 text-base"
-            placeholder="AlcoholUse"
-          >
-            <option value="">Do you drink?</option>
-            <option value="Opposed, Moral">Opposed, Moral</option>
-            <option value="Opposed, Recovering">Opposed, Recovering</option>
-            <option value="none">none</option>
-            <option value="Socially/Occasional">Socially/Occasional</option>
-            <option value="Daily Light">Daily Light</option>
-            <option value="Party Regular">Party Regular</option>
-            <option value="Heavy">Heavy</option>
-          </select>
+          <div className="grid grid-cols-2 gap-x-1">
+            <div className="col-span-1">
+              <label htmlFor="gender" className="sr-only font-bold text-base md:ml-1">
+                Gender
+              </label>
+              <select
+                id="gender"
+                name="gender"
+                autoComplete="gender"
+                required
+                onChange={handleOnChange}
+                value={state.gender}
+                className="my-5 appearance-none rounded-full relative block w-full py-3 px-4 font-bold border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 text-sm"
+                placeholder="Name"
+              >
+                <option value="">Gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Non-Binary/Other">Non-Binary/Other</option>
+                <option value="Decline to Specify">Decline to Specify</option>
+              </select>
+              <label htmlFor="hairColor" className="sr-only font-bold text-base md:ml-1">
+                Hair Color
+              </label>
+              <select
+                id="hairColor"
+                name="hairColor"
+                autoComplete="hairColor"
+                required
+                onChange={handleOnChange}
+                value={state.hairColor}
+                className="my-5 appearance-none rounded-full relative block w-full py-3 px-4 font-bold border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 text-sm"
+                placeholder="Name"
+              >
+                <option value="">Hair</option>
+                <option value="Blond">Blonde</option>
+                <option value="Brown">Brown</option>
+                <option value="Black">Black</option>
+                <option value="Red">Red</option>
+                <option value="Gray">Gray</option>
+                <option value="White">White</option>
+                <option value="Other">Other</option>
+                <option value="What Hair?">What Hair?</option>
+              </select>
+              <label htmlFor="eyeColor" className="sr-only font-bold text-base md:ml-1">
+                Eye Color
+              </label>
+              <select
+                id="eyeColor"
+                name="eyeColor"
+                autoComplete="eyeColor"
+                required
+                onChange={handleOnChange}
+                value={state.eyeColor}
+                className="my-5 appearance-none rounded-full relative block w-full py-3 px-4 font-bold border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 text-sm"
+                placeholder="Name"
+              >
+                <option value="">Eyes</option>
+                <option value="Blue">Blue</option>
+                <option value="Green">Green</option>
+                <option value="Hazel">Hazel</option>
+                <option value="Brown">Brown</option>
+                <option value="Other">Other</option>
+              </select>
+              <label htmlFor="education" className="sr-only font-bold text-base md:ml-1">
+                Education
+              </label>
+              <select
+                id="education"
+                name="education"
+                autoComplete="eduction"
+                required
+                onChange={handleOnChange}
+                value={state.education}
+                className="my-5 appearance-none rounded-full relative block w-full py-3 px-4 font-bold border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 text-sm"
+                placeholder="Name"
+              >
+                <option value="">Education</option>
+                <option value="High School">High School</option>
+                <option value="Some College">Some College</option>
+                <option value="Bachelors">Bachelors</option>
+                <option value="Post Graduate">Post Graduate</option>
+              </select>
+              <select
+                id="ethnicity"
+                name="ethnicity"
+                autoComplete="ethnicity"
+                required
+                onChange={handleOnChange}
+                value={state.ethnicity}
+                className="my-5 appearance-none rounded-full relative block w-full py-3 px-4 font-bold border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 text-sm"
+                placeholder="Ethnicity"
+              >
+                <option value="">Ethnicity</option>
+                <option value="American Indian">American Indian</option>
+                <option value="Asian">Asian</option>
+                <option value="Black">Black</option>
+                <option value="Hispanic">Hispanic</option>
+                <option value="Middle Eastern">Middle Eastern, Indian</option>
+                <option value="Pacific Islander">Pacific Islander, Hawaiian</option>
+                <option value="White">White</option>
+              </select>
+              <select
+                id="astrologySign"
+                name="astrologySign"
+                autoComplete="astrologySign"
+                required
+                onChange={handleOnChange}
+                value={state.astrologySign}
+                className="my-5 appearance-none rounded-full relative block w-full py-3 px-4 font-bold border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 text-sm"
+                placeholder="astrologySign"
+              >
+                <option value="">Zodiac</option>
+                <option value="Aries">Aries</option>
+                <option value="Taurus">Taurus</option>
+                <option value="Gemini">Gemini</option>
+                <option value="Cancer">Cancer</option>
+                <option value="Leo">Leo</option>
+                <option value="Virgo">Virgo</option>
+                <option value="Libra">Libra</option>
+                <option value="Scorpio">Scorpio</option>
+                <option value="Sagittarius">Sagittarius</option>
+                <option value="Capricorn">Capricorn</option>
+                <option value="Aquarius">Aquarius</option>
+                <option value="Pisces">Pisces</option>
+              </select>
+            </div>
+            <div className="col-span-1">
+              <select
+                id="bodyType"
+                name="bodyType"
+                autoComplete="bodyType"
+                required
+                onChange={handleOnChange}
+                value={state.bodyType}
+                className="my-5 appearance-none rounded-full relative block w-full py-3 px-4 font-bold border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 text-sm"
+                placeholder="bodyType"
+              >
+                <option value="">Body Type</option>
+                <option value="Athletic">Athletic</option>
+                <option value="Average">Average</option>
+                <option value="Curvy">Curvy</option>
+                <option value="Muscular">Muscular</option>
+                <option value="Relaxed">Relaxed</option>
+                <option value="Slim">Slim</option>
+                <option value="Solid">Solid</option>
+              </select>
+              <input
+                id="height"
+                name="height"
+                autoComplete="height"
+                required
+                onChange={handleOnChange}
+                value={state.height}
+                className="my-5 appearance-none rounded-full relative block w-full py-3 px-4 font-bold border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 text-sm"
+                placeholder="Height (Inches)"
+                onKeyPress={(event) => {
+                  if (!/[0-9]/.test(event.key)) {
+                    event.preventDefault();
+                  }
+                }}
+              />
+              <select
+                id="religion"
+                name="religion"
+                autoComplete="religion"
+                required
+                onChange={handleOnChange}
+                value={state.religion}
+                className="my-5 appearance-none rounded-full relative block w-full py-3 px-4 font-bold border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 text-sm"
+                placeholder="religion"
+              >
+                <option value="">Religion</option>
+                <option value="Christian">Christian</option>
+                <option value="Muslim">Muslim</option>
+                <option value="Hindi">Hindi</option>
+                <option value="Buddhist">Buddhist</option>
+                <option value="Non-dogmatic">Non-dogmatic</option>
+                <option value="Other">Other</option>
+              </select>
+              <select
+                id="childStatus"
+                name="childStatus"
+                autoComplete="childStatus"
+                required
+                onChange={handleOnChange}
+                value={state.childStatus}
+                className="my-5 appearance-none rounded-full relative block w-full py-3 px-4 font-bold border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 text-sm"
+                placeholder="Child Status"
+              >
+                <option value="">Kids?</option>
+                <option value="Young parent">Young parent</option>
+                <option value="Mature parent">Mature parent</option>
+                <option value="Maybe someday">Maybe someday</option>
+                <option value="Do not want kids">Do not want kids</option>
+                <option value="I want kids">I want kids</option>
+                <option value="Done with Parenting">Done with Parenting</option>
+              </select>
+              <select
+                id="smokingStatus"
+                name="smokingStatus"
+                autoComplete="smokingStatus"
+                required
+                onChange={handleOnChange}
+                value={state.smokingStatus}
+                className="my-5 appearance-none rounded-full relative block w-full py-3 px-4 font-bold border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 text-sm"
+                placeholder="NameSmokingStatus"
+              >
+                <option value="">Do you smoke?</option>
+                <option value="Non-smoker">Non-smoker</option>
+                <option value="Smoker">Smoker</option>
+                <option value="Quitting">Quitting</option>
+              </select>
+              <select
+                id="alcoholUse"
+                name="alcoholUse"
+                autoComplete="alcoholUse"
+                required
+                onChange={handleOnChange}
+                value={state.alcoholUse}
+                className="my-5 appearance-none rounded-full relative block w-full py-3 px-4 font-bold border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 text-sm"
+                placeholder="AlcoholUse"
+              >
+                <option value="">Do you drink?</option>
+                <option value="Opposed, Moral">Opposed, Moral</option>
+                <option value="Opposed, Recovering">Opposed, Recovering</option>
+                <option value="none">none</option>
+                <option value="Socially/Occasional">Socially/Occasional</option>
+                <option value="Daily Light">Daily Light</option>
+                <option value="Party Regular">Party Regular</option>
+                <option value="Heavy">Heavy</option>
+              </select>
+            </div>
+          </div>
           <button
             type="button"
             onClick={saveProfileConfiguration}
