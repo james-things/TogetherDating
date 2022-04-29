@@ -154,7 +154,7 @@ const AgePage = () => {
           </div>
           <button
             type="submit"
-            className="w-full bg-gradient-to-r from-pink-600 to-yellow-500 rounded-full hover:bg-gray-200 py-4 px-16 block whitespace-no-wrap text-white font-bold uppercase"
+            className="w-full bg-gray-800 rounded-full hover:bg-gray-200 py-4 px-16 block whitespace-no-wrap text-white font-bold uppercase"
           >
             Continue
           </button>

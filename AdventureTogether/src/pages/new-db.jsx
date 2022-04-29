@@ -1,24 +1,18 @@
-// Description: A host page for testing the user profile component
+// Description: A page which requires a user to enter MM-DD-YYYY birthdate
+// and rejects navigation to registration if the user is younger than 18 years old
 
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { useUser } from 'reactfire';
+import React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { withLayout } from '../wrappers/layout';
-import UserProfileEditable from '../components/UserProfileEditable';
 
-function UserProfilePage() {
-  const [loading, setLoading] = useState(false);
-  // Subscribe to user session
-  const { status, data: user } = useUser();
+// Page main function
+const NewDBPage = () => {
+  // Initialize history routing and reducer
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    if (user && (user.uid.length > 0)) {
-      setLoading(false);
-    }
-  }, [user]);
-
+  // Page content - Accepts input for the users MM, DD, and YYYY of birth
   return (
-    <div className="min-w-full my-10 bg-white rounded-2xl border-2 border-gray-200 flex flex-col justify-center items-center mx-auto p-10 w-9/12 lg:w-1/2 md:w-6/12 sm:w-7/12">
+    <div className="my-10 bg-white rounded-2xl border-2 border-gray-200 flex flex-col justify-center items-center mx-auto p-10 w-9/12 lg:w-1/2 md:w-6/12 sm:w-7/12">
       <div className="flex flex-col justify-center items-center">
         <Link to="/">
           <svg
@@ -43,16 +37,34 @@ function UserProfilePage() {
             </g>
           </svg>
         </Link>
+        <h3 className="text-2xl font-extrabold italic uppercase my-4">
+          New Users DB!
+        </h3>
+        <div
+          className="text-sm text-gray-800 text-center"
+          data-nosnippet="true"
+        >
+          An existing login with no matching profile was detected!
+          <br />
+          Please click continue to re-create your profile.
+        </div>
       </div>
       <div className="text-center w-full divide-y-2 divide-gray-100 divide-solid">
-        {(user) && <UserProfileEditable userId={user?.uid} />}
+        <form className="my-5 w-full">
+          <button
+            type="button"
+            className="w-full bg-gray-800 rounded-full hover:bg-gray-200 py-4 px-16 block whitespace-no-wrap text-white font-bold uppercase"
+            onClick={() => navigate('/outdoor-interests')}
+          >
+            Continue
+          </button>
+        </form>
         <div className="py-4">
-          <div className="flex justify-between items-center"> </div>
+          {' '}
         </div>
-        {(user) && user?.uid}
       </div>
     </div>
   );
-}
+};
 
-export default withLayout(UserProfilePage, { bgImage: true });
+export default withLayout(NewDBPage, { bgImage: true });

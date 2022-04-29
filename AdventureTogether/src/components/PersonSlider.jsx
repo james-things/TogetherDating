@@ -255,7 +255,7 @@ const PersonSlider = ({ persons, userId }) => {
                       </p>
                       <p className="hidden md:block absolute bottom-0 group-hover:top-0 m-4 pt-6 pr-8 text-white text-md truncate group-hover:whitespace-normal transition-all w-full">{person.description}</p>
                     </div>
-                    <p className="block md:hidden text-gray-500 my-2 text-center">{person.description}</p>
+                    <p className="block hidden text-gray-500 my-2 text-center">{person.description}</p>
                   </TinderCard>
                 </div>
               ))}

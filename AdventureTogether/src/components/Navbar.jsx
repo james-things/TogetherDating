@@ -1,10 +1,10 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment } from 'react';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import {
   BellIcon, MenuIcon, XIcon, LoginIcon,
 } from '@heroicons/react/outline';
 import { useFirestore, useFirestoreDocData, useUser } from 'reactfire';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { doc } from 'firebase/firestore';
 
 const navigationLoggedIn = [
@@ -25,6 +25,7 @@ function classNames(...classes) {
 }
 
 export default function Navbar() {
+  const navigate = useNavigate();
   const { status, data: user } = useUser();
   const userRef = doc(useFirestore(), `new-users/${user?.uid}`); // this is how to use uid from user
   const { refstatus, data } = useFirestoreDocData(userRef);
@@ -157,10 +158,12 @@ export default function Navbar() {
                     </>
                   )
                   : (
-                    <button type="button" className="bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
-                      <span className="sr-only">View notifications</span>
-                      <LoginIcon className="h-6 w-6" aria-hidden="true" />
-                    </button>
+                    <Link to={(user) ? '/logout' : '/index'}>
+                      <button type="button" className="bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
+                        <span className="sr-only">View notifications</span>
+                        <LoginIcon className="h-6 w-6" aria-hidden="true" />
+                      </button>
+                    </Link>
                   )}
               </div>
             </div>
