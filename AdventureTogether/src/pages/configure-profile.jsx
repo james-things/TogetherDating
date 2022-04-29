@@ -98,7 +98,7 @@ const ConfigureProfilePage = () => {
 
   // Page content - Allow the user to select and initiate a registration process
   return (
-    <div className="my-10 bg-white rounded-2xl border-2 border-gray-200 flex flex-col justify-center items-center mx-auto p-10 w-full md:w-7/12">
+    <div className="my-20 bg-white rounded-2xl border-2 border-gray-200 flex flex-col justify-center items-center mx-auto p-10 w-full">
       <div className="flex flex-col justify-center items-center">
         <Link to="/">
           <svg
@@ -131,47 +131,13 @@ const ConfigureProfilePage = () => {
           </svg>
         </Link>
         <h3 className="text-2xl font-extrabold italic uppercase my-4">
-          Get Started
+          Almost there!
         </h3>
         <div
           className="text-sm text-gray-800 text-center"
           data-nosnippet="true"
         >
-          By clicking Log in, you agree to our
-          {' '}
-          <a
-            className="underline focus-outline-style text-gray-600"
-            href="#"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-describedby="open-in-new-window"
-          >
-            Terms
-          </a>
-          . Learn how we process your data in our
-          {' '}
-          <a
-            className="underline focus-outline-style text-gray-600"
-            href="#"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-describedby="open-in-new-window"
-          >
-            Privacy Policy
-          </a>
-          {' '}
-          and
-          {' '}
-          <a
-            className="underline focus-outline-style text-gray-600"
-            href="#"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-describedby="open-in-new-window"
-          >
-            Cookie Policy
-          </a>
-          .
+          Make a selection for each option below to finish setting up your profile.
         </div>
       </div>
       <div className="text-center w-full divide-y-2 divide-gray-100 divide-solid">
@@ -422,17 +388,7 @@ const ConfigureProfilePage = () => {
           </button>
         </form>
         <div className="py-4">
-          <h3 className="text-2xl font-extrabold italic uppercase my-4">
-            Get the app!
-          </h3>
-          <div className="flex justify-between items-center">
-            <img width="130" src="/appStore.webp" alt="AppStore Download" />
-            <img
-              width="170"
-              src="/playStore.webp"
-              alt="PlayStore Download"
-            />
-          </div>
+          {' '}
         </div>
       </div>
     </div>

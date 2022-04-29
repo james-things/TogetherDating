@@ -6,15 +6,19 @@ import { withLayout } from '../wrappers/layout';
 import { CometChatConversationListWithMessages } from '../CometChatWorkspace/src';
 
 // Main func/page content
-const InboxPage = () => (
-  <div
-    className="absolute inset-0 top-auto w-screen bg-white"
-    style={{
-      height: '90vh',
-    }}
-  >
-    <CometChatConversationListWithMessages />
-  </div>
-);
+const InboxPage = () => {
+  InboxPage.displayName = 'inbox';
+
+  return (
+    <div
+      className="absolute inset-0 top-16 w-screen bg-white"
+      style={{
+        height: '90vh',
+      }}
+    >
+      <CometChatConversationListWithMessages />
+    </div>
+  );
+};
 
 export default withLayout(InboxPage);

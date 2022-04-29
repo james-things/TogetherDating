@@ -25,6 +25,7 @@ const reducer = (state, action) => {
 };
 
 function MyFriendsPage() {
+  MyFriendsPage.displayName = 'my-friends';
   const [loading, setLoading] = useState(false);
   // Subscribe to user session
   const { status, data: user } = useUser();

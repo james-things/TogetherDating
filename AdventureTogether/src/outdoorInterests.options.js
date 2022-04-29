@@ -35,7 +35,7 @@ export const optionBicycling = {
 
 export const optionBoardingSkiing = {
   name: 'Boarding/Skiing',
-  options: ['Boarding, Any', 'Board-sailing/Windsurfing', 'Skiing, Alpine', 'Skiing, Cross Country', 'Skateboarding', 'Sledding', 'Snowboarding', 'Snowshoeing'],
+  options: ['Boarding, Any', 'Board-sailing', 'Skiing, Alpine', 'Skiing, Cross Country', 'Skateboarding', 'Sledding', 'Snowboarding', 'Snowshoeing'],
   selections: [0, 0, 0, 0, 0, 0, 0, 0],
 };
 
@@ -47,7 +47,7 @@ export const optionLargeBoat = {
 
 export const optionSmallBoating = {
   name: 'Boating (Small)',
-  options: ['Small Boat, Any', 'Canoeing', 'Kayaking, Recreational', 'Kayaking, Sea/Tour', 'Kayaking, White Water', 'Kayaking, Fishing', 'Rafting', 'Stand-up Paddling', 'Surfing', 'Wake-boarding'],
+  options: ['Small Boat, Any', 'Canoeing', 'Kayak, Recreational', 'Kayak, Sea/Tour', 'Kayak, White Water', 'Kayak, Fishing', 'Rafting', 'Stand-up Paddling', 'Surfing', 'Wake-boarding'],
   selections: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 };
 
@@ -59,7 +59,7 @@ export const optionCamping = {
 
 export const optionClimbing = {
   name: 'Climbing',
-  options: ['Climbing, Any', 'Climbing, Boulder/Sport', 'Climbing, Indoor', 'Climbing, Mountaineering/Ice', 'Climbing, Tree', 'Rappelling'],
+  options: ['Climbing, Any', 'Climbing, Sport', 'Climbing, Indoor', 'Climbing, Mountain', 'Climbing, Tree', 'Rappelling'],
   selections: [0, 0, 0, 0, 0, 0],
 };
 
@@ -71,7 +71,7 @@ export const optionFishing = {
 
 export const optionFlying = {
   name: 'Flying',
-  options: ['Flying, Drones/RC', 'Flying, Airplane', 'Flying, Unpowered/Gliding', 'Kiting'],
+  options: ['Flying, Drones/RC', 'Flying, Airplane', 'Flying, Gliding', 'Kiting'],
   selections: [0, 0, 0, 0],
 };
 
@@ -89,13 +89,13 @@ export const optionMotorSports = {
 
 export const optionRestorationConservation = {
   name: 'Nature',
-  options: ['Conservation, Any', 'Restoration, Any', 'Birdwatching', 'Picking/Foraging', 'Gardening', 'Restoration, Historical', 'Volunteer', 'Wildlife Viewing'],
+  options: ['Conservation, Any', 'Restoration, Any', 'Birdwatching', 'Picking/Foraging', 'Gardening', 'Restoration', 'Volunteer', 'Wildlife Viewing'],
   selections: [0, 0, 0, 0, 0, 0, 0, 0],
 };
 
 export const optionShooting = {
   name: 'Shooting',
-  options: ['Shooting, Any', 'Archery', 'Shooting, Plinking/Target/Range', 'Shooting, Trap', 'Paintball'],
+  options: ['Shooting, Any', 'Archery', 'Shooting, Target', 'Shooting, Trap', 'Paintball'],
   selections: [0, 0, 0, 0, 0],
 };
 
@@ -119,7 +119,7 @@ export const optionWalkRun = {
 
 export const optionLeisureOther = {
   name: 'Leisure',
-  options: ['Astronomy', 'Golf', 'Photography/Painting', 'Travel'],
+  options: ['Astronomy', 'Golf', 'Photography', 'Painting', 'Travel'],
   selections: [0, 0, 0, 0],
 };
 
