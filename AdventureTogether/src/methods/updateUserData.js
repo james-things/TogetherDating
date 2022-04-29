@@ -5,7 +5,7 @@ import { doc, getFirestore, updateDoc } from 'firebase/firestore';
 
 export default async function updateUserData(userId, userData) {
   const db = getFirestore();
-  const ref = doc(db, `users/${userId}`);
+  const ref = doc(db, `new-users/${userId}`);
   await updateDoc(ref, userData)
     .catch((err) => {
       console.log(`Unable to update user: ${err.message}`);

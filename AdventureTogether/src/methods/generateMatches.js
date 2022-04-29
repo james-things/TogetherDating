@@ -6,10 +6,10 @@ import {
 
 async function addMatches() {
   const db = getFirestore();
-  const q = query(collection(db, 'users'), where('id', '!=', ('ftSU0Vp08DQoTzkz1DZio0A8QhA2')));
+  const q = query(collection(db, 'new-users'), where('id', '!=', ('ftSU0Vp08DQoTzkz1DZio0A8QhA2')));
   const querySnapshot = await getDocs(q);
   querySnapshot.forEach((snappy) => {
-    const tempRef = doc(db, `users/${snappy.data().id}`);
+    const tempRef = doc(db, `new-users/${snappy.data().id}`);
     updateDoc(tempRef, {
       matches: ['ftSU0Vp08DQoTzkz1DZio0A8QhA2', '3VHNy5TmlCh45iL13672VnD3IVk1'],
     });

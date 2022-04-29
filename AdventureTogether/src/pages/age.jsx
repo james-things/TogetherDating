@@ -160,17 +160,7 @@ const AgePage = () => {
           </button>
         </form>
         <div className="py-4">
-          <h3 className="text-2xl font-extrabold italic uppercase my-4">
-            Get the app!
-          </h3>
-          <div className="flex justify-between items-center">
-            <img width="130" src="/appStore.webp" alt="AppStore Download" />
-            <img
-              width="170"
-              src="/playStore.webp"
-              alt="PlayStore Download"
-            />
-          </div>
+          {' '}
         </div>
       </div>
     </div>

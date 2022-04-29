@@ -83,7 +83,7 @@ export default function UserProfileEditable({ userId }) {
   const { status, data: user } = useUser(); // probably better to pass user from parent vs this
 
   // Set document reference passed to component
-  const userRef = doc(useFirestore(), `users/${userId}`); // 'users/17aeqVDSRSd1Zf1tME57sIUAlwy2' // `users/${userId}`
+  const userRef = doc(useFirestore(), `new-users/${userId}`); // 'new-users/17aeqVDSRSd1Zf1tME57sIUAlwy2' // `new-users/${userId}`
 
   // Subscribe to referenced document
   const { refstatus, data } = useFirestoreDocData(userRef);

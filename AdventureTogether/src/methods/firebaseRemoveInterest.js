@@ -8,7 +8,7 @@ import updateUserData from './updateUserData';
 
 export default async function firebaseRemoveInterest(targetName, userId) {
   const db = getFirestore();
-  const ref = doc(db, `users/${userId}`);
+  const ref = doc(db, `new-users/${userId}`);
   await getDoc(ref).then((docPromise) => {
     const docInterests = docPromise.data().outdoorActivities;
     const newInterests = docInterests.filter((interest) => interest !== targetName);

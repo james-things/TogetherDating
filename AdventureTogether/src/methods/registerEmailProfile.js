@@ -21,7 +21,7 @@ export default async function registerEmailProfile(userId, imageState, nameState
   const imageUrl = await getDownloadURL(imageRef);
 
   // Await firebase profile storage
-  await setDoc(doc(db, `users/${userId}`), ({
+  await setDoc(doc(db, `new-users/${userId}`), ({
     name: nameState,
     description: descState,
     imageUrl,

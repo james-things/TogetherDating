@@ -51,7 +51,7 @@ const OutdoorInterestsPage = () => {
   const [loading, setLoading] = useState(true);
   const [interests, setInterests] = useState([]);
   const { status, data: user } = useUser();
-  const userRef = doc(useFirestore(), `users/${user?.uid}`);
+  const userRef = doc(useFirestore(), `new-users/${user?.uid}`);
   const { refstatus, data } = useFirestoreDocData(userRef);
   const navigate = useNavigate();
 

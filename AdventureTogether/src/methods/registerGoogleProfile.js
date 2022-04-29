@@ -17,7 +17,7 @@ export default async function registerGoogleProfile(descState) {
   const image = user.photoURL;
 
   // Await firestore creation of profile
-  await setDoc(doc(db, `users/${userId}`), ({
+  await setDoc(doc(db, `new-users/${userId}`), ({
     name: uname,
     description: descState,
     imageUrl: image,

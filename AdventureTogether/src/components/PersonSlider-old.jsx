@@ -47,7 +47,7 @@ export default function PersonSliderOld({ persons, userId }) {
   const takeAction = async (action) => {
     try {
       const [ratedPerson, ...rest] = personsArray;
-      await firebase.firestore().collection('/users').doc(userId).update({
+      await firebase.firestore().collection('/new-users').doc(userId).update({
         [`${action}s`]: firebase.firestore.FieldValue.arrayUnion(ratedPerson.id),
       });
       setPersonsArray(rest);
@@ -55,13 +55,13 @@ export default function PersonSliderOld({ persons, userId }) {
       // todo: investigate this function (from original codebase)
       if (action === 'like' || action === 'favorite') {
         try {
-          const ratedPersonDocument = await (await firebase.firestore().collection('/users').doc(ratedPerson.id).get()).data();
+          const ratedPersonDocument = await (await firebase.firestore().collection('/new-users').doc(ratedPerson.id).get()).data();
           if (ratedPersonDocument.likes.includes(userId)
             || ratedPersonDocument.favorites.includes(userId)) {
-            await firebase.firestore().collection('/users').doc(userId).update({
+            await firebase.firestore().collection('/new-users').doc(userId).update({
               matches: firebase.firestore.FieldValue.arrayUnion(ratedPerson.id),
             });
-            await firebase.firestore().collection('/users').doc(ratedPerson.id).update({
+            await firebase.firestore().collection('/new-users').doc(ratedPerson.id).update({
               matches: firebase.firestore.FieldValue.arrayUnion(userId),
             });
           }

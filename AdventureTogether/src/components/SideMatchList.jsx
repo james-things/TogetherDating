@@ -16,11 +16,11 @@ export default function SideMatchList({ person }) {
 
   // useEffect with empty array for deps should run only once
   useEffect(() => {
-    const matchListener = firebase.firestore().collection('/users').doc(id).onSnapshot((doc) => {
+    const matchListener = firebase.firestore().collection('/new-users').doc(id).onSnapshot((doc) => {
       const currentMatchIds = doc.data().matches || [];
       firebase
         .firestore()
-        .collection('users')
+        .collection('new-users')
         .where('id', 'in', [...currentMatchIds, id]) // non-empty array required
         .get()
         .then((querySnapshot) => {

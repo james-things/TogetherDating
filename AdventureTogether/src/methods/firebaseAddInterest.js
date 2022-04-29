@@ -6,7 +6,7 @@ import updateUserData from './updateUserData';
 
 export default async function firebaseAddInterest(targetName, userId) {
   const db = getFirestore();
-  const ref = doc(db, `users/${userId}`);
+  const ref = doc(db, `new-users/${userId}`);
   await getDoc(ref).then((docPromise) => {
     const docInterests = docPromise.data().outdoorActivities;
     if (docInterests.indexOf(targetName) === -1) {
