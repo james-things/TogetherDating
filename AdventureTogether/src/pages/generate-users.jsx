@@ -203,7 +203,7 @@ const GenerateUsersPage = () => {
         setLastUser(gName);
 
         // Print successful result
-        console.log(`User [${gName}:${gEmail}] created successfully.`);
+        console.log(`-------\nNew user created successfully!\n-------\nUser Details:\n${gDob}\n${gName}\n${gGender}\n${gUrl}\n${gEmail}\n${gPw}\n${gOutActivs}\n${gEthnicity}\n${gEyeColor}\n${gHairColor}\n${gBodyType}\n${gHeight}\n${gEducation}\n${gReligion}\n${gAmbition}${gAlcohol}\n${gSmoking}\n${gChild}\n${gAstro}\n${gDescription}\n-------`);
       })
       // In event of failure, try to catch and display the error message thrown
       .catch((err) => {
@@ -229,8 +229,8 @@ const GenerateUsersPage = () => {
   useEffect(() => {
     if (start) {
       const timer = setTimeout(() => {
-        // set a random waiting time between 3-10 seconds to delay google rate limiting
-        setRandomTime((7000 * Math.random()) + 3000);
+        // set a random waiting time between 2-5 seconds to try to delay google rate limiting
+        setRandomTime((3000 * Math.random()) + 2000);
         console.log(`Random time set to: ${randomTime}`);
         registerGeneratedUser();
         incrementCounter();
@@ -247,7 +247,7 @@ const GenerateUsersPage = () => {
           Automated User Generation/Registration
         </h3>
         <br />
-        Once start is clicked, a new user will be created every 3-10 seconds.
+        Once start is clicked, a new user will be created every few seconds.
       </div>
       <div className="text-left w-full py-3 divide-y-2 divide-gray-100 divide-solid">
         <form className="w-full">
@@ -263,7 +263,9 @@ const GenerateUsersPage = () => {
           <button
             type="button"
             onClick={(start) ? stopGeneration : startGeneration}
-            className="w-full bg-gradient-to-r from-pink-600 to-yellow-500 rounded-full hover:bg-gray-200 py-4 px-16 block whitespace-no-wrap text-white font-bold"
+            className={(start)
+              ? 'w-full bg-gradient-to-r from-red-900 to-red-800 rounded-full hover:bg-gray-200 py-4 px-16 block whitespace-no-wrap text-white font-bold'
+              : 'w-full bg-gradient-to-r from-gray-800 to-gray-800 rounded-full hover:bg-gray-200 py-4 px-16 block whitespace-no-wrap text-white font-bold'}
           >
             {(start) && 'Stop Generation'}
             {(!start) && 'Start Generation'}
