@@ -119,6 +119,17 @@ const PersonSlider = ({ persons, userId }) => {
     document.body.style.overflow = 'visible';
   };
 
+  // For programmatic swiping ( can replace or call actions ) - not currently in use
+  const swipe = async (action, shouldRateBool) => {
+    let dir;
+    shouldRate = shouldRateBool;
+    if ((action === 'like') || (action === 'skip')) dir = 'right';
+    if ((action === 'dislike') || (action === 'back')) dir = 'left';
+    if (canSwipe && currentIndex < personsArray.length) {
+      await childRefs[currentIndex].current.swipe(dir); // Swipe the card!
+    }
+  };
+
   // update shared interest state based on currentPerson
   function updateSharedInterests() {
     const targetUserInterests = currentPerson.outdoorActivities;
@@ -132,17 +143,6 @@ const PersonSlider = ({ persons, userId }) => {
     });
     setSharedInterests(tempShared);
   }
-
-  // For programmatic swiping ( can replace or call actions ) - not currently in use
-  const swipe = async (action, shouldRateBool) => {
-    let dir;
-    shouldRate = shouldRateBool;
-    if ((action === 'like') || (action === 'skip')) dir = 'right';
-    if ((action === 'dislike') || (action === 'back')) dir = 'left';
-    if (canSwipe && currentIndex < personsArray.length) {
-      await childRefs[currentIndex].current.swipe(dir); // Swipe the card!
-    }
-  };
 
   // increase current index and show card (should be decrease?) - not currently in use
   const goBack = async () => {
@@ -241,11 +241,10 @@ const PersonSlider = ({ persons, userId }) => {
           <div className="">
             <div className="">
               {personsArray.map((person, index) => (
-                <div key={person.id.slice(0, -5)}>
+                <div key={person.id}>
                   <TinderCard
                     ref={childRefs[index]}
                     className="swipe"
-                    key={person.id}
                     onSwipe={(dir) => swiped(dir, person.id, index)}
                     onCardLeftScreen={() => outOfFrame(person.id, index)}
                     preventSwipe="up down"
@@ -283,7 +282,14 @@ const PersonSlider = ({ persons, userId }) => {
                 <table className="w-full">
                   <tbody className="bg-white dark:bg-gray-800">
                     <tr className="border-b border-gray-200 dark:border-gray-900">
-                      {`Common Interests: ${(sharedInterests.length > 0) ? sharedInterests : 'The Great Outdoors'}`}
+                      Common Interests:
+                      {sharedInterests.map((interest, i) => (
+                        <a key={`${interest}`}>
+                          {(i === 0) ? ' ' : ''}
+                          {interest}
+                          {(i === sharedInterests.length - 1) ? '' : ', '}
+                        </a>
+                      ))}
                     </tr>
                     <tr className="border-b border-gray-200 dark:border-gray-900">
                       {`Description: ${currentPerson.description}`}
