@@ -12,20 +12,7 @@ import getAge from '../methods/getAge';
 
 import editIcon from '../editIcon.webp';
 import updateUserData from '../methods/updateUserData';
-
-const initialState = {
-  alcoholUse: '',
-  astrologySign: '',
-  bodyType: '',
-  childStatus: '',
-  education: '',
-  ethnicity: '',
-  gender: '',
-  hairColor: '',
-  eyeColor: '',
-  religion: '',
-  smoking: '',
-};
+import firebaseUpdateAttribute from '../methods/firebaseUpdateAttibute';
 
 const initialEditState = {
   editable: false,
@@ -34,37 +21,16 @@ const initialEditState = {
 // Reducer to process inputs
 const reducer = (state, action) => {
   switch (action.type) {
-    case 'astrologySign':
-      return { ...state, astrologySign: action.payload };
-    case 'alcoholUse':
-      return { ...state, alcoholUse: action.payload };
-    case 'bodyType':
-      return { ...state, bodyType: action.payload };
-    case 'childStatus':
-      return { ...state, childStatus: action.payload };
-    case 'religion':
-      return { ...state, religion: action.payload };
-    case 'smokingStatus':
-      return { ...state, smoking: action.payload };
-    case 'education':
-      return { ...state, education: action.payload };
-    case 'ethnicity':
-      return { ...state, ethnicity: action.payload };
-    case 'hairColor':
-      return { ...state, hairColor: action.payload };
-    case 'eyeColor':
-      return { ...state, eyeColor: action.payload };
-    case 'gender':
-      return { ...state, gender: action.payload };
+    case 'height':
+      return { ...state, height: action.payload };
     default:
       throw new Error();
   }
 };
 
 export default function UserProfileEditable({ userId }) {
-  const [state, dispatch] = useReducer(reducer, initialState);
   const [editState, setEdit] = useState(initialEditState);
-  const [dataState, setDataState] = useState(initialState);
+  const [heightState, setHeightState] = useState();
 
   const toggleEditable = () => {
     const currentEditState = editState.editable;
@@ -110,56 +76,25 @@ export default function UserProfileEditable({ userId }) {
   // Link reducer to input
   const handleOnChange = (evt) => {
     const { target } = evt;
-    dispatch({
-      type: target.name,
-      payload: target.value,
-    });
+    const n = target.name;
+    const v = target.value;
+    firebaseUpdateAttribute(userId, n, v);
   };
 
   const handleConfirmButton = async () => {
-    await updateUserData(userId, state);
+    if (heightState !== undefined) {
+      const temp = heightState;
+      console.log(temp);
+      await firebaseUpdateAttribute(userId, 'height', temp);
+    }
     setEdit({ editable: false });
   };
 
-  useEffect(() => {
-    if (data) {
-      if (data.id) {
-        const {
-          description,
-          alcoholUse,
-          astrologySign,
-          bodyType,
-          childStatus,
-          education,
-          ethnicity,
-          gender,
-          hairColor,
-          eyeColor,
-          religion,
-          smoking,
-          height,
-        } = data;
-
-        setDataState({
-          description,
-          alcoholUse,
-          astrologySign,
-          bodyType,
-          childStatus,
-          education,
-          ethnicity,
-          gender,
-          hairColor,
-          eyeColor,
-          religion,
-          smoking,
-          height,
-        });
-
-        console.log(dataState);
-      }
-    }
-  }, [data]);
+  const updateHeightState = (evt) => {
+    const { target } = evt;
+    console.log(target.value);
+    setHeightState(target.value);
+  };
 
   return (
     <pre>
@@ -216,7 +151,7 @@ export default function UserProfileEditable({ userId }) {
                           autoComplete="gender"
                           required
                           onChange={handleOnChange}
-                          value={state.gender}
+                          value={data.gender}
                           className="h-6 text-xs appearance-none rounded-full relative block w-full px-4 border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 font-bold"
                           placeholder="Name"
                         >
@@ -239,8 +174,7 @@ export default function UserProfileEditable({ userId }) {
                           name="height"
                           autoComplete="height"
                           required
-                          onChange={handleOnChange}
-                          value={state.height}
+                          onChange={updateHeightState}
                           className="h-6 appearance-none rounded-full relative block w-full px-4 font-bold border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 text-sm"
                           placeholder="Height (Inches)"
                           onKeyPress={(event) => {
@@ -264,7 +198,7 @@ export default function UserProfileEditable({ userId }) {
                           autoComplete="bodyType"
                           required
                           onChange={handleOnChange}
-                          value={state.bodyType}
+                          value={data.bodyType}
                           className="h-6 text-xs appearance-none rounded-full relative block w-full px-4 border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 font-bold"
                           placeholder="bodyType"
                         >
@@ -292,7 +226,7 @@ export default function UserProfileEditable({ userId }) {
                           autoComplete="religion"
                           required
                           onChange={handleOnChange}
-                          value={state.religion}
+                          value={data.religion}
                           className="h-6 text-xs appearance-none rounded-full relative block w-full px-4 border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 font-bold"
                           placeholder="religion"
                         >
@@ -318,7 +252,7 @@ export default function UserProfileEditable({ userId }) {
                           autoComplete="ethnicity"
                           required
                           onChange={handleOnChange}
-                          value={state.ethnicity}
+                          value={data.ethnicity}
                           className="h-6 text-xs appearance-none rounded-full relative block w-full px-4 border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 font-bold"
                           placeholder="Ethnicity"
                         >
@@ -349,7 +283,7 @@ export default function UserProfileEditable({ userId }) {
                     autoComplete="hairColor"
                     required
                     onChange={handleOnChange}
-                    value={state.hairColor}
+                    value={data.hairColor}
                     className="h-6 text-xs appearance-none rounded-full relative block w-full px-4 border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 font-bold"
                     placeholder="Name"
                   >
@@ -377,7 +311,7 @@ export default function UserProfileEditable({ userId }) {
                     autoComplete="eyeColor"
                     required
                     onChange={handleOnChange}
-                    value={state.eyeColor}
+                    value={data.eyeColor}
                     className="h-6 text-xs appearance-none rounded-full relative block w-full px-4 border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 font-bold"
                     placeholder="Name"
                   >
@@ -402,7 +336,7 @@ export default function UserProfileEditable({ userId }) {
                     autoComplete="astrologySign"
                     required
                     onChange={handleOnChange}
-                    value={state.astrologySign}
+                    value={data.astrologySign}
                     className="h-6 text-xs appearance-none rounded-full relative block w-full px-4 border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 font-bold"
                     placeholder="astrologySign"
                   >
@@ -434,7 +368,7 @@ export default function UserProfileEditable({ userId }) {
                     autoComplete="childStatus"
                     required
                     onChange={handleOnChange}
-                    value={state.childStatus}
+                    value={data.childStatus}
                     className="h-6 text-xs appearance-none rounded-full relative block w-full px-4 border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 font-bold"
                     placeholder="Child Status"
                   >
@@ -460,7 +394,7 @@ export default function UserProfileEditable({ userId }) {
                     autoComplete="smoking"
                     required
                     onChange={handleOnChange}
-                    value={state.smoking}
+                    value={data.smoking}
                     className="h-6 text-xs appearance-none rounded-full relative block w-full px-4 border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 font-bold"
                     placeholder="NameSmokingStatus"
                   >
@@ -483,7 +417,7 @@ export default function UserProfileEditable({ userId }) {
                     autoComplete="alcoholUse"
                     required
                     onChange={handleOnChange}
-                    value={state.alcoholUse}
+                    value={data.alcoholUse}
                     className="h-6 text-xs appearance-none rounded-full relative block w-full px-4 border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 font-bold"
                     placeholder="AlcoholUse"
                   >
