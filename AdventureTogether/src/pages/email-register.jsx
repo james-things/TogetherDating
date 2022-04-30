@@ -72,6 +72,16 @@ const EmailRegisterPage = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
+  // If there is an error, it will end up status
+  if (status === 'error') {
+    return <span>Error Loading Projects.</span>;
+  }
+
+  // If we are still waiting on data, that will be in status too
+  if (status === 'loading') {
+    return <span>Loading...</span>;
+  }
+
   // Link reducer to input
   const handleOnChange = (evt) => {
     const { target } = evt;
@@ -104,7 +114,7 @@ const EmailRegisterPage = () => {
 
   // Page content - Allow the user to select and initiate a registration process
   return (
-    <div className="my-10 bg-white rounded-2xl border-2 border-gray-200 flex flex-col justify-center items-center mx-auto p-10 w-full">
+    <div className="my-20 bg-white rounded-2xl border-2 border-gray-200 flex flex-col justify-center items-center mx-auto p-10 w-full">
       <div className="flex flex-col justify-center items-center">
         <Link to="/">
           <svg
