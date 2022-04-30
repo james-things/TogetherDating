@@ -73,16 +73,16 @@ function MyFriendsPage() {
             </g>
           </svg>
         </Link>
-        <h3 className="text-2xl font-extrabold italic uppercase my-4">
-          Friends List Test Page
+        <h3 className="text-2xl font-extrabold my-4">
+          My Outdoorsies
         </h3>
+        Users you have connected with on our app!
       </div>
       <div className="text-center w-full divide-y-2 divide-gray-100 divide-solid">
         {(user) && <FriendsGrid userId={user?.uid} />}
         <div className="py-4">
           <div className="flex justify-between items-center"> </div>
         </div>
-        {(user) && user?.uid}
       </div>
     </div>
   );

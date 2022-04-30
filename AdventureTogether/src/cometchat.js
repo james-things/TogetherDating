@@ -56,10 +56,25 @@ const sendCometChatMessage = async (ratedPersonId, messageText) => {
   );
 };
 
+const makeCometChatCall = async (targetPerson, type) => {
+  const receiverType = CometChat.RECEIVER_TYPE.USER;
+  const audioCall = new CometChat.Call(targetPerson, CometChat.CALL_TYPE.AUDIO, receiverType);
+
+  await CometChat.initiateCall(audioCall).then(
+    (call) => {
+      console.log('Audio call placed successfully:', audioCall);
+    },
+    (error) => {
+      console.log('Audio call failed with error:', error);
+    },
+  );
+};
+
 export {
   CometChat,
   loginCometChatUser,
   registerCometChatUser,
   sendCometChatMessage,
   logoutCometChatUser,
+  makeCometChatCall,
 };

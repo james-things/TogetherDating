@@ -11,8 +11,8 @@ const navigationLoggedIn = [
   { name: 'Discover', href: '/discover', current: (window.location.href.includes('discover')) },
   { name: 'Profile', href: '/user-profile', current: (window.location.href.includes('user-profile')) },
   { name: 'Interests', href: '/outdoor-interests', current: (window.location.href.includes('outdoor-interests')) },
-  { name: 'Friends', href: '/my-friends', current: (window.location.href.includes('my-friends')) },
-  { name: 'Inbox', href: '/inbox', current: (window.location.href.includes('inbox')) },
+  { name: 'Conversations', href: '/inbox', current: (window.location.href.includes('inbox')) },
+  { name: 'Outdoorsies', href: '/my-friends', current: (window.location.href.includes('my-friends')) },
 ];
 
 const navigationLoggedOut = [
