@@ -166,14 +166,6 @@ export default function UserProfileEditable({ userId }) {
       {(data)
         && (
           <div className="container">
-            <button
-              type="button"
-              className="font-sans p-4 h-12 bg-white"
-              onClick={() => toggleEditable()}
-            >
-              Edit Profile
-              <img className="icon-edit" src={editIcon} alt="edit" />
-            </button>
             <div className="grid grid-cols-4 gap-x-1 font-sans">
               {/* above this */}
               <div className="items-stretch justify-center col-span-1 self-center">
@@ -184,10 +176,20 @@ export default function UserProfileEditable({ userId }) {
                   alt="User Profile Pic"
                 />
               </div>
-              <div className="col-span-3 self-center">
-                <div className="text-center text-2xl">
+              <div className="col-span-2 self-center px-8">
+                <div className="text-center text-3xl">
                   {data.name}
                 </div>
+              </div>
+              <div className="col-span-1">
+                <button
+                  type="button"
+                  className="font-sans h-12 bg-white"
+                  onClick={() => toggleEditable()}
+                >
+                  Edit Profile
+                  <img className="icon-edit" src={editIcon} alt="edit" />
+                </button>
               </div>
               <div className="col-span-2">
                 <div className="col-span-2">
@@ -231,7 +233,23 @@ export default function UserProfileEditable({ userId }) {
                   <div className="text-left text-md h-6">
                     {(editState.editable === false) && `${heightFeet}' ${heightInches}"`}
                     {(editState.editable === true)
-                      && ('You cant edit height yet :(')}
+                      && (
+                        <input
+                          id="height"
+                          name="height"
+                          autoComplete="height"
+                          required
+                          onChange={handleOnChange}
+                          value={state.height}
+                          className="h-6 appearance-none rounded-full relative block w-full px-4 font-bold border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 text-sm"
+                          placeholder="Height (Inches)"
+                          onKeyPress={(event) => {
+                            if (!/[0-9]/.test(event.key)) {
+                              event.preventDefault();
+                            }
+                          }}
+                        />
+                      )}
                   </div>
                   <div className="text-left text-md h-6">
                     <u>Body Type:</u>

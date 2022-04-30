@@ -22,7 +22,7 @@ const initialState = {
   hairColor: '',
   eyeColor: '',
   religion: '',
-  smokingStatus: '',
+  smoking: '',
   height: '',
   completedRegistration: true,
 };
@@ -104,7 +104,7 @@ const EmailRegisterPage = () => {
 
   // Page content - Allow the user to select and initiate a registration process
   return (
-    <div className="my-10 bg-white rounded-2xl border-2 border-gray-200 flex flex-col justify-center items-center mx-auto p-10 w-full md:w-7/12">
+    <div className="my-10 bg-white rounded-2xl border-2 border-gray-200 flex flex-col justify-center items-center mx-auto p-10 w-full">
       <div className="flex flex-col justify-center items-center">
         <Link to="/">
           <svg
