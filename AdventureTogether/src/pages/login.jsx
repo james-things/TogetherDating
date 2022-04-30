@@ -46,15 +46,13 @@ const LoginPage = () => {
   // useEffect hook to catch firebase logged in state
   // this will fire when user is not null
   useEffect(async () => {
-    if (data) {
-      if (data?.id !== undefined) {
+    if (user) {
+      if (user?.uid) {
         await loginCometChatUser(user?.uid);
         navigate('/');
-      } else {
-        navigate('/email-register');
       }
     }
-  }, [data]);
+  }, [user?.uid]);
 
   // Link reducer
   const handleOnChange = (evt) => {

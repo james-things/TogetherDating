@@ -197,7 +197,7 @@ const PersonSlider = ({ persons, userId }) => {
       setMyInterests(data.outdoorActivities);
       const timer = setTimeout(() => {
         setLoading(false);
-      }, 2000);
+      }, 1000);
       return () => clearTimeout(timer);
     }
     // try to catch if still loading
