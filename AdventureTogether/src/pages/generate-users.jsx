@@ -203,7 +203,7 @@ const GenerateUsersPage = () => {
         setLastUser(gName);
 
         // Print successful result
-        console.log(`-------\nNew user created successfully!\n-------\nUser Details:\n${gDob}\n${gName}\n${gGender}\n${gUrl}\n${gEmail}\n${gPw}\n${gOutActivs}\n${gEthnicity}\n${gEyeColor}\n${gHairColor}\n${gBodyType}\n${gHeight}\n${gEducation}\n${gReligion}\n${gAmbition}${gAlcohol}\n${gSmoking}\n${gChild}\n${gAstro}\n${gDescription}\n-------`);
+        console.log(`-------\nNew user created successfully!\n-------\nUser Details:\n${gDob}\n${gName}\n${gGender}\n${gUrl}\n${gEmail}\n${gPw}\n${gOutActivs}\n${gEthnicity}\n${gEyeColor}\n${gHairColor}\n${gBodyType}\n${gHeight}\n${gEducation}\n${gReligion}\n${gAmbition}\n${gAlcohol}\n${gSmoking}\n${gChild}\n${gAstro}\n${gDescription}\n-------`);
       })
       // In event of failure, try to catch and display the error message thrown
       .catch((err) => {
