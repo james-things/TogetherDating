@@ -42,7 +42,7 @@ export default async function registerEmailProfile(userId, state) {
   await setDoc(doc(db, `new-users/${userId}`), ({
     name,
     description,
-    image,
+    imageUrl,
     alcoholUse,
     astrologySign,
     bodyType,
