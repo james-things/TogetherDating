@@ -9,42 +9,58 @@ import {
 import localStoreGet from './localStoreGet';
 import { loginCometChatUser, registerCometChatUser } from '../cometchat';
 
-export default async function registerEmailProfile(userId, imageState, nameState, descState) {
+export default async function registerEmailProfile(userId, state) {
+  const {
+    name,
+    description,
+    image,
+    alcoholUse,
+    astrologySign,
+    bodyType,
+    childStatus,
+    education,
+    ethnicity,
+    gender,
+    hairColor,
+    eyeColor,
+    religion,
+    smoking,
+    height,
+    completedRegistration,
+  } = state;
   const db = getFirestore();
   const storage = getStorage();
   // Prepare the profile data already collected
   const bDay = localStoreGet('localBirthdate');
   const imageRef = ref(storage, `/profiles/${userId}`);
 
-  await uploadBytes(imageRef, imageState);
+  await uploadBytes(imageRef, image);
 
   const imageUrl = await getDownloadURL(imageRef);
 
   // Await firebase profile storage
   await setDoc(doc(db, `new-users/${userId}`), ({
-    name: nameState,
-    description: descState,
-    imageUrl,
+    name,
+    description,
+    image,
+    alcoholUse,
+    astrologySign,
+    bodyType,
+    childStatus,
+    education,
+    ethnicity,
+    gender,
+    hairColor,
+    eyeColor,
+    religion,
+    smoking,
+    height,
+    completedRegistration,
     likes: [],
     dislikes: [],
     favorites: [],
     matches: [],
-    birthdate: bDay,
-    height: '',
-    gender: '',
-    ethnicity: '',
     outdoorActivities: [],
-    eyeColor: '',
-    hairColor: '',
-    bodyType: '',
-    education: '',
-    religion: '',
-    ambition: '',
-    alcoholUse: '',
-    smoking: '',
-    childStatus: '',
-    astrologySign: '',
-    completedRegistration: false,
     id: userId,
   }))
     .catch((err) => {
@@ -52,6 +68,6 @@ export default async function registerEmailProfile(userId, imageState, nameState
     });
 
   // Then register and log the user in to CometChat
-  await registerCometChatUser(nameState, userId);
+  await registerCometChatUser(name, userId);
   await loginCometChatUser(userId);
 }

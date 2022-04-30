@@ -5,7 +5,10 @@ import React, {
 } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { useAuth, useUser } from 'reactfire';
+import {
+  useAuth, useFirestore, useFirestoreDocData, useUser,
+} from 'reactfire';
+import { doc } from 'firebase/firestore';
 import FirebaseUI from '../components/FirebaseUI';
 import { loginCometChatUser } from '../cometchat';
 import { withLayout } from '../wrappers/layout';
@@ -32,6 +35,8 @@ const reducer = (state, action) => {
 // Main func
 const LoginPage = () => {
   const { status, data: user } = useUser();
+  const userRef = doc(useFirestore(), `new-users/${user?.uid}`);
+  const { refstatus, data } = useFirestoreDocData(userRef);
   const auth = useAuth();
   const navigate = useNavigate();
 
@@ -42,10 +47,16 @@ const LoginPage = () => {
   // this will fire when user is not null
   useEffect(async () => {
     if (user?.uid) {
-      await loginCometChatUser(user?.uid);
-      navigate('/');
+      if (data) {
+        if (data?.id) {
+          await loginCometChatUser(user?.uid);
+          navigate('/');
+        }
+      } else {
+        navigate('/email-register');
+      }
     }
-  }, [user?.uid]);
+  }, [user?.uid, data]);
 
   // Link reducer
   const handleOnChange = (evt) => {

@@ -112,9 +112,9 @@ export const optionTeam = {
 };
 
 export const optionWalkRun = {
-  name: 'Walking/Running',
-  options: ['Walk / Run, Any', 'Run, Jog', 'Run, Trail', 'Hiking, Day', 'Beach Combing', 'Triathlon', 'Adventure Racing'],
-  selections: [0, 0, 0, 0, 0, 0, 0],
+  name: 'Walking/Running/Leisure',
+  options: ['Walk / Run, Any', 'Run, Jog', 'Run, Trail', 'Hiking, Day', 'Beach Combing', 'Triathlon', 'Adventure Racing', 'Astronomy', 'Golf', 'Photography', 'Painting', 'Travel'],
+  selections: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 };
 
 export const optionLeisureOther = {

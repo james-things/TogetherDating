@@ -5,7 +5,7 @@
 //  custom handlers as compared to existing dropdowns.
 //  css: fix text displaying in dropdowns, fix button positions, fix size of component, etc.
 
-import React, { useReducer, useState } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 import { useFirestore, useFirestoreDocData, useUser } from 'reactfire';
 import { doc } from 'firebase/firestore';
 import getAge from '../methods/getAge';
@@ -64,6 +64,7 @@ const reducer = (state, action) => {
 export default function UserProfileEditable({ userId }) {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [editState, setEdit] = useState(initialEditState);
+  const [dataState, setDataState] = useState(initialState);
 
   const toggleEditable = () => {
     const currentEditState = editState.editable;
@@ -119,6 +120,46 @@ export default function UserProfileEditable({ userId }) {
     await updateUserData(userId, state);
     setEdit({ editable: false });
   };
+
+  useEffect(() => {
+    if (data) {
+      if (data.id) {
+        const {
+          description,
+          alcoholUse,
+          astrologySign,
+          bodyType,
+          childStatus,
+          education,
+          ethnicity,
+          gender,
+          hairColor,
+          eyeColor,
+          religion,
+          smoking,
+          height,
+        } = data;
+
+        setDataState({
+          description,
+          alcoholUse,
+          astrologySign,
+          bodyType,
+          childStatus,
+          education,
+          ethnicity,
+          gender,
+          hairColor,
+          eyeColor,
+          religion,
+          smoking,
+          height,
+        });
+
+        console.log(dataState);
+      }
+    }
+  }, [data]);
 
   return (
     <pre>
@@ -177,7 +218,6 @@ export default function UserProfileEditable({ userId }) {
                           className="h-6 text-xs appearance-none rounded-full relative block w-full px-4 border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 font-bold"
                           placeholder="Name"
                         >
-                          <option value={data.gender}>Keep as-is</option>
                           <option value="Male">Male</option>
                           <option value="Female">Female</option>
                           <option value="Non-Binary/Other">Non-Binary/Other</option>
@@ -210,7 +250,6 @@ export default function UserProfileEditable({ userId }) {
                           className="h-6 text-xs appearance-none rounded-full relative block w-full px-4 border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 font-bold"
                           placeholder="bodyType"
                         >
-                          <option value={data.bodyType}>Keep as-is</option>
                           <option value="Athletic">Athletic</option>
                           <option value="Average">Average</option>
                           <option value="Curvy">Curvy</option>
@@ -239,7 +278,6 @@ export default function UserProfileEditable({ userId }) {
                           className="h-6 text-xs appearance-none rounded-full relative block w-full px-4 border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 font-bold"
                           placeholder="religion"
                         >
-                          <option value={data.religion}>Keep as-is</option>
                           <option value="Christian">Christian</option>
                           <option value="Muslim">Muslim</option>
                           <option value="Hindi">Hindi</option>
@@ -266,7 +304,6 @@ export default function UserProfileEditable({ userId }) {
                           className="h-6 text-xs appearance-none rounded-full relative block w-full px-4 border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 font-bold"
                           placeholder="Ethnicity"
                         >
-                          <option value={data.ethnicity}>Keep as-is</option>
                           <option value="American Indian">American Indian</option>
                           <option value="Asian">Asian</option>
                           <option value="Black">Black</option>
@@ -298,8 +335,7 @@ export default function UserProfileEditable({ userId }) {
                     className="h-6 text-xs appearance-none rounded-full relative block w-full px-4 border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 font-bold"
                     placeholder="Name"
                   >
-                    <option value={data.hairColor}>Keep as-is</option>
-                    <option value="Blond">Blond</option>
+                    <option value="Blonde">Blonde</option>
                     <option value="Brown">Brown</option>
                     <option value="Black">Black</option>
                     <option value="Red">Red</option>
@@ -327,7 +363,6 @@ export default function UserProfileEditable({ userId }) {
                     className="h-6 text-xs appearance-none rounded-full relative block w-full px-4 border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 font-bold"
                     placeholder="Name"
                   >
-                    <option value={data.eyeColor}>Keep as-is</option>
                     <option value="Blue">Blue</option>
                     <option value="Green">Green</option>
                     <option value="Hazel">Hazel</option>
@@ -353,7 +388,6 @@ export default function UserProfileEditable({ userId }) {
                     className="h-6 text-xs appearance-none rounded-full relative block w-full px-4 border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 font-bold"
                     placeholder="astrologySign"
                   >
-                    <option value={data.astrologySign}>Keep as-is</option>
                     <option value="Aries">Aries</option>
                     <option value="Taurus">Taurus</option>
                     <option value="Gemini">Gemini</option>
@@ -386,7 +420,6 @@ export default function UserProfileEditable({ userId }) {
                     className="h-6 text-xs appearance-none rounded-full relative block w-full px-4 border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 font-bold"
                     placeholder="Child Status"
                   >
-                    <option value={data.childStatus}>Keep as-is</option>
                     <option value="Young parent">Young parent</option>
                     <option value="Mature parent">Mature parent</option>
                     <option value="Maybe someday">Maybe someday</option>
@@ -404,16 +437,15 @@ export default function UserProfileEditable({ userId }) {
                     {(editState.editable === true)
                   && (
                   <select
-                    id="smokingStatus"
-                    name="smokingStatus"
-                    autoComplete="smokingStatus"
+                    id="smoking"
+                    name="smoking"
+                    autoComplete="smoking"
                     required
                     onChange={handleOnChange}
                     value={state.smoking}
                     className="h-6 text-xs appearance-none rounded-full relative block w-full px-4 border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 font-bold"
                     placeholder="NameSmokingStatus"
                   >
-                    <option value={data.smoking}>Keep as-is</option>
                     <option value="Non-smoker">Non-smoker</option>
                     <option value="Smoker">Smoker</option>
                     <option value="Quitting">Quitting</option>
@@ -437,7 +469,6 @@ export default function UserProfileEditable({ userId }) {
                     className="h-6 text-xs appearance-none rounded-full relative block w-full px-4 border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 font-bold"
                     placeholder="AlcoholUse"
                   >
-                    <option value={data.alcoholUse}>Keep as-is</option>
                     <option value="Opposed, Moral">Opposed, Moral</option>
                     <option value="Opposed, Recovering">Opposed, Recovering</option>
                     <option value="none">none</option>

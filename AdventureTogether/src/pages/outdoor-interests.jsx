@@ -57,11 +57,6 @@ const OutdoorInterestsPage = () => {
 
   const [state, dispatch] = useReducer(reducer, initialState);
   const [error, setError] = useState('');
-  const [checked, setChecked] = React.useState(false);
-
-  const handleChange = () => {
-    setChecked(!checked);
-  };
 
   useEffect(() => {
     if (data && (interests.length === 0)) {
@@ -70,15 +65,6 @@ const OutdoorInterestsPage = () => {
     }
   }, [data, interests]);
 
-  // Link reducer to input
-  const handleOnChange = (evt) => {
-    const { target } = evt;
-    dispatch({
-      type: target.name,
-      payload: target.value,
-    });
-  };
-
   // Async function to register an email/pw user's dating profile
   async function saveProfileConfiguration(evt) {
     // prevent default inputs
@@ -86,7 +72,7 @@ const OutdoorInterestsPage = () => {
     // Submit data to update
     await updateUserData(user?.uid, state);
     // once done, redirect user to discover page
-    navigate(data.completedRegistration ? '/index' : '/configure-profile');
+    navigate('/index');
   }
 
   // Page content - Allow the user to select and initiate a registration process
@@ -139,7 +125,7 @@ const OutdoorInterestsPage = () => {
             <sub>(Don&apos;t stress, you can always update these later!)</sub>
           </p>
           <br />
-          <Box className="" display="grid" gridTemplateColumns="1fr 1fr 1fr" gap={1}>
+          <Box className="" display="grid" gridTemplateColumns="1fr 1fr 1fr 1fr" gap={1}>
             <Box p={1} borderColor="border.default" borderWidth={1} borderStyle="solid">
               <OutdoorInterestPicker dataset={interestOptions.optionAnimal} interests={interests} />
             </Box>
@@ -174,9 +160,6 @@ const OutdoorInterestsPage = () => {
               <OutdoorInterestPicker dataset={interestOptions.optionMotorSports} interests={interests} />
             </Box>
             <Box p={1} borderColor="border.default" borderWidth={1} borderStyle="solid">
-              <OutdoorInterestPicker dataset={interestOptions.optionFlying} interests={interests} />
-            </Box>
-            <Box p={1} borderColor="border.default" borderWidth={1} borderStyle="solid">
               <OutdoorInterestPicker dataset={interestOptions.optionRestorationConservation} interests={interests} />
             </Box>
             <Box p={1} borderColor="border.default" borderWidth={1} borderStyle="solid">
@@ -190,9 +173,6 @@ const OutdoorInterestsPage = () => {
             </Box>
             <Box p={1} borderColor="border.default" borderWidth={1} borderStyle="solid">
               <OutdoorInterestPicker dataset={interestOptions.optionWalkRun} interests={interests} />
-            </Box>
-            <Box p={1} borderColor="border.default" borderWidth={1} borderStyle="solid">
-              <OutdoorInterestPicker dataset={interestOptions.optionLeisureOther} interests={interests} />
             </Box>
           </Box>
           <br />
