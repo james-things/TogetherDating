@@ -1,7 +1,19 @@
-/* eslint-disable max-len */
+/* eslint-disable max-len, react/jsx-no-bind */
 import React, { useEffect, useState } from 'react';
 import { doc, getDoc, getFirestore } from 'firebase/firestore';
 import { useFirestoreDocData } from 'reactfire';
+import Modal from 'react-modal';
+
+const customStyles = {
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+  },
+};
 
 export default function FriendsGrid({ userId }) {
   const [loading, setLoading] = useState(true);
@@ -56,6 +68,22 @@ export default function FriendsGrid({ userId }) {
     });
   }
 
+  let subtitle;
+  const [modalIsOpen, setIsOpen] = React.useState(false);
+
+  function openModal() {
+    setIsOpen(true);
+  }
+
+  function afterOpenModal() {
+    // references are now sync'd and can be accessed.
+    subtitle.style.color = '#f00';
+  }
+
+  function closeModal() {
+    setIsOpen(false);
+  }
+
   // will clean this up after further testing
   useEffect(() => {
     // handle early potential early firing of useEffect
@@ -63,7 +91,6 @@ export default function FriendsGrid({ userId }) {
       console.log('handled early firing of useEffect!');
     } else if (data && friends.length === 0) {
       // Build a list of friends and obtain their documents
-      // todo: perform additional testing to confirm timings work as expected
       const temp = data.outdoorActivities;
       temp.forEach((i) => myInterests.push(i));
       data.likes.map((like) => friendIds.push(like)); // this works
@@ -75,29 +102,30 @@ export default function FriendsGrid({ userId }) {
 
   return (
     <>
-      {(!loading) && (data) && (friends.length > 0)
+      {(friends.length === 0) && (<div>No connections yet, head to Discover!</div>)}
+      {(!loading) && (data) && (friends.length > 0) && (!modalIsOpen)
         && (
-        <div className="flex items-center justify-center py-8">
-          <div className="max-w-3xl rounded shadow overflow-x-auto">
-            <table className="w-full">
-              <thead className="dark:bg-gray-900 bg-gray-100">
-                <tr>
-                  <td className="text-xs font-semibold text-gray-800 dark:text-gray-100 uppercase sm:py-8 py-4 pl-6">
-                    <div className="flex items-center">
-                      User
-                    </div>
-                  </td>
-                  <td className="text-xs font-semibold text-gray-800 dark:text-gray-100 pl-6 pr-4 uppercase">
-                    <div className="flex items-center">
-                      Shared Interests
-                    </div>
-                  </td>
-                  {/*
-                  <td className="text-xs font-semibold text-gray-800 dark:text-gray-100 pl-6 uppercase">
-                    <div className="flex items-center">
-                      Last Online
-                    </div>
-                  </td>
+          <div className="flex items-center justify-center py-8">
+            <div className="max-w-3xl rounded shadow overflow-x-auto">
+              <table className="w-full">
+                <thead className="dark:bg-gray-900 bg-gray-100">
+                  <tr>
+                    <td className="text-xs font-semibold text-gray-800 dark:text-gray-100 uppercase sm:py-8 py-4 pl-6">
+                      <div className="flex items-center">
+                        User
+                      </div>
+                    </td>
+                    <td className="text-xs font-semibold text-gray-800 dark:text-gray-100 pl-6 pr-4 uppercase">
+                      <div className="flex items-center">
+                        Shared Interests
+                      </div>
+                    </td>
+                    <td className="text-xs font-semibold text-gray-800 dark:text-gray-100 pl-6 uppercase">
+                      <div className="flex items-center">
+                        View Profile
+                      </div>
+                    </td>
+                    {/*
                   <td className="text-xs font-semibold text-gray-800 dark:text-gray-100 pl-6 uppercase">
                     <div className="flex items-center">
                       Message
@@ -114,41 +142,43 @@ export default function FriendsGrid({ userId }) {
                     </div>
                   </td>
                   */}
-                </tr>
-              </thead>
-              <tbody className="bg-white dark:bg-gray-800">
-                {friends.map((friend, index) => (
-                  <tr className="border-b border-gray-200 dark:border-gray-900" key={friend.id.slice(0, -5)}>
-                    <td className="py-4 sm:pl-6 pl-4">
-                      <div className="flex items-center">
-                        <div className="w-8 h-8 bg-gray-100 rounded flex items-center justify-center">
-                          <img
-                            className="h-8 w-8 rounded-full"
-                            src={friend.image}
-                            alt="?"
-                          />
+                  </tr>
+                </thead>
+                <tbody className="bg-white dark:bg-gray-800">
+                  {friends.map((friend, index) => (
+                    <tr className="border-b border-gray-200 dark:border-gray-900" key={friend.id.slice(0, -5)}>
+                      <td className="py-4 sm:pl-6 pl-4">
+                        <div className="flex items-center">
+                          <div className="w-8 h-8 bg-gray-100 rounded flex items-center justify-center">
+                            <img
+                              className="h-8 w-8 rounded-full"
+                              src={friend.image}
+                              alt="?"
+                            />
+                          </div>
+                          <div className="pl-5">
+                            <p className="text-sm font-semibold leading-none text-gray-800 dark:text-gray-100 pb-2">{friend.name}</p>
+                          </div>
                         </div>
-                        <div className="pl-5">
-                          <p className="text-sm font-semibold leading-none text-gray-800 dark:text-gray-100 pb-2">{friend.name}</p>
+                      </td>
+                      <td className="py-4 sm:pl-6 pl-4 pr-4">
+                        <div className="flex items-center">
+                          <p className="text-s leading-tight text-gray-500 dark:text-gray-400 pl-3 min-w-max">
+                            {friend.sharedInterests.map((interest, i) => (
+                              <small key={`${interest}`}>
+                                {interest}
+                                {(i === friend.sharedInterests.length - 1) ? '' : ', '}
+                              </small>
+                            ))}
+                          </p>
                         </div>
-                      </div>
-                    </td>
-                    <td className="py-4 sm:pl-6 pl-4 pr-4">
-                      <div className="flex items-center">
-                        <p className="text-s leading-tight text-gray-500 dark:text-gray-400 pl-3 min-w-max">
-                          {friend.sharedInterests.map((interest, i) => (
-                            <small key={`${interest}`}>
-                              {interest}
-                              {(i === friend.sharedInterests.length - 1) ? '' : ', '}
-                            </small>
-                          ))}
-                        </p>
-                      </div>
-                    </td>
-                    {/*
-                    <td className="py-4 sm:pl-6 pl-4">
-                      <p className="text-xs leading-3 text-gray-800 dark:text-gray-400 pt-2">{(friend.lastLogin === undefined) ? 'Unknown' : friend.lastLogin}</p>
-                    </td>
+                      </td>
+                      <td className="py-4 sm:pl-6 pl-4">
+                        <div>
+                          <button type="button" onClick={openModal}>Open Modal</button>
+                        </div>
+                      </td>
+                      {/*
                     <td className="py-4 sm:pl-6 pl-4">
                       <p className="text-sm leading-none text-gray-800 dark:text-gray-100">M</p>
                     </td>
@@ -178,13 +208,33 @@ export default function FriendsGrid({ userId }) {
                       </div>
                     </td>
                     */}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
-        </div>
         )}
+      <Modal
+        className=""
+        isOpen={modalIsOpen}
+        onAfterOpen={afterOpenModal}
+        onRequestClose={closeModal}
+        style={customStyles}
+        contentLabel="Example Modal"
+      >
+        {/* eslint-disable-next-line no-return-assign */}
+        <h2 ref={(_subtitle) => (subtitle = _subtitle)}>Hello</h2>
+        <button type="button" onClick={closeModal}>close</button>
+        <div>I am a modal</div>
+        <form>
+          <input />
+          <button type="button">tab navigation</button>
+          <button type="button">stays</button>
+          <button type="button">inside</button>
+          <button type="button">the modal</button>
+        </form>
+      </Modal>
     </>
   );
 }

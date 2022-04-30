@@ -32,6 +32,7 @@ import MyFriendsPage from './pages/my-friends';
 import UserProfilePage from './pages/user-profile';
 import GenerateUsersPage from './pages/generate-users';
 import NewDBPage from './pages/new-db';
+import UserProfile from './components/UserProfile';
 
 // React v17 routing - this was necessary to implement other core upgrades
 function App() {
@@ -60,6 +61,7 @@ function App() {
                 <Route path="/data-test" element={<DataTest />} />
                 <Route path="/user-profile" element={<UserProfilePage />} />
                 <Route path="/user-profile-other" element={<UserProfileOtherPage />} />
+                <Route path="/user-profile-other" element={<UserProfile />} />
                 <Route path="/my-friends" element={<MyFriendsPage />} />
                 <Route path="/generate-users" element={<GenerateUsersPage />} />
                 <Route path="/new-db" element={<NewDBPage />} />

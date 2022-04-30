@@ -49,7 +49,6 @@ function UserProfilePage() {
         <div className="py-4">
           <div className="flex justify-between items-center"> </div>
         </div>
-        {(user) && user?.uid}
       </div>
     </div>
   );

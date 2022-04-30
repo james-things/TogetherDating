@@ -62,77 +62,76 @@ export default function UserProfile({ userId }) {
                 <div className="text-center text-4xl">
                   {data.name}
                   {'\'s profile'}
-
                 </div>
               </div>
               <div className="text-left col-span-1 text-m h-8">
-                <u>Gender:</u>
+                Gender:
               </div>
               <div className="text-left col-span-1 text-m h-8">
                 {data.gender}
               </div>
               <div className="text-left col-span-1 text-m h-8">
-                <u>Hair Color:</u>
+                Hair Color:
               </div>
               <div className="text-left col-span-1 text-m h-8">
                 {data.hairColor}
               </div>
               <div className="text-left col-span-1 text-m h-8">
-                <u>Age:</u>
+                Age:
               </div>
               <div className="text-left col-span-1 text-m h-8">
                 {getAge(data.birthdate)}
               </div>
               <div className="text-left col-span-1 text-m h-8">
-                <u>Eye Color:</u>
+                Eye Color:
               </div>
               <div className="text-left col-span-1 text-m h-8">
                 {data.eyeColor}
               </div>
               <div className="text-left col-span-1 text-m h-8">
-                <u>Height:</u>
+                Height:
               </div>
               <div className="text-left col-span-1 text-m h-8">
                 {`${heightFeet}' ${heightInches}"`}
               </div>
               <div className="text-left col-span-1 text-m h-8">
-                <u>Zodiac Sign:</u>
+                Zodiac Sign:
               </div>
               <div className="text-left col-span-1 text-m h-8">
                 {data.astrologySign}
               </div>
               <div className="text-left col-span-1 text-m h-8">
-                <u>Body Type:</u>
+                Body Type:
               </div>
               <div className="text-left col-span-1 text-m h-8">
                 {data.bodyType}
               </div>
               <div className="text-left col-span-1 text-m h-8">
-                <u>Parental Status:</u>
+                Parental Status:
               </div>
               <div className="text-left col-span-1 text-m h-8">
                 {data.childStatus}
               </div>
               <div className="text-left col-span-1 text-m h-8">
-                <u>Religion:</u>
+                Religion:
               </div>
               <div className="text-left col-span-1 text-m h-8">
                 {data.religion}
               </div>
               <div className="text-left col-span-1 text-m h-8">
-                <u>Tobacco Use:</u>
+                Tobacco Use:
               </div>
               <div className="text-left col-span-1 text-m h-8">
                 {data.smoking}
               </div>
               <div className="text-left col-span-1 text-m h-8">
-                <u>Ethnicity:</u>
+                Ethnicity:
               </div>
               <div className="text-left col-span-1 text-m h-8">
                 {data.ethnicity}
               </div>
               <div className="text-left col-span-1 text-m h-8">
-                <u>Alcohol Use:</u>
+                Alcohol Use:
               </div>
               <div className="text-left col-span-1 text-m h-8">
                 {data.alcoholUse}
