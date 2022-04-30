@@ -39,8 +39,8 @@ const reducer = (state, action) => {
       return { ...state, childStatus: action.payload };
     case 'religion':
       return { ...state, religion: action.payload };
-    case 'smokingStatus':
-      return { ...state, smokingStatus: action.payload };
+    case 'smoking':
+      return { ...state, smoking: action.payload };
     case 'education':
       return { ...state, education: action.payload };
     case 'ethnicity':
@@ -336,14 +336,14 @@ const GoogleRegisterPage = () => {
                 <option value="Done with Parenting">Done with Parenting</option>
               </select>
               <select
-                id="smokingStatus"
-                name="smokingStatus"
-                autoComplete="smokingStatus"
+                id="smoking"
+                name="smoking"
+                autoComplete="smoking"
                 required
                 onChange={handleOnChange}
-                value={state.smokingStatus}
+                value={state.smoking}
                 className="my-5 appearance-none rounded-full relative block w-full py-3 px-4 font-bold border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 text-sm"
-                placeholder="NameSmokingStatus"
+                placeholder="Smoking"
               >
                 <option value="">Do you smoke?</option>
                 <option value="Non-smoker">Non-smoker</option>

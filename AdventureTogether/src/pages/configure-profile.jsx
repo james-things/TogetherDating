@@ -42,7 +42,7 @@ const reducer = (state, action) => {
       return { ...state, childStatus: action.payload };
     case 'religion':
       return { ...state, religion: action.payload };
-    case 'smokingStatus':
+    case 'smoking':
       return { ...state, smokingStatus: action.payload };
     case 'education':
       return { ...state, education: action.payload };
