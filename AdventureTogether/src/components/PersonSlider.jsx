@@ -197,6 +197,12 @@ const PersonSlider = ({ persons, userId }) => {
     return `${heightFeet}' ${heightInches}"`;
   }
 
+  function fixDobString(nan) {
+    console.log(nan);
+    // const subStr = nan.substring(2, 10);
+    // return subStr;
+  }
+
   // Load in the logged-in user's interests once their document is available
   // eslint-disable-next-line consistent-return
   useEffect(() => {
@@ -257,7 +263,7 @@ const PersonSlider = ({ persons, userId }) => {
                     >
                       <p className="absolute bottom-12 m-4 pb-6 pr-8 text-white text-xl font-bold w-full">{person.name}</p>
                       <p className="absolute bottom-6 m-4 pb-6 pr-8 text-white text-md w-full">
-                        {`Age: ${getAge(currentPerson.birthdate)}`}
+                        {`Age: ${Number.isNaN(getAge(currentPerson.birthdate)) ? getAge(fixDobString(currentPerson.birthdate)) : getAge(currentPerson.birthdate)}`}
                       </p>
                       <p className="absolute bottom-6 m-4 pt-6 pr-8 text-white text-md w-full">
                         {`Height: ${getHeight(currentPerson.height)}`}

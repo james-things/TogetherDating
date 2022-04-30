@@ -8,14 +8,18 @@ export default function MatchSortList(personCollection, user) {
   const implicitInterests = [];
   // const user1 = JSON.parse(localStorage.getItem('user'));
   const user1 = user;
-  if (Object.keys(user).length > 0) {
+  if (user1) {
     // const matches = JSON.parse(localStorage.getItem('people'));
     // console.log('USER', user1, personCollection);
     const userActivites = user1.outdoorActivities;
     newUsers = personCollection.filter((x) => !user1.likes.includes(x.id));
+    console.log(`newUsers length: ${newUsers.length}`);
     newUsers = newUsers.filter((x) => !user1.dislikes.includes(x.id));
+    console.log(`newUsers length: ${newUsers.length}`);
     newUsers = newUsers.filter((x) => !user1.favorites.includes(x.id));
-    tempReturnUsers = personCollection.filter((x) => !newUsers.includes(x));
+    console.log(`newUsers length: ${newUsers.length}`);
+    tempReturnUsers = newUsers.filter((x) => !x.dislikes.includes(user.id));
+    console.log(`tempReturnUsers length: ${tempReturnUsers.length}`);
     tempReturnUsers = tempReturnUsers.filter((x) => !x.dislikes.includes(user1.id));
     tempReturnUsers.forEach((rUser) => {
       console.log(rUser.name);
@@ -125,7 +129,9 @@ export default function MatchSortList(personCollection, user) {
     console.log('ML Score', scoreArray);
 
     // invert persons for PersonSlider
-    return person.reverse();
-    // return returnUsers.reverse();
+    if (person.length > 0) {
+      return person.reverse();
+    }
+    return returnUsers.reverse();
   }
 }
