@@ -28,7 +28,7 @@ const DiscoverPage = () => {
   useEffect(() => {
     firebase
       .firestore()
-      .collection('users')
+      .collection('new-users')
       // .where('id', 'not-in', [id, ...likes, ...dislikes, ...favorites])
       .get()
       .then((querySnapshot) => {
@@ -68,7 +68,7 @@ const DiscoverPage = () => {
   // Page content - A display of potential matches, with a side match list component
   return (
     <div className="grid grid-cols-3 md:grid-cols-9 h-screen w-screen overflow-hidden">
-      <div className="hidden md:block col-span-2 bg-pink-500 shadow-lg">
+      <div className="hidden md:block col-span-2 bg-gray-800 shadow-lg">
         <SideMatchList person={{ id, name, imageUrl }} />
       </div>
       <div className="flex flex-col items-center flex-grow w-full md:ml-4 col-span-3 md:col-span-7">
@@ -102,7 +102,6 @@ const DiscoverPage = () => {
           {!loading
             // eslint-disable-next-line react/jsx-no-bind,max-len
             && <PersonSlider persons={persons} userId={id} />}
-          <Link to="/inbox" className="block absolute shadow-3xl inset-0 top-auto font-bold text-white flex items-center justify-center uppercase p-4 h-12 bg-gradient-to-r from-pink-600 via-pink-600 to-yellow-500">Inbox</Link>
         </section>
       </div>
     </div>

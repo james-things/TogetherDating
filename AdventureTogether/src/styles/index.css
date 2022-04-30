@@ -43,4 +43,5 @@ code {
 }
 
 @tailwind components;
+@tailwind screens;
 @tailwind utilities;

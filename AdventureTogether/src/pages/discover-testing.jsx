@@ -29,7 +29,7 @@ const DiscoverTestingPage = () => {
   useEffect(() => {
     firebase
       .firestore()
-      .collection('users')
+      .collection('new-users')
       // .where('id', 'not-in', [id, ...likes, ...dislikes, ...favorites])
       .get()
       .then((querySnapshot) => {

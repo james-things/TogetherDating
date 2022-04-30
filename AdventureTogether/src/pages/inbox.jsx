@@ -8,7 +8,7 @@ import { CometChatConversationListWithMessages } from '../CometChatWorkspace/src
 // Main func/page content
 const InboxPage = () => (
   <div
-    className="absolute inset-0 top-auto w-screen bg-white"
+    className="absolute inset-0 top-16 bottom-0 w-screen bg-white"
     style={{
       height: '90vh',
     }}

@@ -12,7 +12,7 @@ export default async function getImplicitInterests() {
   const callFB = await
   firebase
     .firestore()
-    .collection('users')
+    .collection('new-users')
     // .where('id', 'in', [id, ...likes, ...dislikes, ...favorites])
     .get()
     .then((querySnapshot) => {

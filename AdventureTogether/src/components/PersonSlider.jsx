@@ -28,11 +28,11 @@ const PersonSlider = ({ persons, userId }) => {
   let shouldRate = true;
 
   // Subscribe to user document
-  const userRef = doc(useFirestore(), `users/${userId}`);
+  const userRef = doc(useFirestore(), `new-users/${userId}`);
   const { refstatus, data } = useFirestoreDocData(userRef);
 
   // Various states
-  const [personsArray, setPersonsArray] = useState(persons); // array of people from matching algo
+  const [personsArray, setPersonsArray] = useState(((persons.length > 50) ? persons.slice(-50) : persons)); // array of people from matching algo (limit 50)
   const [currentIndex, setCurrentIndex] = useState(personsArray.length - 1); // index of current person
   const [lastDirection, setLastDirection] = useState(); // last card direction
   const [sharedInterests, setSharedInterests] = useState([]); // temporary state storage for shared interests
@@ -41,7 +41,7 @@ const PersonSlider = ({ persons, userId }) => {
 
   // Used for outOfFrame closure
   const currentIndexRef = useRef(currentIndex);
-  let currentPerson = persons[currentIndex];
+  let currentPerson = personsArray[currentIndex];
 
   // Maintain references for card stack
   const childRefs = useMemo(
@@ -68,7 +68,7 @@ const PersonSlider = ({ persons, userId }) => {
   const takeAction = async (action) => {
     try {
       // update our own document with the action at target user
-      await firebase.firestore().collection('/users').doc(userId).update({
+      await firebase.firestore().collection('/new-users').doc(userId).update({
         [`${action}s`]: firebase.firestore.FieldValue.arrayUnion(ratedUid),
       });
       console.log('added rating to logged in user\'s document');
@@ -77,17 +77,17 @@ const PersonSlider = ({ persons, userId }) => {
       if (action === 'like') {
         try {
           // fetch the rated person's document
-          const ratedPersonDocument = await (await firebase.firestore().collection('/users').doc(ratedUid).get()).data();
+          const ratedPersonDocument = await (await firebase.firestore().collection('/new-users').doc(ratedUid).get()).data();
           console.log('retrieved rated user\'s document successfully');
           // if that person's document contains a like for our uid
           if (ratedPersonDocument.likes.includes(userId)) {
             console.log('match found! updating docs');
             // add our new match to our own document's matches list
-            await firebase.firestore().collection('/users').doc(userId).update({
+            await firebase.firestore().collection('/new-users').doc(userId).update({
               matches: firebase.firestore.FieldValue.arrayUnion(ratedUid),
             });
             // also add this new match to our rated user's document
-            await firebase.firestore().collection('/users').doc(ratedUid).update({
+            await firebase.firestore().collection('/new-users').doc(ratedUid).update({
               matches: firebase.firestore.FieldValue.arrayUnion(userId),
             });
             console.log('update doc calls made, check for promise errors!');
@@ -200,6 +200,7 @@ const PersonSlider = ({ persons, userId }) => {
       }, 1000);
       return () => clearTimeout(timer);
     }
+    // try to catch if still loading
     if ((myInterests.length > 0) && currentPerson) {
       updateSharedInterests();
     }
@@ -254,7 +255,7 @@ const PersonSlider = ({ persons, userId }) => {
                       </p>
                       <p className="hidden md:block absolute bottom-0 group-hover:top-0 m-4 pt-6 pr-8 text-white text-md truncate group-hover:whitespace-normal transition-all w-full">{person.description}</p>
                     </div>
-                    <p className="block md:hidden text-gray-500 my-2 text-center">{person.description}</p>
+                    <p className="block hidden text-gray-500 my-2 text-center">{person.description}</p>
                   </TinderCard>
                 </div>
               ))}

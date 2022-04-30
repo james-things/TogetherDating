@@ -5,7 +5,7 @@
 //  custom handlers as compared to existing dropdowns.
 //  css: fix text displaying in dropdowns, fix button positions, fix size of component, etc.
 
-import React, { useReducer, useState } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 import { useFirestore, useFirestoreDocData, useUser } from 'reactfire';
 import { doc } from 'firebase/firestore';
 import getAge from '../methods/getAge';
@@ -64,6 +64,7 @@ const reducer = (state, action) => {
 export default function UserProfileEditable({ userId }) {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [editState, setEdit] = useState(initialEditState);
+  const [dataState, setDataState] = useState(initialState);
 
   const toggleEditable = () => {
     const currentEditState = editState.editable;
@@ -83,7 +84,7 @@ export default function UserProfileEditable({ userId }) {
   const { status, data: user } = useUser(); // probably better to pass user from parent vs this
 
   // Set document reference passed to component
-  const userRef = doc(useFirestore(), `users/${userId}`); // 'users/17aeqVDSRSd1Zf1tME57sIUAlwy2' // `users/${userId}`
+  const userRef = doc(useFirestore(), `new-users/${userId}`); // 'new-users/17aeqVDSRSd1Zf1tME57sIUAlwy2' // `new-users/${userId}`
 
   // Subscribe to referenced document
   const { refstatus, data } = useFirestoreDocData(userRef);
@@ -120,19 +121,51 @@ export default function UserProfileEditable({ userId }) {
     setEdit({ editable: false });
   };
 
+  useEffect(() => {
+    if (data) {
+      if (data.id) {
+        const {
+          description,
+          alcoholUse,
+          astrologySign,
+          bodyType,
+          childStatus,
+          education,
+          ethnicity,
+          gender,
+          hairColor,
+          eyeColor,
+          religion,
+          smoking,
+          height,
+        } = data;
+
+        setDataState({
+          description,
+          alcoholUse,
+          astrologySign,
+          bodyType,
+          childStatus,
+          education,
+          ethnicity,
+          gender,
+          hairColor,
+          eyeColor,
+          religion,
+          smoking,
+          height,
+        });
+
+        console.log(dataState);
+      }
+    }
+  }, [data]);
+
   return (
     <pre>
       {(data)
         && (
           <div className="container">
-            <button
-              type="button"
-              className="font-sans p-4 h-12 bg-white"
-              onClick={() => toggleEditable()}
-            >
-              Edit Profile
-              <img className="icon-edit" src={editIcon} alt="edit" />
-            </button>
             <div className="grid grid-cols-4 gap-x-1 font-sans">
               {/* above this */}
               <div className="items-stretch justify-center col-span-1 self-center">
@@ -143,10 +176,20 @@ export default function UserProfileEditable({ userId }) {
                   alt="User Profile Pic"
                 />
               </div>
-              <div className="col-span-3 self-center">
-                <div className="text-center text-2xl">
+              <div className="col-span-2 self-center px-8">
+                <div className="text-center text-3xl">
                   {data.name}
                 </div>
+              </div>
+              <div className="col-span-1">
+                <button
+                  type="button"
+                  className="font-sans h-12 bg-white"
+                  onClick={() => toggleEditable()}
+                >
+                  Edit Profile
+                  <img className="icon-edit" src={editIcon} alt="edit" />
+                </button>
               </div>
               <div className="col-span-2">
                 <div className="col-span-2">
@@ -177,7 +220,6 @@ export default function UserProfileEditable({ userId }) {
                           className="h-6 text-xs appearance-none rounded-full relative block w-full px-4 border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 font-bold"
                           placeholder="Name"
                         >
-                          <option value={data.gender}>Keep as-is</option>
                           <option value="Male">Male</option>
                           <option value="Female">Female</option>
                           <option value="Non-Binary/Other">Non-Binary/Other</option>
@@ -191,7 +233,23 @@ export default function UserProfileEditable({ userId }) {
                   <div className="text-left text-md h-6">
                     {(editState.editable === false) && `${heightFeet}' ${heightInches}"`}
                     {(editState.editable === true)
-                      && ('You cant edit height yet :(')}
+                      && (
+                        <input
+                          id="height"
+                          name="height"
+                          autoComplete="height"
+                          required
+                          onChange={handleOnChange}
+                          value={state.height}
+                          className="h-6 appearance-none rounded-full relative block w-full px-4 font-bold border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 text-sm"
+                          placeholder="Height (Inches)"
+                          onKeyPress={(event) => {
+                            if (!/[0-9]/.test(event.key)) {
+                              event.preventDefault();
+                            }
+                          }}
+                        />
+                      )}
                   </div>
                   <div className="text-left text-md h-6">
                     <u>Body Type:</u>
@@ -210,7 +268,6 @@ export default function UserProfileEditable({ userId }) {
                           className="h-6 text-xs appearance-none rounded-full relative block w-full px-4 border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 font-bold"
                           placeholder="bodyType"
                         >
-                          <option value={data.bodyType}>Keep as-is</option>
                           <option value="Athletic">Athletic</option>
                           <option value="Average">Average</option>
                           <option value="Curvy">Curvy</option>
@@ -239,7 +296,6 @@ export default function UserProfileEditable({ userId }) {
                           className="h-6 text-xs appearance-none rounded-full relative block w-full px-4 border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 font-bold"
                           placeholder="religion"
                         >
-                          <option value={data.religion}>Keep as-is</option>
                           <option value="Christian">Christian</option>
                           <option value="Muslim">Muslim</option>
                           <option value="Hindi">Hindi</option>
@@ -266,7 +322,6 @@ export default function UserProfileEditable({ userId }) {
                           className="h-6 text-xs appearance-none rounded-full relative block w-full px-4 border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 font-bold"
                           placeholder="Ethnicity"
                         >
-                          <option value={data.ethnicity}>Keep as-is</option>
                           <option value="American Indian">American Indian</option>
                           <option value="Asian">Asian</option>
                           <option value="Black">Black</option>
@@ -298,8 +353,7 @@ export default function UserProfileEditable({ userId }) {
                     className="h-6 text-xs appearance-none rounded-full relative block w-full px-4 border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 font-bold"
                     placeholder="Name"
                   >
-                    <option value={data.hairColor}>Keep as-is</option>
-                    <option value="Blond">Blond</option>
+                    <option value="Blonde">Blonde</option>
                     <option value="Brown">Brown</option>
                     <option value="Black">Black</option>
                     <option value="Red">Red</option>
@@ -327,7 +381,6 @@ export default function UserProfileEditable({ userId }) {
                     className="h-6 text-xs appearance-none rounded-full relative block w-full px-4 border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 font-bold"
                     placeholder="Name"
                   >
-                    <option value={data.eyeColor}>Keep as-is</option>
                     <option value="Blue">Blue</option>
                     <option value="Green">Green</option>
                     <option value="Hazel">Hazel</option>
@@ -353,7 +406,6 @@ export default function UserProfileEditable({ userId }) {
                     className="h-6 text-xs appearance-none rounded-full relative block w-full px-4 border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 font-bold"
                     placeholder="astrologySign"
                   >
-                    <option value={data.astrologySign}>Keep as-is</option>
                     <option value="Aries">Aries</option>
                     <option value="Taurus">Taurus</option>
                     <option value="Gemini">Gemini</option>
@@ -386,7 +438,6 @@ export default function UserProfileEditable({ userId }) {
                     className="h-6 text-xs appearance-none rounded-full relative block w-full px-4 border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 font-bold"
                     placeholder="Child Status"
                   >
-                    <option value={data.childStatus}>Keep as-is</option>
                     <option value="Young parent">Young parent</option>
                     <option value="Mature parent">Mature parent</option>
                     <option value="Maybe someday">Maybe someday</option>
@@ -404,16 +455,15 @@ export default function UserProfileEditable({ userId }) {
                     {(editState.editable === true)
                   && (
                   <select
-                    id="smokingStatus"
-                    name="smokingStatus"
-                    autoComplete="smokingStatus"
+                    id="smoking"
+                    name="smoking"
+                    autoComplete="smoking"
                     required
                     onChange={handleOnChange}
                     value={state.smoking}
                     className="h-6 text-xs appearance-none rounded-full relative block w-full px-4 border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 font-bold"
                     placeholder="NameSmokingStatus"
                   >
-                    <option value={data.smoking}>Keep as-is</option>
                     <option value="Non-smoker">Non-smoker</option>
                     <option value="Smoker">Smoker</option>
                     <option value="Quitting">Quitting</option>
@@ -437,7 +487,6 @@ export default function UserProfileEditable({ userId }) {
                     className="h-6 text-xs appearance-none rounded-full relative block w-full px-4 border-2 border-gray-400 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 font-bold"
                     placeholder="AlcoholUse"
                   >
-                    <option value={data.alcoholUse}>Keep as-is</option>
                     <option value="Opposed, Moral">Opposed, Moral</option>
                     <option value="Opposed, Recovering">Opposed, Recovering</option>
                     <option value="none">none</option>

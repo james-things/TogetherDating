@@ -6,7 +6,7 @@ import { doc, getFirestore, setDoc } from 'firebase/firestore';
 import localStoreGet from './localStoreGet';
 import { loginCometChatUser, registerCometChatUser } from '../cometchat';
 
-export default async function registerGoogleProfile(descState) {
+export default async function registerGoogleProfile(state) {
   const db = getFirestore();
   const auth = getAuth();
   // Prepare available data from google login
@@ -15,32 +15,47 @@ export default async function registerGoogleProfile(descState) {
   const userId = user.uid;
   const uname = user.displayName;
   const image = user.photoURL;
+  const {
+    description,
+    alcoholUse,
+    astrologySign,
+    bodyType,
+    childStatus,
+    education,
+    ethnicity,
+    gender,
+    hairColor,
+    eyeColor,
+    religion,
+    smoking,
+    height,
+    completedRegistration,
+  } = state;
 
   // Await firestore creation of profile
-  await setDoc(doc(db, `users/${userId}`), ({
+  await setDoc(doc(db, `new-users/${userId}`), ({
     name: uname,
-    description: descState,
+    description,
     imageUrl: image,
     likes: [],
     dislikes: [],
     favorites: [],
     matches: [],
     birthdate: bDay,
-    height: '',
-    gender: '',
-    ethnicity: '',
     outdoorActivities: [],
-    eyeColor: '',
-    hairColor: '',
-    bodyType: '',
-    education: '',
-    religion: '',
-    ambition: '',
-    alcoholUse: '',
-    smoking: '',
-    childStatus: '',
-    astrologySign: '',
-    completedRegistration: false,
+    alcoholUse,
+    astrologySign,
+    bodyType,
+    childStatus,
+    education,
+    ethnicity,
+    gender,
+    hairColor,
+    eyeColor,
+    religion,
+    smoking,
+    height,
+    completedRegistration,
     id: userId,
   }))
     .catch((err) => {

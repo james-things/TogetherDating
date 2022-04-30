@@ -1,21 +1,23 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment } from 'react';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import {
   BellIcon, MenuIcon, XIcon, LoginIcon,
 } from '@heroicons/react/outline';
-import { useUser } from 'reactfire';
+import { useFirestore, useFirestoreDocData, useUser } from 'reactfire';
+import { Link, useNavigate } from 'react-router-dom';
+import { doc } from 'firebase/firestore';
 
 const navigationLoggedIn = [
-  { name: 'Discover', href: '/discover', current: true },
-  { name: 'Profile', href: '/user-profile', current: false },
-  { name: 'Interests', href: '/outdoor-interests', current: false },
-  { name: 'Friends', href: '/my-friends', current: false },
-  { name: 'Inbox', href: '/inbox', current: false },
+  { name: 'Discover', href: '/discover', current: (window.location.href.includes('discover')) },
+  { name: 'Profile', href: '/user-profile', current: (window.location.href.includes('user-profile')) },
+  { name: 'Interests', href: '/outdoor-interests', current: (window.location.href.includes('outdoor-interests')) },
+  { name: 'Friends', href: '/my-friends', current: (window.location.href.includes('my-friends')) },
+  { name: 'Inbox', href: '/inbox', current: (window.location.href.includes('inbox')) },
 ];
 
 const navigationLoggedOut = [
-  { name: 'Log In', href: '/login', current: true },
-  { name: 'Create Account', href: '/age', current: false },
+  { name: 'Log In', href: '/login', current: (window.location.href.includes('login')) },
+  { name: 'Create Account', href: '/age', current: (window.location.href.includes('age') || window.location.href.includes('signup')) },
 ];
 
 function classNames(...classes) {
@@ -23,22 +25,12 @@ function classNames(...classes) {
 }
 
 export default function Navbar() {
+  const navigate = useNavigate();
   const { status, data: user } = useUser();
+  const userRef = doc(useFirestore(), `new-users/${user?.uid}`); // this is how to use uid from user
+  const { refstatus, data } = useFirestoreDocData(userRef);
+
   const navState = user ? navigationLoggedIn : navigationLoggedOut;
-  const [loggedInCur, setLoggedInCur] = useState(navigationLoggedIn);
-  const [loggedOutCur, setLoggedOutCur] = useState(navigationLoggedOut);
-
-  function setCurrent(item) {
-    let tempCur;
-    if (user) tempCur = loggedInCur;
-    else tempCur = loggedOutCur;
-
-    tempCur.forEach((i) => {
-      const curIndex = tempCur.indexOf(i);
-      if (i.name === item.name) tempCur[curIndex].current = true;
-      else tempCur[curIndex].current = false;
-    });
-  }
 
   return (
     <Disclosure as="nav" className="bg-gray-800">
@@ -59,34 +51,38 @@ export default function Navbar() {
               </div>
               <div className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
                 <div className="flex-shrink-0 flex items-center">
-                  <svg className="block lg:hidden h-8 w-auto" width="24px" height="24px" viewBox="0 0 24 24" id="Layer_1" data-name="Layer 1" fill="white" xmlns="http://www.w3.org/2000/svg">
-                    <defs>
-                      <clipPath id="clip-path">
-                        <rect className="cls-1" x="0.13" width="24" height="24" />
-                      </clipPath>
-                    </defs>
-                    <g className="cls-2">
-                      <path d="M10.89,12a1,1,0,0,1-.75-.34,1,1,0,0,1-.24-.78c.41-3.27,2.93-9.44,9.56-9.44a1,1,0,0,1,1,.87,9.42,9.42,0,0,1-2,6.84C16.75,11.05,14.22,12,10.89,12Zm7.6-8.51C14.23,4,12.66,7.94,12.13,10a7,7,0,0,0,4.79-2.12A7,7,0,0,0,18.49,3.5Z" />
-                      <path d="M10.89,12h-.12c-2.51-.32-7.26-2.26-7.26-7.38a1,1,0,0,1,.88-1A7.26,7.26,0,0,1,9.68,5.2,7.33,7.33,0,0,1,11.89,11a1,1,0,0,1-1,1ZM5.6,5.61c.48,2.57,2.76,3.67,4.21,4.12a4.72,4.72,0,0,0-1.44-3A4.81,4.81,0,0,0,5.6,5.61Z" />
-                      <path d="M10.89,16.18a1,1,0,0,1-1-1V11a1,1,0,1,1,2,0v4.17A1,1,0,0,1,10.89,16.18Z" />
-                      <path d="M13.55,22.55H8.63a4,4,0,0,1-4-4V15.18a1,1,0,0,1,1-1H16.55a1,1,0,0,1,1,1v3.37A4,4,0,0,1,13.55,22.55ZM6.63,16.18v2.37a2,2,0,0,0,2,2h4.92a2,2,0,0,0,2-2V16.18Z" />
-                    </g>
-                  </svg>
-                  <svg className="hidden lg:block h-8 w-auto" width="24px" height="24px" viewBox="0 0 24 24" id="Layer_1" data-name="Layer 1" fill="white" xmlns="http://www.w3.org/2000/svg">
-                    <defs>
-                      <clipPath id="clip-path">
-                        <rect className="cls-1" x="0.13" width="24" height="24" />
-                      </clipPath>
-                    </defs>
-                    <g className="cls-2">
-                      <path d="M10.89,12a1,1,0,0,1-.75-.34,1,1,0,0,1-.24-.78c.41-3.27,2.93-9.44,9.56-9.44a1,1,0,0,1,1,.87,9.42,9.42,0,0,1-2,6.84C16.75,11.05,14.22,12,10.89,12Zm7.6-8.51C14.23,4,12.66,7.94,12.13,10a7,7,0,0,0,4.79-2.12A7,7,0,0,0,18.49,3.5Z" />
-                      <path d="M10.89,12h-.12c-2.51-.32-7.26-2.26-7.26-7.38a1,1,0,0,1,.88-1A7.26,7.26,0,0,1,9.68,5.2,7.33,7.33,0,0,1,11.89,11a1,1,0,0,1-1,1ZM5.6,5.61c.48,2.57,2.76,3.67,4.21,4.12a4.72,4.72,0,0,0-1.44-3A4.81,4.81,0,0,0,5.6,5.61Z" />
-                      <path d="M10.89,16.18a1,1,0,0,1-1-1V11a1,1,0,1,1,2,0v4.17A1,1,0,0,1,10.89,16.18Z" />
-                      <path d="M13.55,22.55H8.63a4,4,0,0,1-4-4V15.18a1,1,0,0,1,1-1H16.55a1,1,0,0,1,1,1v3.37A4,4,0,0,1,13.55,22.55ZM6.63,16.18v2.37a2,2,0,0,0,2,2h4.92a2,2,0,0,0,2-2V16.18Z" />
-                    </g>
-                  </svg>
+                  <Link to="/">
+                    <svg className="block lg:hidden h-8 w-auto" width="24px" height="24px" viewBox="0 0 24 24" id="Layer_1" data-name="Layer 1" fill="white" xmlns="http://www.w3.org/2000/svg">
+                      <defs>
+                        <clipPath id="clip-path">
+                          <rect className="cls-1" x="0.13" width="24" height="24" />
+                        </clipPath>
+                      </defs>
+                      <g className="cls-2">
+                        <path d="M10.89,12a1,1,0,0,1-.75-.34,1,1,0,0,1-.24-.78c.41-3.27,2.93-9.44,9.56-9.44a1,1,0,0,1,1,.87,9.42,9.42,0,0,1-2,6.84C16.75,11.05,14.22,12,10.89,12Zm7.6-8.51C14.23,4,12.66,7.94,12.13,10a7,7,0,0,0,4.79-2.12A7,7,0,0,0,18.49,3.5Z" />
+                        <path d="M10.89,12h-.12c-2.51-.32-7.26-2.26-7.26-7.38a1,1,0,0,1,.88-1A7.26,7.26,0,0,1,9.68,5.2,7.33,7.33,0,0,1,11.89,11a1,1,0,0,1-1,1ZM5.6,5.61c.48,2.57,2.76,3.67,4.21,4.12a4.72,4.72,0,0,0-1.44-3A4.81,4.81,0,0,0,5.6,5.61Z" />
+                        <path d="M10.89,16.18a1,1,0,0,1-1-1V11a1,1,0,1,1,2,0v4.17A1,1,0,0,1,10.89,16.18Z" />
+                        <path d="M13.55,22.55H8.63a4,4,0,0,1-4-4V15.18a1,1,0,0,1,1-1H16.55a1,1,0,0,1,1,1v3.37A4,4,0,0,1,13.55,22.55ZM6.63,16.18v2.37a2,2,0,0,0,2,2h4.92a2,2,0,0,0,2-2V16.18Z" />
+                      </g>
+                    </svg>
+                  </Link>
+                  <Link to="/">
+                    <svg className="hidden lg:block h-8 w-auto" width="24px" height="24px" viewBox="0 0 24 24" id="Layer_1" data-name="Layer 1" fill="white" xmlns="http://www.w3.org/2000/svg">
+                      <defs>
+                        <clipPath id="clip-path">
+                          <rect className="cls-1" x="0.13" width="24" height="24" />
+                        </clipPath>
+                      </defs>
+                      <g className="cls-2">
+                        <path d="M10.89,12a1,1,0,0,1-.75-.34,1,1,0,0,1-.24-.78c.41-3.27,2.93-9.44,9.56-9.44a1,1,0,0,1,1,.87,9.42,9.42,0,0,1-2,6.84C16.75,11.05,14.22,12,10.89,12Zm7.6-8.51C14.23,4,12.66,7.94,12.13,10a7,7,0,0,0,4.79-2.12A7,7,0,0,0,18.49,3.5Z" />
+                        <path d="M10.89,12h-.12c-2.51-.32-7.26-2.26-7.26-7.38a1,1,0,0,1,.88-1A7.26,7.26,0,0,1,9.68,5.2,7.33,7.33,0,0,1,11.89,11a1,1,0,0,1-1,1ZM5.6,5.61c.48,2.57,2.76,3.67,4.21,4.12a4.72,4.72,0,0,0-1.44-3A4.81,4.81,0,0,0,5.6,5.61Z" />
+                        <path d="M10.89,16.18a1,1,0,0,1-1-1V11a1,1,0,1,1,2,0v4.17A1,1,0,0,1,10.89,16.18Z" />
+                        <path d="M13.55,22.55H8.63a4,4,0,0,1-4-4V15.18a1,1,0,0,1,1-1H16.55a1,1,0,0,1,1,1v3.37A4,4,0,0,1,13.55,22.55ZM6.63,16.18v2.37a2,2,0,0,0,2,2h4.92a2,2,0,0,0,2-2V16.18Z" />
+                      </g>
+                    </svg>
+                  </Link>
                   <h1 className="hidden lg:block h-8 w-auto inline-flex text-2xl mb-2 md:text-2xl font-bold text-white tracking-thin align-middle">
-                    Adventure Together&nbsp;&nbsp;|
+                    &nbsp;Adventure Together&nbsp;&nbsp;|
                   </h1>
                 </div>
                 <div className="hidden sm:block sm:ml-6">
@@ -95,7 +91,6 @@ export default function Navbar() {
                       <a
                         key={item.name}
                         href={item.href}
-                        onClick={() => setCurrent(item)}
                         className={classNames(
                           item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
                           'px-3 py-2 rounded-md text-sm font-medium',
@@ -109,7 +104,7 @@ export default function Navbar() {
                 </div>
               </div>
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                {user
+                {(user && data)
                   ? (
                     <>
                       <button type="button" className="bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
@@ -122,8 +117,8 @@ export default function Navbar() {
                             <span className="sr-only">Open user menu</span>
                             <img
                               className="h-8 w-8 rounded-full"
-                              src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                              alt=""
+                              src={data.imageUrl}
+                              alt="?"
                             />
                           </Menu.Button>
                         </div>
@@ -163,10 +158,12 @@ export default function Navbar() {
                     </>
                   )
                   : (
-                    <button type="button" className="bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
-                      <span className="sr-only">View notifications</span>
-                      <LoginIcon className="h-6 w-6" aria-hidden="true" />
-                    </button>
+                    <Link to={(user) ? '/logout' : '/index'}>
+                      <button type="button" className="bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
+                        <span className="sr-only">View notifications</span>
+                        <LoginIcon className="h-6 w-6" aria-hidden="true" />
+                      </button>
+                    </Link>
                   )}
               </div>
             </div>

@@ -23,8 +23,8 @@ export default function FriendsList({ userId }) {
   const db = getFirestore();
 
   // Subscribe to document associated with user session (passed as props)
-  // 'users/17aeqVDSRSd1Zf1tME57sIUAlwy2' // `users/${user?.uid}` // (test strings)
-  const userRef = doc(db, `users/${userId}`);
+  // 'new-users/17aeqVDSRSd1Zf1tME57sIUAlwy2' // `new-users/${user?.uid}` // (test strings)
+  const userRef = doc(db, `new-users/${userId}`);
   const { refstatus, data } = useFirestoreDocData(userRef);
 
   // If there is an error, it will end up status
@@ -41,7 +41,7 @@ export default function FriendsList({ userId }) {
   function fetchFriendDetails() {
     friendIds.forEach(async (id) => {
       const sharedInterests = [];
-      const docRef = doc(db, `users/${id}`);
+      const docRef = doc(db, `new-users/${id}`);
       const curFriend = await getDoc(docRef);
       const friendInterests = curFriend.data().outdoorActivities;
 

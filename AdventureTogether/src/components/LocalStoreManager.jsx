@@ -11,7 +11,7 @@ import * as PropTypes from 'prop-types';
 export default function LocalStoreManager(props) {
   // Subscribe to user and user document
   const { status, data: user } = useUser();
-  const userRef = doc(useFirestore(), `users/${user?.uid}`);
+  const userRef = doc(useFirestore(), `new-users/${user?.uid}`);
   const { refstatus, data } = useFirestoreDocData(userRef);
 
   // Each time user or data updates, if it is not undefined, update the localStore

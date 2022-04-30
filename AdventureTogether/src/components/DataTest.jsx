@@ -13,7 +13,7 @@ export default function DataTest() {
 
   // Subscribe to firestore document works similarly
   // However a reference to the document should be defined first
-  const userRef = doc(useFirestore(), `users/${user?.uid}`); // this is how to use uid from user
+  const userRef = doc(useFirestore(), `new-users/${user?.uid}`); // this is how to use uid from user
   const { refstatus, data } = useFirestoreDocData(userRef);
 
   // If there is an error, it will end up in the status

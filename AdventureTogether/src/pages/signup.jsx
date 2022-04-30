@@ -72,32 +72,25 @@ const SignupPage = () => {
       <div className="flex flex-col justify-center items-center">
         <Link to="/">
           <svg
-            className="w-10"
+            width="24px"
+            height="24px"
             viewBox="0 0 24 24"
-            focusable="false"
-            aria-hidden="true"
-            role="presentation"
+            id="Layer_1"
+            data-name="Layer 1"
+            xmlns="http://www.w3.org/2000/svg"
+            xmlnsXlink="http://www.w3.org/1999/xlink"
           >
             <defs>
-              <radialGradient
-                id="svg-fill-radial__tinder"
-                cx="0.5"
-                cy="1"
-                fr="0"
-                fx="0.5"
-                fy="1"
-                r="1"
-                spreadMethod="pad"
-              >
-                <stop offset="0%" stopColor="#ff7854" />
-                <stop offset="100%" stopColor="#fd267d" />
-              </radialGradient>
+              <clipPath id="clip-path">
+                <rect className="cls-1" x={0.13} width={24} height={24} />
+              </clipPath>
             </defs>
-            <path
-              d="M8.21 10.08c-.02 0-.04 0-.06-.02-.67-.9-.84-2.44-.89-3.03 0-.11-.13-.18-.23-.12C4.93 8.08 3 10.86 3 13.54 3 18.14 6.2 22 11.7 22c5.15 0 8.7-3.98 8.7-8.46 0-5.87-4.2-9.77-7.93-11.53a.13.13 0 0 0-.19.14c.48 3.16-.18 6.6-4.07 7.93z"
-              fill="url(#svg-fill-radial__tinder)"
-              fillRule="nonzero"
-            />
+            <g className="cls-2">
+              <path d="M10.89,12a1,1,0,0,1-.75-.34,1,1,0,0,1-.24-.78c.41-3.27,2.93-9.44,9.56-9.44a1,1,0,0,1,1,.87,9.42,9.42,0,0,1-2,6.84C16.75,11.05,14.22,12,10.89,12Zm7.6-8.51C14.23,4,12.66,7.94,12.13,10a7,7,0,0,0,4.79-2.12A7,7,0,0,0,18.49,3.5Z" />
+              <path d="M10.89,12h-.12c-2.51-.32-7.26-2.26-7.26-7.38a1,1,0,0,1,.88-1A7.26,7.26,0,0,1,9.68,5.2,7.33,7.33,0,0,1,11.89,11a1,1,0,0,1-1,1ZM5.6,5.61c.48,2.57,2.76,3.67,4.21,4.12a4.72,4.72,0,0,0-1.44-3A4.81,4.81,0,0,0,5.6,5.61Z" />
+              <path d="M10.89,16.18a1,1,0,0,1-1-1V11a1,1,0,1,1,2,0v4.17A1,1,0,0,1,10.89,16.18Z" />
+              <path d="M13.55,22.55H8.63a4,4,0,0,1-4-4V15.18a1,1,0,0,1,1-1H16.55a1,1,0,0,1,1,1v3.37A4,4,0,0,1,13.55,22.55ZM6.63,16.18v2.37a2,2,0,0,0,2,2h4.92a2,2,0,0,0,2-2V16.18Z" />
+            </g>
           </svg>
         </Link>
         <h3 className="text-2xl font-extrabold italic uppercase my-4">
@@ -203,7 +196,7 @@ const SignupPage = () => {
           />
           <button
             type="submit"
-            className="w-full bg-gradient-to-r from-pink-600 to-yellow-500 rounded-full hover:bg-gray-200 py-4 px-16 block whitespace-no-wrap text-white font-bold uppercase"
+            className="w-full bg-gray-800 rounded-full hover:bg-gray-600 py-4 px-16 block whitespace-no-wrap text-white font-bold uppercase"
           >
             Continue
           </button>
