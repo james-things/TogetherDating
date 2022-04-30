@@ -79,7 +79,7 @@ const LoginPage = () => {
   // You will notice <FirebaseLogin props={...} /> in the code. This singular line links
   // in the Firebase UI SSO component.
   return (
-    <div className="bg-white rounded-2xl border-2 border-gray-200 flex flex-col justify-center items-center mx-auto p-10 w-full md:w-7/12">
+    <div className="top-20 bg-white rounded-2xl border-2 border-gray-200 flex flex-col justify-center items-center mx-auto p-10 w-full">
       <div className="flex flex-col justify-center items-center">
         <Link to="/">
           <svg

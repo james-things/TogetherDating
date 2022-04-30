@@ -2,10 +2,12 @@
 
 export default function MatchSortList(personCollection, user) {
   let newUsers = [];
-  let returnUsers = [];
+  const returnUsers = [];
+  let tempReturnUsers = [];
   const countInterests = [];
   const implicitInterests = [];
-  const user1 = JSON.parse(localStorage.getItem('user'));
+  // const user1 = JSON.parse(localStorage.getItem('user'));
+  const user1 = user;
   if (Object.keys(user).length > 0) {
     // const matches = JSON.parse(localStorage.getItem('people'));
     // console.log('USER', user1, personCollection);
@@ -13,8 +15,23 @@ export default function MatchSortList(personCollection, user) {
     newUsers = personCollection.filter((x) => !user1.likes.includes(x.id));
     newUsers = newUsers.filter((x) => !user1.dislikes.includes(x.id));
     newUsers = newUsers.filter((x) => !user1.favorites.includes(x.id));
-    returnUsers = personCollection.filter((x) => !newUsers.includes(x));
-    returnUsers = returnUsers.filter((x) => !user1.dislikes.includes(x.id));
+    tempReturnUsers = personCollection.filter((x) => !newUsers.includes(x));
+    tempReturnUsers = tempReturnUsers.filter((x) => !x.dislikes.includes(user1.id));
+    tempReturnUsers.forEach((rUser) => {
+      console.log(rUser.name);
+      let shared;
+      let found = false;
+      user1.outdoorActivities.forEach((myActivity) => {
+        rUser.outdoorActivities.forEach((theirActivity) => {
+          if (myActivity === theirActivity) found = true;
+          shared = theirActivity;
+        });
+      });
+      if (found === true) {
+        console.log(`found shared interest with user: ${rUser.name}\nOver interest: ${shared}`);
+        returnUsers.push(rUser);
+      }
+    });
     // need to pull likes, favorites out, create sorted list
     // this above works
     // console.log(newUsers, returnUsers, personCollection.length);
@@ -56,7 +73,7 @@ export default function MatchSortList(personCollection, user) {
     // console.log(countInterests);
     const scoreArray = [];
     const person = [];
-    newUsers.forEach((element) => {
+    returnUsers.forEach((element) => {
       const outdoor = element.outdoorActivities;
       let score = 0;
       if (typeof outdoor !== 'undefined') {
@@ -109,5 +126,6 @@ export default function MatchSortList(personCollection, user) {
 
     // invert persons for PersonSlider
     return person.reverse();
+    // return returnUsers.reverse();
   }
 }

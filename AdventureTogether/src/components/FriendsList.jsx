@@ -39,6 +39,8 @@ export default function FriendsList({ userId }) {
 
   // for each friend, fetch their data and shared interests and build a list
   function fetchFriendDetails() {
+    const now = Date.now();
+    console.log(now);
     friendIds.forEach(async (id) => {
       const sharedInterests = [];
       const docRef = doc(db, `new-users/${id}`);

@@ -11,8 +11,8 @@ const navigationLoggedIn = [
   { name: 'Discover', href: '/discover', current: (window.location.href.includes('discover')) },
   { name: 'Profile', href: '/user-profile', current: (window.location.href.includes('user-profile')) },
   { name: 'Interests', href: '/outdoor-interests', current: (window.location.href.includes('outdoor-interests')) },
-  { name: 'Friends', href: '/my-friends', current: (window.location.href.includes('my-friends')) },
-  { name: 'Inbox', href: '/inbox', current: (window.location.href.includes('inbox')) },
+  { name: 'Conversations', href: '/inbox', current: (window.location.href.includes('inbox')) },
+  { name: 'Outdoorsies', href: '/my-friends', current: (window.location.href.includes('my-friends')) },
 ];
 
 const navigationLoggedOut = [
@@ -107,10 +107,6 @@ export default function Navbar() {
                 {(user && data)
                   ? (
                     <>
-                      <button type="button" className="bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
-                        <span className="sr-only">View notifications</span>
-                        <BellIcon className="h-6 w-6" aria-hidden="true" />
-                      </button>
                       <Menu as="div" className="ml-3 relative">
                         <div>
                           <Menu.Button className="bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">

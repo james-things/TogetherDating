@@ -119,6 +119,17 @@ const PersonSlider = ({ persons, userId }) => {
     document.body.style.overflow = 'visible';
   };
 
+  // For programmatic swiping ( can replace or call actions ) - not currently in use
+  const swipe = async (action, shouldRateBool) => {
+    let dir;
+    shouldRate = shouldRateBool;
+    if ((action === 'like') || (action === 'skip')) dir = 'right';
+    if ((action === 'dislike') || (action === 'back')) dir = 'left';
+    if (canSwipe && currentIndex < personsArray.length) {
+      await childRefs[currentIndex].current.swipe(dir); // Swipe the card!
+    }
+  };
+
   // update shared interest state based on currentPerson
   function updateSharedInterests() {
     const targetUserInterests = currentPerson.outdoorActivities;
@@ -132,17 +143,6 @@ const PersonSlider = ({ persons, userId }) => {
     });
     setSharedInterests(tempShared);
   }
-
-  // For programmatic swiping ( can replace or call actions ) - not currently in use
-  const swipe = async (action, shouldRateBool) => {
-    let dir;
-    shouldRate = shouldRateBool;
-    if ((action === 'like') || (action === 'skip')) dir = 'right';
-    if ((action === 'dislike') || (action === 'back')) dir = 'left';
-    if (canSwipe && currentIndex < personsArray.length) {
-      await childRefs[currentIndex].current.swipe(dir); // Swipe the card!
-    }
-  };
 
   // increase current index and show card (should be decrease?) - not currently in use
   const goBack = async () => {
@@ -190,6 +190,13 @@ const PersonSlider = ({ persons, userId }) => {
     currentPerson = persons[currentIndex];
   };
 
+  function getHeight(inches) {
+    // eslint-disable-next-line no-bitwise
+    const heightFeet = ~~(Number(inches) / 12); // bitwise quotient === integer division
+    const heightInches = (Number(inches) % 12);
+    return `${heightFeet}' ${heightInches}"`;
+  }
+
   // Load in the logged-in user's interests once their document is available
   // eslint-disable-next-line consistent-return
   useEffect(() => {
@@ -234,11 +241,10 @@ const PersonSlider = ({ persons, userId }) => {
           <div className="">
             <div className="">
               {personsArray.map((person, index) => (
-                <div key={person.id.slice(0, -5)}>
+                <div key={person.id}>
                   <TinderCard
                     ref={childRefs[index]}
                     className="swipe"
-                    key={person.id}
                     onSwipe={(dir) => swiped(dir, person.id, index)}
                     onCardLeftScreen={() => outOfFrame(person.id, index)}
                     preventSwipe="up down"
@@ -249,48 +255,71 @@ const PersonSlider = ({ persons, userId }) => {
                         backgroundImage: `url(${person.imageUrl})`,
                       }}
                     >
-                      <p className="absolute bottom-12 group-hover:top-0 m-4 pb-0 text-white text-lg font-bold transition-all">{person.name}</p>
-                      <p className="hidden md:block absolute bottom-6 group-hover:top-0 m-4 pt-6 pr-8 text-white text-md truncate group-hover:whitespace-normal transition-all w-full">
+                      <p className="absolute bottom-12 m-4 pb-6 pr-8 text-white text-xl font-bold w-full">{person.name}</p>
+                      <p className="absolute bottom-6 m-4 pb-6 pr-8 text-white text-md w-full">
                         {`Age: ${getAge(currentPerson.birthdate)}`}
                       </p>
-                      <p className="hidden md:block absolute bottom-0 group-hover:top-0 m-4 pt-6 pr-8 text-white text-md truncate group-hover:whitespace-normal transition-all w-full">{person.description}</p>
+                      <p className="absolute bottom-6 m-4 pt-6 pr-8 text-white text-md w-full">
+                        {`Height: ${getHeight(currentPerson.height)}`}
+                      </p>
+                      <p className="absolute bottom-0 m-4 pt-6 pr-8 text-white text-md w-full">
+                        {`Body Type: ${currentPerson.bodyType}`}
+                      </p>
                     </div>
                     <p className="block hidden text-gray-500 my-2 text-center">{person.description}</p>
                   </TinderCard>
                 </div>
               ))}
             </div>
-            <div className="top-card-info align-middle w-72">
+            <div className="top-card-info align-middle w-72 resize-none">
               <div className="action-buttons w-full">
                 <ActionButton action="back" />
                 <ActionButton action="dislike" />
                 <ActionButton action="like" />
                 <ActionButton action="skip" />
               </div>
-              <div className="top-card-info-text text-xs text-left bg-white border-black border-2">
-                {`Name: ${currentPerson.name}`}
-                <br />
-                {`Common Interests: ${(sharedInterests.length > 0) ? sharedInterests : 'The Great Outdoors'}`}
-                <br />
-                {`Eye Color: ${currentPerson.eyeColor}`}
-                <br />
-                {`Hair Color: ${currentPerson.hairColor}`}
-                <br />
-                {`Height: ${currentPerson.height}`}
-                <br />
-                {`Ethnicity: ${currentPerson.ethnicity}`}
-                <br />
-                {`Sign: ${currentPerson.astrologySign}`}
-                <br />
-                {`Gender: ${currentPerson.gender}`}
-                <br />
-                {`Age: ${getAge(currentPerson.birthdate)}`}
-                <br />
-                {`Kids?: ${currentPerson.childStatus}`}
-                <br />
-                {`Drinking: ${currentPerson.alcoholUse}`}
-                <br />
-                {`Smoking: ${currentPerson.smoking}`}
+              <div className="top-card-info-text text-xs text-left bg-white border-black rounded border-2">
+                <table className="w-full">
+                  <tbody className="bg-white dark:bg-gray-800">
+                    <tr className="border-b border-gray-200 dark:border-gray-900">
+                      Common Interests:
+                      {sharedInterests.map((interest, i) => (
+                        <a key={`${interest}`}>
+                          {(i === 0) ? ' ' : ''}
+                          {interest}
+                          {(i === sharedInterests.length - 1) ? '' : ', '}
+                        </a>
+                      ))}
+                    </tr>
+                    <tr className="border-b border-gray-200 dark:border-gray-900">
+                      {`Description: ${currentPerson.description}`}
+                    </tr>
+                    <tr className="border-b border-gray-200 dark:border-gray-900">
+                      {`Eye Color: ${currentPerson.eyeColor}`}
+                    </tr>
+                    <tr className="border-b border-gray-200 dark:border-gray-900">
+                      {`Hair Color: ${currentPerson.hairColor}`}
+                    </tr>
+                    <tr className="border-b border-gray-200 dark:border-gray-900">
+                      {`Sign: ${currentPerson.astrologySign}`}
+                    </tr>
+                    <tr className="border-b border-gray-200 dark:border-gray-900">
+                      {`Ethnicity: ${currentPerson.ethnicity}`}
+                    </tr>
+                    <tr className="border-b border-gray-200 dark:border-gray-900">
+                      {`Gender: ${currentPerson.gender}`}
+                    </tr>
+                    <tr className="border-b border-gray-200 dark:border-gray-900">
+                      {`Wants Kids? ${currentPerson.childStatus}`}
+                    </tr>
+                    <tr className="border-b border-gray-200 dark:border-gray-900">
+                      {`Drinks? ${currentPerson.alcoholUse}`}
+                    </tr>
+                    <tr className="border-b border-gray-200 dark:border-gray-900">
+                      {`Tobacco? ${currentPerson.smoking}`}
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
