@@ -98,7 +98,7 @@ const ConfigureProfilePage = () => {
 
   // Page content - Allow the user to select and initiate a registration process
   return (
-    <div className="my-20 bg-white rounded-2xl border-2 border-gray-200 flex flex-col justify-center items-center mx-auto p-10 w-full">
+    <div className="top-20 bg-white rounded-2xl border-2 border-gray-200 flex flex-col justify-center items-center mx-auto p-10 w-full">
       <div className="flex flex-col justify-center items-center">
         <Link to="/">
           <svg
