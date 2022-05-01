@@ -41,6 +41,7 @@ export default async function registerEmailProfile(userId, state) {
   // Await firebase profile storage
   await setDoc(doc(db, `new-users/${userId}`), ({
     name,
+    birthdate: bDay,
     description,
     imageUrl,
     alcoholUse,
