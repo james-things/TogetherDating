@@ -26,17 +26,17 @@
     "\\.(js|jsx|ts|tsx)$": "babel-jest"
   },
   "transformIgnorePatterns": [
-    "<rootDir>/node_modules/(?!@ionic-native|@ionic|@ngrx|angular2-ui-switch|angularfire2|jest-cli|react)"
+    "<rootDir>/node_modules/(?!@ionic-native|@ionic|@ngrx|angular2-ui-switch|angularfire2|jest-cli|react|dateformat)"
   ],
-  "moduleFileExtensions": ["js", "jsx"],
+  "moduleFileExtensions": ["js", "jsx", "ts", "tsx"],
   "moduleDirectories": ["node_modules", "bower_components", "shared"],
   "moduleNameMapper": {
     "\\.(css|less)$": "<rootDir>/src/CometChatWorkspace/src/resources/__mocks__/styleMock.js",
-    "\\.(gif|png|ttf|eot|svg)$": "<rootDir>/src/CometChatWorkspace/src/resources/__mocks__/fileMock.js"
+    "\\.(gif|png|ttf|eot|svg|webp)$": "<rootDir>/src/CometChatWorkspace/src/resources/__mocks__/fileMock.js"
   },
   "verbose": false,
   "testMatch": [
-    "**/*.steps.js",
-    "**/?(*.)(spec|test).js?(x)"
+    "**/*.steps.js?(x)",
+    "**/?(*.)(spec|test).(js?(x)|ts?(x))"
   ]
 }

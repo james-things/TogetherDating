@@ -1,10 +1,10 @@
 import React, { Fragment } from 'react';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import {
-  BellIcon, MenuIcon, XIcon, LoginIcon,
+  MenuIcon, XIcon, LoginIcon,
 } from '@heroicons/react/outline';
 import { useFirestore, useFirestoreDocData, useUser } from 'reactfire';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { doc } from 'firebase/firestore';
 
 const navigationLoggedIn = [
@@ -25,7 +25,6 @@ function classNames(...classes) {
 }
 
 export default function Navbar() {
-  const navigate = useNavigate();
   const { status, data: user } = useUser();
   const userRef = doc(useFirestore(), `new-users/${user?.uid}`); // this is how to use uid from user
   const { refstatus, data } = useFirestoreDocData(userRef);

@@ -72,7 +72,6 @@ export default function FriendsList({ userId }) {
       console.log('handled early firing of useEffect!');
     } else if (data && friends.length === 0) {
       // Build a list of friends and obtain their documents
-      // todo: perform additional testing to confirm timings work as expected
       const temp = data.outdoorActivities;
       temp.forEach((i) => myInterests.push(i));
       data.likes.map((match) => friendIds.push(match)); // this works
