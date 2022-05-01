@@ -33,26 +33,28 @@ const DiscoverPage = () => {
   // Iterates through users to generate potential matches
   useEffect(() => {
     if (user && data) {
-      firebase
-        .firestore()
-        .collection('new-users')
-        // .where('id', 'not-in', [id, ...likes, ...dislikes, ...favorites])
-        .get()
-        .then((querySnapshot) => {
-          const newPersons = [];
-          querySnapshot.forEach((person) => newPersons.push(person.data()));
-          // had to add a user object to send to compare against activities
-          // the previous above area removes already liked people
-          // const user = JSON.parse(localStorage.getItem('user'));
-          const show = machineLearningSort(newPersons, data);
-          // need to set people to compare - unsure what the function does for sure
-          // setPersons(newPersons);
-          // console.log('CALL', show);
-          // i am able to get the people then swap the persons
-          setPersons(show);
-          console.log('SORTED ARRAY', show);
-          setLoading(false);
-        });
+      if (persons.length === 0) {
+        firebase
+          .firestore()
+          .collection('new-users')
+          // .where('id', 'not-in', [id, ...likes, ...dislikes, ...favorites])
+          .get()
+          .then((querySnapshot) => {
+            const newPersons = [];
+            querySnapshot.forEach((person) => newPersons.push(person.data()));
+            // had to add a user object to send to compare against activities
+            // the previous above area removes already liked people
+            // const user = JSON.parse(localStorage.getItem('user'));
+            const show = machineLearningSort(newPersons, data);
+            // need to set people to compare - unsure what the function does for sure
+            // setPersons(newPersons);
+            // console.log('CALL', show);
+            // i am able to get the people then swap the persons
+            setPersons(show);
+            console.log('SORTED ARRAY', show);
+            setLoading(false);
+          });
+      }
     }
   }, [user, data]);
 
