@@ -11,16 +11,25 @@ export default function MatchSortList(personCollection, user) {
   if (user1) {
     // const matches = JSON.parse(localStorage.getItem('people'));
     // console.log('USER', user1, personCollection);
+    // Only process each category if it is not undefined to prevent errors for new accounts
     const userActivites = user1.outdoorActivities;
-    newUsers = personCollection.filter((x) => !user1.likes.includes(x.id));
-    console.log(`newUsers length: ${newUsers.length}`);
-    newUsers = newUsers.filter((x) => !user1.dislikes.includes(x.id));
-    console.log(`newUsers length: ${newUsers.length}`);
-    newUsers = newUsers.filter((x) => !user1.favorites.includes(x.id));
-    console.log(`newUsers length: ${newUsers.length}`);
-    tempReturnUsers = newUsers.filter((x) => !x.dislikes.includes(user.id));
+    if (user1.likes !== undefined) {
+      newUsers = personCollection.filter((x) => !user1.likes.includes(x.id));
+      console.log(`newUsers length: ${newUsers.length}`);
+    }
+    if (user1.dislikes !== undefined) {
+      newUsers = newUsers.filter((x) => !user1.dislikes.includes(x.id));
+      console.log(`newUsers length: ${newUsers.length}`);
+    }
+    if (user1.likes !== undefined) {
+      newUsers = newUsers.filter((x) => !user1.favorites.includes(x.id));
+      console.log(`newUsers length: ${newUsers.length}`);
+    }
+    // filter yourself out of the list...
+    newUsers = newUsers.filter((x) => x.name !== user1.name);
+    // eslint-disable-next-line max-len
+    tempReturnUsers = newUsers.filter((x) => (x.dislikes !== undefined) && (!x.dislikes.includes(user1.id)));
     console.log(`tempReturnUsers length: ${tempReturnUsers.length}`);
-    tempReturnUsers = tempReturnUsers.filter((x) => !x.dislikes.includes(user1.id));
     tempReturnUsers.forEach((rUser) => {
       console.log(rUser.name);
       let shared;

@@ -280,7 +280,7 @@ const PersonSlider = ({ persons, userId }) => {
               </div>
               <div className="top-card-info-text text-xs text-left bg-white border-black rounded border-2">
                 <table className="w-full">
-                  <tbody className="bg-white dark:bg-gray-800">
+                  <tbody className="bg-white dark:bg-gray-800 min-h-full">
                     <tr className="border-b border-gray-200 dark:border-gray-900">
                       Common Interests:
                       {sharedInterests.map((interest, i) => (

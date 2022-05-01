@@ -8,7 +8,7 @@ import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
 import { Link } from 'react-router-dom';
 import { useFirestore, useFirestoreDocData, useUser } from 'reactfire';
-import { doc } from 'firebase/firestore';
+import { doc, getFirestore } from 'firebase/firestore';
 import SideMatchList from '../components/SideMatchList';
 import { withLayout } from '../wrappers/layout';
 import machineLearningSort from '../methods/machineLearningSort';
@@ -17,7 +17,8 @@ import PersonSlider from '../components/PersonSlider';
 // Page main function
 const DiscoverPage = () => {
   const { status, data: user } = useUser();
-  const userRef = doc(useFirestore(), `new-users/${user?.uid}`);
+  const db = getFirestore();
+  const userRef = doc(db, `new-users/${user?.uid}`);
   const { refstatus, data } = useFirestoreDocData(userRef);
 
   const [persons, setPersons] = useState([]);
@@ -33,11 +34,11 @@ const DiscoverPage = () => {
   // Iterates through users to generate potential matches
   useEffect(() => {
     if (user && data) {
-      if (persons.length === 0) {
+      if (data?.id !== undefined) {
         firebase
           .firestore()
           .collection('new-users')
-          // .where('id', 'not-in', [id, ...likes, ...dislikes, ...favorites])
+        // .where('id', 'not-in', [id, ...likes, ...dislikes, ...favorites])
           .get()
           .then((querySnapshot) => {
             const newPersons = [];
@@ -70,10 +71,6 @@ const DiscoverPage = () => {
     console.log('persons changed!');
     getTopCardPerson();
   }
-
-  useEffect(() => {
-    console.log('persons changed');
-  }, [persons]);
 
   // Page content - A display of potential matches, with a side match list component
   return (
