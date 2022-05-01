@@ -139,7 +139,7 @@ describe('optionTeam', () => {
 
 describe('optionWalkRun', () => {
   it('Option list for outdoor interests type: Walking/Running', () => {
-    expect(opts.optionWalkRun.name).toBe('Walking/Running');
+    expect(opts.optionWalkRun.name).toBe('Walking/Running/Leisure');
   });
 });
 

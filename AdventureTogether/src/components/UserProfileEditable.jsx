@@ -119,7 +119,7 @@ export default function UserProfileEditable({ userId }) {
               <div className="col-span-1">
                 <button
                   type="button"
-                  className="font-sans h-12 bg-white"
+                  className="focus:outline-none outline-none font-sans h-12 bg-white"
                   onClick={() => toggleEditable()}
                 >
                   Edit Profile

@@ -25,7 +25,7 @@ defineFeature(feature, (test) => {
     });
 
     then('I expect the string to be converted to ISO format YYYY-MM-DD', () => {
-      compareStrings = (usString == isoString) ;
+      compareStrings = (usString === isoString);
       expect(compareStrings).toBe(false);
     });
   });
