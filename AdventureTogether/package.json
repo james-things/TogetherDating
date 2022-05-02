@@ -77,7 +77,8 @@
     "start": "craco start",
     "build": "craco build",
     "eject": "react-scripts eject",
-    "test": "jest --silent"
+    "test-all": "jest --silent",
+    "test": "jest --testPathIgnorePatterns=Firebase --silent"
   },
   "eslintConfig": {
     "extends": [

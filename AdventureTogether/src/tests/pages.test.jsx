@@ -12,6 +12,7 @@ import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 import { cometConfig, firebaseConfig } from '../environment';
 import SorryPage from '../pages/sorry';
+import AgePage from '../pages/age';
 
 let container = null;
 const firebaseApp = initializeApp(firebaseConfig);
@@ -40,6 +41,25 @@ describe('Sorry Page', () => {
             <FirestoreProvider sdk={firestoreInstance}>
               <Router>
                 <SorryPage />
+              </Router>
+            </FirestoreProvider>
+          </AuthProvider>
+        </FirebaseAppProvider>, container,
+      );
+    });
+    expect(container.toBeVisible);
+  });
+});
+
+describe('Sorry Page', () => {
+  it('Should render successfully', () => {
+    act(() => {
+      render(
+        <FirebaseAppProvider firebaseConfig={firebaseConfig}>
+          <AuthProvider sdk={auth}>
+            <FirestoreProvider sdk={firestoreInstance}>
+              <Router>
+                <AgePage />
               </Router>
             </FirestoreProvider>
           </AuthProvider>
