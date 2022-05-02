@@ -12,15 +12,15 @@ import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 import { cleanup, render } from '@testing-library/react';
 import firebase from 'firebase/compat/app';
-import { firebaseConfig } from '../environment';
-import LocalStoreManager from '../components/LocalStoreManager';
-import UserProfile from '../components/UserProfile';
-import Navbar from '../components/Navbar';
-import UserProfileEditable from '../components/UserProfileEditable';
-import ButtonMap from '../components/ButtonMap';
-import FriendsGrid from '../components/FriendsGrid';
-import FriendsList from '../components/FriendsList';
-import DataTest from '../components/DataTest';
+import { firebaseConfig } from '../../environment';
+import LocalStoreManager from '../../components/LocalStoreManager';
+import UserProfile from '../../components/UserProfile';
+import Navbar from '../../components/Navbar';
+import UserProfileEditable from '../../components/UserProfileEditable';
+import ButtonMap from '../../components/ButtonMap';
+import FriendsGrid from '../../components/FriendsGrid';
+import FriendsList from '../../components/FriendsList';
+import DataTest from '../../components/DataTest';
 
 const flushPromises = () => new Promise(setImmediate);
 let container = null;
@@ -38,8 +38,6 @@ beforeAll(() => {
 });
 
 afterAll(async () => {
-  await firebase.app().delete();
-
   unmountComponentAtNode(container);
   container.remove();
   container = null;
@@ -131,25 +129,6 @@ describe('LocalStoreManager Component', () => {
   });
 });
 
-describe('OutdoorInterestPicker Component', () => {
-  it('Should render successfully', () => {
-    act(() => {
-      render(
-        <FirebaseAppProvider firebaseConfig={firebaseConfig}>
-          <AuthProvider sdk={auth}>
-            <FirestoreProvider sdk={firestoreInstance}>
-              <Router>
-                <UserProfileEditable userId="testrandomfakeuid" />
-              </Router>
-            </FirestoreProvider>
-          </AuthProvider>
-        </FirebaseAppProvider>, container,
-      );
-    });
-    expect(container.toBeVisible);
-  });
-});
-
 describe('FriendsList Component', () => {
   it('Should render successfully', () => {
     act(() => {
@@ -178,25 +157,6 @@ describe('FriendsGrid Component', () => {
             <FirestoreProvider sdk={firestoreInstance}>
               <Router>
                 <FriendsGrid userId="testrandomfakeuid" />
-              </Router>
-            </FirestoreProvider>
-          </AuthProvider>
-        </FirebaseAppProvider>, container,
-      );
-    });
-    expect(container.toBeVisible);
-  });
-});
-
-describe('DataTest Component', () => {
-  it('Should render successfully', () => {
-    act(() => {
-      render(
-        <FirebaseAppProvider firebaseConfig={firebaseConfig}>
-          <AuthProvider sdk={auth}>
-            <FirestoreProvider sdk={firestoreInstance}>
-              <Router>
-                <DataTest userId="testrandomfakeuid" />
               </Router>
             </FirestoreProvider>
           </AuthProvider>
