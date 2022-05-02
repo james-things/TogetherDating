@@ -1,30 +1,26 @@
-/* eslint-disable no-undef */
-// Description: A unit test for the successful rendering of IndexPage
+/* eslint-disable no-undef, max-len */
+// Description: A unit test for the successful rendering of the Navbar component
+import { act, cleanup as hooksCleanup } from '@testing-library/react-hooks';
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
-import { render, unmountComponentAtNode } from 'react-dom';
+import { unmountComponentAtNode } from 'react-dom';
 import { initializeApp } from 'firebase/app';
-import { act } from 'react-dom/test-utils';
 import { FirebaseAppProvider, AuthProvider, FirestoreProvider } from 'reactfire';
 import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
+import { cleanup, render } from '@testing-library/react';
 import firebase from 'firebase/compat/app';
-import { cleanup as hooksCleanup } from '@testing-library/react-hooks/lib/pure';
-import { cleanup } from '@testing-library/react';
-import { cometConfig, firebaseConfig } from '../environment';
-import SorryPage from '../pages/sorry';
-import AgePage from '../pages/age';
-import IndexPage from '../pages';
-import NewDBPage from '../pages/new-db';
-import UserProfilePage from '../pages/user-profile';
-import SignupPage from '../pages/signup';
-import LogoutPage from '../pages/logout';
-import LoginPage from '../pages/login';
-import MyFriendsPage from '../pages/my-friends';
-import GoogleRegister from '../pages/google-register';
-import EmailRegisterPage from '../pages/email-register';
+import { firebaseConfig } from '../../environment';
+import LocalStoreManager from '../../components/LocalStoreManager';
+import UserProfile from '../../components/UserProfile';
+import Navbar from '../../components/Navbar';
+import UserProfileEditable from '../../components/UserProfileEditable';
+import ButtonMap from '../../components/ButtonMap';
+import FriendsGrid from '../../components/FriendsGrid';
+import FriendsList from '../../components/FriendsList';
+import DataTest from '../../components/DataTest';
 
 const flushPromises = () => new Promise(setImmediate);
 let container = null;
@@ -55,7 +51,7 @@ afterAll(async () => {
   await flushPromises();
 });
 
-describe('Sorry Page', () => {
+describe('UserProfileEditable Component', () => {
   it('Should render successfully', () => {
     act(() => {
       render(
@@ -63,7 +59,7 @@ describe('Sorry Page', () => {
           <AuthProvider sdk={auth}>
             <FirestoreProvider sdk={firestoreInstance}>
               <Router>
-                <SorryPage />
+                <UserProfileEditable userId="testrandomfakeuid" />
               </Router>
             </FirestoreProvider>
           </AuthProvider>
@@ -74,7 +70,7 @@ describe('Sorry Page', () => {
   });
 });
 
-describe('Age Page', () => {
+describe('Navbar Component', () => {
   it('Should render successfully', () => {
     act(() => {
       render(
@@ -82,7 +78,7 @@ describe('Age Page', () => {
           <AuthProvider sdk={auth}>
             <FirestoreProvider sdk={firestoreInstance}>
               <Router>
-                <AgePage />
+                <Navbar />
               </Router>
             </FirestoreProvider>
           </AuthProvider>
@@ -93,7 +89,7 @@ describe('Age Page', () => {
   });
 });
 
-describe('Index Page', () => {
+describe('UserProfile Component', () => {
   it('Should render successfully', () => {
     act(() => {
       render(
@@ -101,7 +97,7 @@ describe('Index Page', () => {
           <AuthProvider sdk={auth}>
             <FirestoreProvider sdk={firestoreInstance}>
               <Router>
-                <IndexPage />
+                <UserProfile userId="testrandomfakeuid" />
               </Router>
             </FirestoreProvider>
           </AuthProvider>
@@ -112,7 +108,7 @@ describe('Index Page', () => {
   });
 });
 
-describe('EmailRegister Page', () => {
+describe('LocalStoreManager Component', () => {
   it('Should render successfully', () => {
     act(() => {
       render(
@@ -120,7 +116,9 @@ describe('EmailRegister Page', () => {
           <AuthProvider sdk={auth}>
             <FirestoreProvider sdk={firestoreInstance}>
               <Router>
-                <EmailRegisterPage />
+                <LocalStoreManager>
+                  <ButtonMap />
+                </LocalStoreManager>
               </Router>
             </FirestoreProvider>
           </AuthProvider>
@@ -131,7 +129,7 @@ describe('EmailRegister Page', () => {
   });
 });
 
-describe('GoogleRegister Page', () => {
+describe('FriendsList Component', () => {
   it('Should render successfully', () => {
     act(() => {
       render(
@@ -139,7 +137,7 @@ describe('GoogleRegister Page', () => {
           <AuthProvider sdk={auth}>
             <FirestoreProvider sdk={firestoreInstance}>
               <Router>
-                <GoogleRegister Page />
+                <FriendsList userId="testrandomfakeuid" />
               </Router>
             </FirestoreProvider>
           </AuthProvider>
@@ -150,7 +148,7 @@ describe('GoogleRegister Page', () => {
   });
 });
 
-describe('NewDB Page', () => {
+describe('FriendsGrid Component', () => {
   it('Should render successfully', () => {
     act(() => {
       render(
@@ -158,26 +156,7 @@ describe('NewDB Page', () => {
           <AuthProvider sdk={auth}>
             <FirestoreProvider sdk={firestoreInstance}>
               <Router>
-                <NewDBPage />
-              </Router>
-            </FirestoreProvider>
-          </AuthProvider>
-        </FirebaseAppProvider>, container,
-      );
-    });
-    expect(container.toBeVisible);
-  });
-});
-
-describe('UserProfile Page', () => {
-  it('Should render successfully', () => {
-    act(() => {
-      render(
-        <FirebaseAppProvider firebaseConfig={firebaseConfig}>
-          <AuthProvider sdk={auth}>
-            <FirestoreProvider sdk={firestoreInstance}>
-              <Router>
-                <UserProfilePage />
+                <FriendsGrid userId="testrandomfakeuid" />
               </Router>
             </FirestoreProvider>
           </AuthProvider>
