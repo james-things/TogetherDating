@@ -1,24 +1,23 @@
-/* eslint-disable no-undef */
-// Description: A unit test for the successful rendering of IndexPage
+/* eslint-disable no-undef, max-len */
+// Description: A unit test for the successful rendering of the Navbar component
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
-import { unmountComponentAtNode } from 'react-dom';
 import { initializeApp } from 'firebase/app';
 import { FirebaseAppProvider, AuthProvider, FirestoreProvider } from 'reactfire';
 import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
-import { shallow } from 'enzyme';
 import { cleanup } from '@testing-library/react';
-import { cometConfig, firebaseConfig } from '../environment';
-import SorryPage from '../pages/sorry';
-import AgePage from '../pages/age';
-import IndexPage from '../pages';
-import NewDBPage from '../pages/new-db';
-import UserProfilePage from '../pages/user-profile';
-import EmailRegisterPage from '../pages/email-register';
-import GoogleRegisterPage from '../pages/google-register';
+import { shallow } from 'enzyme';
+import { firebaseConfig } from '../environment';
+import LocalStoreManager from '../components/LocalStoreManager';
+import UserProfile from '../components/UserProfile';
+import Navbar from '../components/Navbar';
+import UserProfileEditable from '../components/UserProfileEditable';
+import ButtonMap from '../components/ButtonMap';
+import FriendsGrid from '../components/FriendsGrid';
+import FriendsList from '../components/FriendsList';
 
 const firebaseApp = initializeApp(firebaseConfig);
 const auth = getAuth(firebaseApp);
@@ -28,46 +27,14 @@ afterAll(() => {
   cleanup();
 });
 
-describe('Sorry Page', () => {
+describe('UserProfile Component', () => {
   it('renders correctly', async () => {
     shallow(
       <FirebaseAppProvider firebaseConfig={firebaseConfig}>
         <AuthProvider sdk={auth}>
           <FirestoreProvider sdk={firestoreInstance}>
             <Router>
-              <SorryPage />
-            </Router>
-          </FirestoreProvider>
-        </AuthProvider>
-      </FirebaseAppProvider>,
-    );
-  });
-});
-
-describe('Age Page', () => {
-  it('renders correctly', async () => {
-    shallow(
-      <FirebaseAppProvider firebaseConfig={firebaseConfig}>
-        <AuthProvider sdk={auth}>
-          <FirestoreProvider sdk={firestoreInstance}>
-            <Router>
-              <AgePage />
-            </Router>
-          </FirestoreProvider>
-        </AuthProvider>
-      </FirebaseAppProvider>,
-    );
-  });
-});
-
-describe('Index Page', () => {
-  it('renders correctly', async () => {
-    shallow(
-      <FirebaseAppProvider firebaseConfig={firebaseConfig}>
-        <AuthProvider sdk={auth}>
-          <FirestoreProvider sdk={firestoreInstance}>
-            <Router>
-              <IndexPage />
+              <UserProfile userId="testrandomfakeuid" />
             </Router>
           </FirestoreProvider>
         </AuthProvider>
@@ -83,7 +50,57 @@ describe('UserProfileEditable Component', () => {
         <AuthProvider sdk={auth}>
           <FirestoreProvider sdk={firestoreInstance}>
             <Router>
-              <EmailRegisterPage />
+              <UserProfileEditable userId="testrandomfakeuid" />
+            </Router>
+          </FirestoreProvider>
+        </AuthProvider>
+      </FirebaseAppProvider>,
+    );
+  });
+});
+
+describe('Navbar Component', () => {
+  it('renders correctly', async () => {
+    shallow(
+      <FirebaseAppProvider firebaseConfig={firebaseConfig}>
+        <AuthProvider sdk={auth}>
+          <FirestoreProvider sdk={firestoreInstance}>
+            <Router>
+              <Navbar />
+            </Router>
+          </FirestoreProvider>
+        </AuthProvider>
+      </FirebaseAppProvider>,
+    );
+  });
+});
+
+describe('LocalStoreManager Component', () => {
+  it('renders correctly', async () => {
+    shallow(
+      <FirebaseAppProvider firebaseConfig={firebaseConfig}>
+        <AuthProvider sdk={auth}>
+          <FirestoreProvider sdk={firestoreInstance}>
+            <Router>
+              <LocalStoreManager>
+                <ButtonMap />
+              </LocalStoreManager>
+            </Router>
+          </FirestoreProvider>
+        </AuthProvider>
+      </FirebaseAppProvider>,
+    );
+  });
+});
+
+describe('UserProfileEditable Component', async () => {
+  it('renders correctly', async () => {
+    shallow(
+      <FirebaseAppProvider firebaseConfig={firebaseConfig}>
+        <AuthProvider sdk={auth}>
+          <FirestoreProvider sdk={firestoreInstance}>
+            <Router>
+              <FriendsList userId="testrandomfakeuid" />
             </Router>
           </FirestoreProvider>
         </AuthProvider>
@@ -99,39 +116,7 @@ describe('UserProfileEditable Component', () => {
         <AuthProvider sdk={auth}>
           <FirestoreProvider sdk={firestoreInstance}>
             <Router>
-              <GoogleRegisterPage />
-            </Router>
-          </FirestoreProvider>
-        </AuthProvider>
-      </FirebaseAppProvider>,
-    );
-  });
-});
-
-describe('UserProfileEditable Component', () => {
-  it('renders correctly', async () => {
-    shallow(
-      <FirebaseAppProvider firebaseConfig={firebaseConfig}>
-        <AuthProvider sdk={auth}>
-          <FirestoreProvider sdk={firestoreInstance}>
-            <Router>
-              <NewDBPage />
-            </Router>
-          </FirestoreProvider>
-        </AuthProvider>
-      </FirebaseAppProvider>,
-    );
-  });
-});
-
-describe('UserProfileEditable Component', () => {
-  it('renders correctly', async () => {
-    shallow(
-      <FirebaseAppProvider firebaseConfig={firebaseConfig}>
-        <AuthProvider sdk={auth}>
-          <FirestoreProvider sdk={firestoreInstance}>
-            <Router>
-              <UserProfilePage />
+              <FriendsGrid userId="testrandomfakeuid" />
             </Router>
           </FirestoreProvider>
         </AuthProvider>

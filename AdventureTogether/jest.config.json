@@ -34,6 +34,9 @@
     "\\.(css|less)$": "<rootDir>/src/CometChatWorkspace/src/resources/__mocks__/styleMock.js",
     "\\.(gif|png|ttf|eot|svg|webp)$": "<rootDir>/src/CometChatWorkspace/src/resources/__mocks__/fileMock.js"
   },
+  "setupFiles": [
+    "<rootDir>/src/setupTests.js"
+  ],
   "verbose": false,
   "testMatch": [
     "**/*.steps.js?(x)",
